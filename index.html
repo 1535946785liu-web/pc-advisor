@@ -321,6 +321,7 @@ html.mo-off .mascot{display:none}
 .mo.wave .mo-arm-r{animation:mo-wave 1s ease-in-out}
 .mo.wave .mo-svg{animation:mo-hop .6s ease-out}
 @media (prefers-reduced-motion:reduce){.mo-body,.mo-eyes,.mo.wave .mo-arm-r,.mo.wave .mo-svg{animation:none}}
+@media (hover:none),(max-width:900px){.space .floor{transform:none;height:34%;bottom:0;left:0;right:0;opacity:.6}}
 /* 性能：只给少数浮动元素保留毛玻璃，避免手机浏览器内存不足崩溃 */
 .glass,.gnav{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 .glass{background:var(--glass-2)}
@@ -1055,7 +1056,7 @@ const sketch=p=>`<div class="sketch"><svg viewBox="0 0 200 128" aria-hidden="tru
 function gallery(p){
   const list=p.img.filter(u=>!img.dead.has(u));
   if(!list.length)return `<div class="gal" data-n="0">${sketch(p)}</div>`;
-  return `<div class="gal" data-id="${p.id}" data-n="${list.length}"><div class="track">${list.map((u,i)=>`<div class="slide"><img src="${esc(u)}" alt="${esc(p.name)} 图 ${i+1}" ${i?'loading="lazy"':""} referrerpolicy="no-referrer" decoding="async"></div>`).join("")}</div>
+  return `<div class="gal" data-id="${p.id}" data-n="${list.length}"><div class="track">${list.map((u,i)=>`<div class="slide"><img ${i?`data-src="${esc(u)}"`:`src="${esc(u)}"`} alt="${esc(p.name)} 图 ${i+1}" loading="lazy" referrerpolicy="no-referrer" decoding="async"></div>`).join("")}</div>
    <span class="gcount">1/${list.length}</span><button type="button" class="gnav prev" aria-label="上一张">‹</button><button type="button" class="gnav next" aria-label="下一张">›</button>
    <div class="dots">${list.map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div></div>`;
 }
@@ -1063,6 +1064,7 @@ function syncGal(g){
   const t=g.querySelector(".track");if(!t)return;const n=t.children.length;g.dataset.n=n;
   if(!n){g.outerHTML=`<div class="gal" data-n="0">${sketch(byId[g.dataset.id])}</div>`;return}
   const i=Math.round(t.scrollLeft/Math.max(1,t.clientWidth));
+  [i,i+1].forEach(k=>{const im=t.children[k]&&t.children[k].querySelector("img[data-src]");if(im){im.src=im.dataset.src;im.removeAttribute("data-src")}});
   const c=g.querySelector(".gcount");if(c)c.textContent=`${Math.min(i+1,n)}/${n}`;
   const d=g.querySelector(".dots");if(d){if(d.children.length!==n)d.innerHTML=Array.from({length:n},()=>"<i></i>").join("");[...d.children].forEach((e,k)=>e.classList.toggle("on",k===i))}
 }
@@ -1164,7 +1166,7 @@ function drawCmp(){
     const minP=Math.min(...g.map(p=>p.price));
     const keys=[...new Set(g.flatMap(p=>p.rows.map(r=>r[0])))];
     const row=(k,f)=>`<tr><th scope="row">${k}</th>${g.map(p=>`<td>${f(p)}</td>`).join("")}</tr>`;
-    return `<div class="cmpgroup"><h3>${CATS[c].t}</h3><div class="table-wrap glass"><table><thead><tr><th></th>${g.map(p=>`<th scope="col">${first(p)?`<img src="${esc(first(p))}" alt="" referrerpolicy="no-referrer">`:""}${esc(p.name)}</th>`).join("")}</tr></thead><tbody>
+    return `<div class="cmpgroup"><h3>${CATS[c].t}</h3><div class="table-wrap glass"><table><thead><tr><th></th>${g.map(p=>`<th scope="col">${first(p)?`<img src="${esc(first(p))}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">`:""}${esc(p.name)}</th>`).join("")}</tr></thead><tbody>
       ${row("最低价",p=>`<span class="tech ${p.price===minP&&g.length>1?"best":""}">€${money(p.price)}</span>`)}
       ${row("市场价",p=>p.market?`<span class="tech">€${money(p.market)}</span>${p.save?" · 省 "+p.save+"%":""}`:"暂无")}
       ${row("历史低价",p=>p.hist?`<span class="tech">€${money(p.hist.v)}</span>`:"暂无")}

@@ -26,7 +26,7 @@
 3. 某款已经买不到、或价格明显不合理（比市场价高很多且没有其他卖家），在条目里保持原价，并在提交说明里列出来，由人决定是否换型号。
 4. 改 `data/meta.js`：`updated` 改成今天日期；`sale` / `saleTip` 写下一个月内意大利的主要促销（黑色星期五、网络星期一、Prime Day、圣诞/新年折扣、1 月 Saldi 等），没有就写一句"价格会变，下单前以商店页面为准"之类的通用提示。
 5. 把 `index.html` 里三个 `data/*.js?v=YYYY-MM-DD` 改成今天日期（让浏览器拿到新数据）。
-6. 检查：`node -e "for (const f of ['meta','pcs','peripherals']) require('vm').runInNewContext(require('fs').readFileSync('data/'+f+'.js','utf8'))"` 不报错；如有 Playwright，打开 `index.html` 确认没有 JS 报错、42 台电脑和外设都显示。
+6. 检查（三个文件按顺序在同一个环境里运行，后面的会用到前面定义的函数）：`node -e "const vm=require('vm'),fs=require('fs'),c=vm.createContext({});for(const f of ['meta','pcs','peripherals'])vm.runInContext(fs.readFileSync('data/'+f+'.js','utf8'),c);console.log(vm.runInContext('META.updated+\" \"+P.length+\" \"+Q.length',c))"` 能打印出日期和条目数（目前 42 台电脑、31 个外设）；如有 Playwright，打开 `index.html` 确认没有 JS 报错、42 台电脑和外设都显示。
 7. 提交到 `main`，提交说明写清：改了多少个价格、哪些创了新低、哪些买不到或需要人工看。
 
 ## 注意

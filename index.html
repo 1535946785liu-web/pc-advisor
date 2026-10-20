@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+</head>
+<body>
+<title>电脑选购参谋</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@900&display=swap">
+<style>
+/* Layout: a shop shelf. Needs form on the left, shelf-tag cards with photo galleries on the right; one column on phones. */
+:root{
+  --paper:#eef2f5; --card:#ffffff; --photo:#ffffff; --ink:#15212d; --ink-2:#4d5b69; --rule:#d3dbe2;
+  --tag:#ffd23f; --tag-ink:#231c00; --act:#0b6a65; --act-ink:#ffffff; --act-soft:#dcefed;
+  --good:#1d7a4b; --bad:#b0442b; --shade:rgba(10,16,22,.88);
+  --f-display:"Noto Serif SC","Songti SC","STSong",serif;
+  --f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --f-data:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0e141a; --card:#161f28; --photo:#f4f6f8; --ink:#e5ecf2; --ink-2:#9aa9b6; --rule:#28333e;
+  --tag:#e8bf2e; --tag-ink:#1d1600; --act:#3fc0b5; --act-ink:#04211f; --act-soft:#163430;
+  --good:#5cc48b; --bad:#ef7f62; --shade:rgba(0,0,0,.92); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0e141a; --card:#161f28; --photo:#f4f6f8; --ink:#e5ecf2; --ink-2:#9aa9b6; --rule:#28333e;
+  --tag:#e8bf2e; --tag-ink:#1d1600; --act:#3fc0b5; --act-ink:#04211f; --act-soft:#163430;
+  --good:#5cc48b; --bad:#ef7f62; --shade:rgba(0,0,0,.92); color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+img{max-width:100%}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;margin:0;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 96px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:28px}
+a{color:var(--act)}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--act);outline-offset:2px}
+
+header.top{display:grid;gap:10px;border-bottom:2px solid var(--ink);padding-bottom:16px}
+.eyebrow{font-family:var(--f-data);font-size:12px;letter-spacing:.08em;color:var(--ink-2);text-transform:uppercase}
+h1{font-family:var(--f-display);font-weight:900;font-size:clamp(30px,6vw,46px);line-height:1.15;margin:0;text-wrap:balance}
+.lede{margin:0;color:var(--ink-2);max-width:62ch}
+.stamp{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px;color:var(--ink-2)}
+.stamp b{font-family:var(--f-data);color:var(--ink);font-weight:600}
+.notice{border-left:3px solid var(--tag);background:var(--card);padding:10px 14px;font-size:14px;border-radius:0 4px 4px 0}
+
+.main{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:860px){.main{grid-template-columns:minmax(0,1fr)}}
+
+form.needs{background:var(--card);border:1px solid var(--rule);border-radius:6px;padding:18px;display:grid;gap:18px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px)}
+@media (max-width:860px){form.needs{position:static}}
+.field{display:grid;gap:8px}
+.label{font-size:13px;font-weight:700;letter-spacing:.02em}
+.budget-row{display:flex;align-items:baseline;gap:6px;font-family:var(--f-data)}
+.budget-row input{width:120px;padding:8px 10px;border:1px solid var(--rule);border-radius:4px;background:var(--paper);font-family:var(--f-data);font-size:18px;font-weight:600}
+input[type=range]{width:100%;accent-color:var(--act)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--rule);background:var(--paper);border-radius:999px;padding:6px 12px;font-size:14px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--act);border-color:var(--act);color:var(--act-ink)}
+.hint{font-size:12px;color:var(--ink-2);margin:0}
+
+section{min-width:0}
+section h2{font-family:var(--f-display);font-weight:900;font-size:24px;margin:0;text-wrap:balance}
+.sec-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:10px;margin-bottom:14px}
+.sec-head p{margin:0;color:var(--ink-2);font-size:14px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:16px}
+.item{background:var(--card);border:1px solid var(--rule);border-radius:6px;overflow:hidden;display:grid;align-content:start;min-width:0}
+.item.pick{border-color:var(--act);box-shadow:0 0 0 1px var(--act)}
+.body{padding:14px 16px 16px;display:grid;gap:12px;min-width:0}
+
+/* photo gallery */
+.gal{position:relative;background:var(--photo);aspect-ratio:4/3;max-width:100%}
+.track{display:flex;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.track::-webkit-scrollbar{display:none}
+.slide{flex:0 0 100%;min-width:0;height:100%;scroll-snap-align:center;display:flex;align-items:center;justify-content:center;padding:10px;cursor:zoom-in}
+.slide img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.gnav{position:absolute;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;border:0;background:rgba(21,33,45,.72);color:#fff;font-size:18px;line-height:1;cursor:pointer;display:grid;place-items:center}
+.gnav.prev{left:8px}.gnav.next{right:8px}
+.gal[data-n="1"] .gnav,.gal[data-n="1"] .dots{display:none}
+.dots{position:absolute;bottom:8px;left:0;right:0;display:flex;justify-content:center;gap:5px;pointer-events:none}
+.dots i{width:7px;height:7px;border-radius:50%;background:rgba(21,33,45,.25)}
+.dots i.on{background:rgba(21,33,45,.85)}
+.gcount{position:absolute;top:8px;left:8px;font-family:var(--f-data);font-size:11px;background:rgba(21,33,45,.72);color:#fff;padding:2px 7px;border-radius:10px}
+.sketch{display:grid;place-items:center;height:100%;color:var(--ink-2);background:var(--paper);text-align:center;gap:4px;padding:12px}
+.sketch svg{width:62%;max-width:220px;height:auto}
+.sketch small{font-size:12px}
+
+.item-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:start}
+.kind{font-family:var(--f-data);font-size:11px;letter-spacing:.06em;color:var(--ink-2);text-transform:uppercase}
+.item h3{margin:2px 0 0;font-size:17px;line-height:1.35}
+.rank{display:inline-block;font-size:12px;font-weight:700;color:var(--act);margin-bottom:2px}
+.price{background:var(--tag);color:var(--tag-ink);font-family:var(--f-data);font-weight:600;font-size:20px;padding:4px 10px 4px 14px;border-radius:2px;white-space:nowrap;position:relative;font-variant-numeric:tabular-nums}
+.price::before{content:"";position:absolute;left:5px;top:50%;width:5px;height:5px;margin-top:-2.5px;border-radius:50%;background:var(--card)}
+.price small{font-size:13px;margin-right:2px}
+.pnote{font-size:12px;color:var(--ink-2);margin-top:-6px}
+.why{font-size:14px;margin:0}
+.why b{color:var(--act)}
+dl.specs{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;font-size:13px;border-top:1px dashed var(--rule);padding-top:10px}
+dl.specs dt{color:var(--ink-2)}
+dl.specs dd{margin:0;font-family:var(--f-data);font-size:12.5px;overflow-wrap:anywhere}
+.fit{font-size:13px;margin:0}
+.pc{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13px}
+@media (max-width:420px){.pc{grid-template-columns:1fr}}
+.pc ul{margin:0;padding:0;list-style:none;display:grid;gap:4px}
+.pc li{padding-left:16px;position:relative}
+.pc .pros li::before{content:"+";position:absolute;left:0;color:var(--good);font-weight:700}
+.pc .cons li::before{content:"−";position:absolute;left:0;color:var(--bad);font-weight:700}
+.actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.actions a{font-size:13px;font-weight:700;text-decoration:none;border:1px solid var(--rule);border-radius:4px;padding:6px 10px}
+.actions a:hover{border-color:var(--act)}
+.cmp{margin-left:auto;font-size:13px;border:1px solid var(--rule);background:transparent;border-radius:4px;padding:6px 10px;cursor:pointer}
+.cmp[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.src{font-size:11.5px;color:var(--ink-2)}
+.src a{color:inherit}
+.empty{padding:22px;border:1px dashed var(--rule);border-radius:6px;color:var(--ink-2);text-align:center}
+
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.toolbar select{padding:6px 8px;border:1px solid var(--rule);border-radius:4px;background:var(--card)}
+
+.table-wrap{overflow-x:auto;border:1px solid var(--rule);border-radius:6px;background:var(--card)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:13px}
+th,td{padding:9px 12px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+thead th{font-size:15px;background:var(--card)}
+thead img{display:block;width:100%;max-width:160px;aspect-ratio:4/3;object-fit:contain;background:var(--photo);border-radius:4px;margin-bottom:6px}
+tbody th{color:var(--ink-2);font-weight:500;white-space:nowrap;width:76px}
+td.mono{font-family:var(--f-data);font-size:12.5px}
+td ul{margin:0;padding-left:16px}
+.best{color:var(--good);font-weight:700}
+
+.cbar{position:fixed;left:0;right:0;bottom:0;background:var(--ink);color:var(--paper);
+  padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  display:flex;gap:10px;align-items:center;justify-content:space-between;z-index:5}
+.cbar .names{font-size:13px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cbar .btns{display:flex;gap:8px;flex:none}
+.cbar button{border:1px solid var(--paper);background:transparent;color:var(--paper);border-radius:4px;padding:6px 10px;cursor:pointer;font-size:13px}
+.cbar button.go{background:var(--tag);color:var(--tag-ink);border-color:var(--tag);font-weight:700}
+
+.lb{position:fixed;inset:0;z-index:20;background:var(--shade);display:grid;grid-template-rows:auto 1fr auto;
+  padding:calc(10px + env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));color:#fff}
+.lb-top{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px}
+.lb-top button,.lb-nav{border:1px solid rgba(255,255,255,.5);background:transparent;color:#fff;border-radius:4px;padding:6px 12px;cursor:pointer}
+.lb-stage{display:grid;place-items:center;min-height:0;overflow:auto}
+.lb-stage img{max-width:100%;max-height:100%;object-fit:contain;background:#fff;border-radius:4px;cursor:zoom-in}
+.lb-stage.zoom img{max-width:none;max-height:none;width:200%;cursor:zoom-out}
+.lb-foot{display:flex;justify-content:center;gap:12px;align-items:center;font-family:var(--f-data);font-size:13px}
+
+footer{font-size:12.5px;color:var(--ink-2);border-top:1px solid var(--rule);padding-top:14px;display:grid;gap:6px}
+footer ul{margin:0;padding-left:18px}
+@media (prefers-reduced-motion:reduce){.track{scroll-behavior:auto}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Italia · prezzi in euro</div>
+    <h1>电脑选购参谋</h1>
+    <p class="lede">在左边填写预算和用途，马上给出最合适的三台。每台都有多角度实物图、配置、优缺点和购买链接，最多三台并排对比。</p>
+    <div class="stamp"><span>价格整理于 <b>2026-10-20</b></span><span>收录 <b id="count">0</b> 款笔记本和台式机</span><span>价格会变动，下单前以商店页面为准</span></div>
+    <div class="notice" id="imgNotice" hidden>这里显示不了商店图片，卡片上先用示意图代替。把这个网页文件下载下来，用手机或电脑的浏览器打开，就能看到实物图；也可以点每台电脑的“看实物图”。</div>
+  </header>
+
+  <div class="main">
+    <form class="needs" id="needs" novalidate>
+      <div class="field">
+        <label class="label" for="budget">最高预算</label>
+        <div class="budget-row"><span>€</span><input type="number" id="budget" min="250" max="5000" step="50" value="1000" inputmode="numeric"></div>
+        <input type="range" id="budgetRange" min="250" max="5000" step="50" value="1000" aria-label="预算滑块">
+      </div>
+      <div class="field">
+        <span class="label" id="typeL">电脑类型</span>
+        <div class="seg" role="group" aria-labelledby="typeL" id="typeSeg"></div>
+      </div>
+      <div class="field">
+        <span class="label" id="osL">系统</span>
+        <div class="seg" role="group" aria-labelledby="osL" id="osSeg"></div>
+      </div>
+      <div class="field">
+        <span class="label" id="useL">主要用途（可多选）</span>
+        <div class="seg" role="group" aria-labelledby="useL" id="useSeg"></div>
+        <p class="hint">推荐按收录型号之间的相对评分计算，只作参考。</p>
+      </div>
+    </form>
+
+    <div style="display:grid;gap:36px;min-width:0">
+      <section id="recSec" aria-live="polite">
+        <div class="sec-head"><h2>为你推荐</h2><p id="recSub"></p></div>
+        <div class="grid" id="recGrid"></div>
+      </section>
+
+      <section id="compare">
+        <div class="sec-head"><h2>并排对比</h2><p>在任意卡片上点“加入对比”，最多三台</p></div>
+        <div id="cmpOut"><div class="empty">还没有选择要对比的电脑</div></div>
+      </section>
+
+      <section id="all">
+        <div class="sec-head"><h2>全部收录</h2>
+          <div class="toolbar">
+            <div class="seg" role="group" aria-label="按类型筛选" id="allSeg"></div>
+            <select id="sort" aria-label="排序"><option value="asc">价格从低到高</option><option value="desc">价格从高到低</option></select>
+          </div>
+        </div>
+        <div class="grid" id="allGrid"></div>
+      </section>
+    </div>
+  </div>
+
+  <footer>
+    <div>价格来自以下意大利科技媒体、比价网站和商店页面，促销价可能已结束。“亚马逊”和“idealo 比价”按钮会打开该型号的实时搜索结果，以那里显示的价格为准。图片来自品牌官网、Icecat 产品库和各商店页面，个别商店图片可能显示同系列的其他配色或配置。</div>
+    <ul id="srcList"></ul>
+  </footer>
+</div>
+
+<div class="cbar" id="cbar" hidden>
+  <span class="names" id="cbarNames"></span>
+  <span class="btns"><button type="button" id="cbarClear">清空</button><button type="button" class="go" id="cbarGo">查看对比</button></span>
+</div>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="查看大图">
+  <div class="lb-top"><span id="lbTitle"></span><button type="button" id="lbClose">关闭</button></div>
+  <div class="lb-stage" id="lbStage"><img id="lbImg" alt=""></div>
+  <div class="lb-foot"><button type="button" class="lb-nav" id="lbPrev">上一张</button><span id="lbNum"></span><button type="button" class="lb-nav" id="lbNext">下一张</button></div>
+</div>
+
+<script>
+const IC=h=>"https://images.icecat.biz/img/gallery/"+h+".jpg";
+const YP=p=>"https://www.yeppon.it/cdn/shop/files/"+p+"&width=1600";
+const PCI=p=>"https://img.pccomponentes.com/articles/"+p+".jpg";
+const LD=p=>"https://media.ldlc.com/r1600/ld/products/"+p+".jpg";
+const AP=p=>"https://www.apple.com/newsroom/images/"+p+"_big.jpg.large.jpg";
+const S=(n,u)=>({n,u});
+const SRC={
+  tomsG:S("Tom's Hardware：最佳笔记本（10月19日）","https://www.tomshw.it/guide/migliori-pc-portatili"),
+  tomsE:S("Tom's Hardware：平价笔记本（10月9日）","https://www.tomshw.it/hardware/migliori-notebook-economici-sotto-500-euro"),
+  mig:S("MiglioriPC：笔记本推荐（9月3日）","https://www.miglioripc.it/migliori-pc-portatili-consigli-acquisti/"),
+  ti:S("Tech Insider：游戏本对比（10月8日）","https://tech-insider.org/it/migliori-notebook-gaming-2026/"),
+  loq:S("Tom's Hardware：LOQ 15 优惠（10月6日）","https://www.tomshw.it/offerte/lenovo-loq-15-al-minimo-storico-di-1199eur-per-giocare-in-mobilita"),
+  nitro:S("Multiplayer.it：Nitro V 15 史低（10月20日）","https://multiplayer.it/notizie/il-notebook-acer-nitro-v-15-con-rtx-5060-e-al-minimo-storico-su-amazon.html"),
+  isp:S("iSpazio：苹果意大利涨价后价格（6月27日）","https://www.ispazio.net/2241246/apple-aumento-prezzi-mac-ipad-italia-nuovi-listini"),
+  tg:S("TECHGames：台式机推荐（9月13日）","https://techgames.it/migliori-pc-desktop-fissi/"),
+  qs:S("QualeScegliere：台式机推荐（6月9日）","https://www.qualescegliere.it/pc-desktop/"),
+  mac:S("Macitynet：Mac mini 官方价（8月26日）","https://www.macitynet.it/mac-mini-m6-o-m5-pro-tutti-i-prezzi-di-ram-e-ssd-e-le-configurazioni-piu-convenienti/"),
+  ypAir15:S("Yeppon：MacBook Air 15 M5","https://www.yeppon.it/products/apple-macbook-air-15-1329474"),
+  ypT14:S("Yeppon：ThinkPad T14 Gen 6","https://www.yeppon.it/products/notebook-lenovo-thinkpad-t14-1345899"),
+  kelE14:S("Kelaptop：ThinkPad E14 Gen 7 比价","https://kelaptop.com/it/lenovo-thinkpad-e-e14-gen-7-amd-21t0007wix"),
+  kelXps:S("Kelaptop：Dell XPS 14 比价","https://kelaptop.com/it/dell-xps-14-da14260-9g26w"),
+  kelL5:S("Kelaptop：Legion 5 15IAX10 比价","https://kelaptop.com/it/lenovo-legion-5-15iax10-83f000agix"),
+  kelLP7:S("Kelaptop：Legion Pro 7 比价","https://kelaptop.com/it/lenovo-legion-pro-7-16iax10h-83f500nqix"),
+  uniTuf:S("Unieuro：TUF Gaming A16","https://www.unieuro.it/online/Notebook/FA608UP-TU148W-pidASUFA608UPTU148W"),
+  pcK8:S("PcComponentes.it：GMKtec K8 Plus","https://www.pccomponentes.it/mini-pc-gmktec-nucbox-k8-plus-amd-ryzen-7-8845hs-32gb-1tb-ssd-radeon-780m-windows-11-pro"),
+  pcT5:S("PcComponentes.it：Legion Tower 5","https://www.pccomponentes.it/pc-sobremesa-lenovo-legion-t5-30agb10-amd-ryzen-7-7800x3d-32gb-2tb-ssd-rtx-5070-no-os-nero")
+};
+/* s: perf, gpu, port(able), bat(tery), disp(lay), val(ue), 1-5. Desktops port 0, bat 0. */
+const P=[
+ {id:"cb14",name:"联想 Lenovo Chromebook 14",type:"laptop",form:"laptop",os:"ChromeOS",price:299.90,pn:"亚马逊",cpu:"MediaTek Kompanio 540",gpu:"集成",ram:4,storage:"64GB UFS",screen:'14" 1920×1200 IPS 防眩光，400 尼特',weight:1.3,battery:"最长 18 小时",ports:"2×USB-A、USB-C（充电/视频）、HDMI",q:"Lenovo Chromebook 14 Kompanio 540",
+  fit:"上网、网课、看视频",pros:["这个价位屏幕很好","1.3kg，续航长","Wi-Fi 6E，接口够用"],cons:["4GB 内存，不能加","存储只有 64GB","不能装 Windows 软件","不送充电器"],s:{perf:1,gpu:1,port:4,bat:4,disp:3,val:3},src:"tomsE",
+  img:["https://media.currys.biz/i/currysprod/10299846?$l-large$&fmt=auto","https://media.currys.biz/i/currysprod/10299846_001?$l-large$&fmt=auto","https://media.currys.biz/i/currysprod/10299846_002?$l-large$&fmt=auto","https://media.currys.biz/i/currysprod/10299846_003?$l-large$&fmt=auto"]},
+ {id:"duet11",name:"联想 Lenovo Duet Chromebook 11",type:"laptop",form:"tablet",os:"ChromeOS",price:349,pn:"亚马逊",cpu:"MediaTek Kompanio 838（8 核）",gpu:"集成",ram:8,storage:"128GB eMMC",screen:'10.95" 1920×1200 触屏，400 尼特',weight:1.1,battery:"29Wh",ports:"USB-C",q:"Lenovo Duet Chromebook 11M889",
+  fit:"二合一，记笔记、看视频",pros:["送键盘和支架","能当平板用","连键盘约 1.1kg"],cons:["不能装 Windows 软件","11 寸屏做表格太挤","接口只有 USB-C"],s:{perf:1,gpu:1,port:5,bat:3,disp:2,val:3},src:"tomsG",
+  img:[IC("7d006bac69f51bfe9c49e1832f274a45346a2a52"),IC("123b91aa53f60b0c22a4ded70b16399671e81368"),IC("5c3c7dbfe014a768a7fc7d9e6f63aefbee82f110"),IC("5424a50a267eb8ef3ec7fd2e5cef86b188962b2c"),"https://image.coolblue.nl/max/700xauto/products/2235366"]},
+ {id:"hp255",name:"HP 255 G10",type:"laptop",form:"laptop",os:"Windows",price:499.90,pn:"亚马逊",cpu:"AMD Ryzen 5 7520U",gpu:"集成",ram:8,storage:"512GB SSD",screen:'15.6" 1920×1080 防眩光，250 尼特',weight:1.5,battery:"最长 12 小时（41Wh）",ports:"USB-A、USB-C（仅数据）、HDMI",q:"HP 255 G10 Ryzen 5 7520U",
+  fit:"基础办公、上网",pros:["基础任务够用","512GB 存储","内存可加到 16GB"],cons:["8GB 内存多开会卡","屏幕亮度偏低","USB-C 只能传数据","买前确认是否预装系统"],s:{perf:2,gpu:1,port:3,bat:3,disp:2,val:4},src:"tomsE",
+  img:["https://www.it-partners.it/cdn/shop/files/114659923_286faee3-7a2e-4fc4-bf76-cc2ab18965fc.jpg?v=1741608289&width=1445","https://www.it-partners.it/cdn/shop/files/114659923-1_340bd617-508d-4adc-8144-3d6c6bf883bc.jpg?v=1741608289&width=1445","https://www.it-partners.it/cdn/shop/files/114659923-2_777b9d4d-f912-4c8d-a17d-0b02c663b289.jpg?v=1741608289&width=1445","https://www.it-partners.it/cdn/shop/files/114659923-3_f1218350-a9f2-4947-9cb7-f83548180882.png?v=1741608289&width=1445"]},
+ {id:"book4",name:"三星 Samsung Galaxy Book4 15.6\"",type:"laptop",form:"laptop",os:"Windows",price:449,pn:"文章价",cpu:"Intel Core 3 100U",gpu:"集成",ram:8,storage:"256–512GB SSD",screen:'15.6" 1920×1080 防眩光',weight:1.55,battery:"54Wh",ports:"USB-A、USB-C、HDMI",q:"Samsung Galaxy Book4 Core 3 100U",
+  fit:"学生上网、写文档",pros:["设计简洁，键盘全尺寸","接口齐全","和三星手机配合好"],cons:["8GB 内存焊死，不能加","入门处理器","不适合修图剪辑"],s:{perf:2,gpu:1,port:3,bat:3,disp:2,val:4},src:"mig",
+  img:[IC("e0acc4632a0936a6ea70d81095741f92"),IC("39e3f34d55199d1d84e9b31e18f4eb05"),IC("8c87b02abec26647026460f5508bc6cd"),IC("ff449b30a4c434beea5841d3946f8ecfc5069660")]},
+ {id:"aspirego",name:"Acer Aspire Go 15 AG15-42P",type:"laptop",form:"laptop",os:"Windows",price:599,pn:"MediaWorld（Yeppon €632.99）",cpu:"AMD Ryzen 7 5825U（8 核）",gpu:"集成",ram:16,storage:"512GB SSD",screen:'15.6" 1920×1080 IPS 防眩光',weight:1.78,battery:"最长 12.5 小时（53Wh）",ports:"USB-A、USB-C、HDMI、网口",q:"Acer Aspire Go 15 Ryzen 7 5825U",
+  fit:"学生、办公、轻度多任务",pros:["8 核 16 线程","16GB 内存，可加到 64GB","接口齐全，带网口"],cons:["上一代处理器","集成显卡，不适合玩游戏","1.78kg 偏重"],s:{perf:3,gpu:1,port:2,bat:3,disp:2,val:5},src:"tomsE",
+  img:[YP("l-6a2985f5cb69d2a0a802a8dd_0.jpg?v=1786124288"),YP("l-6a2985f5cb69d2a0a802a8dd_1.jpg?v=1786124288"),YP("l-6a2985f5cb69d2a0a802a8dd_2_d4369b64-5d00-4132-aed4-53da261f1573.jpg?v=1786124288"),YP("l-6a2985f5cb69d2a0a802a8dd_3.jpg?v=1786124287"),IC("a51ef6c17bd8bf0064fa5546c2f14f037a9fbc0c")]},
+ {id:"cbplus514",name:"Acer Chromebook Plus 514",type:"laptop",form:"laptop",os:"ChromeOS",price:619.32,pn:"亚马逊（Ryzen 5 版约 €469）",cpu:"Intel Core i3-N305（8 核）",gpu:"集成",ram:8,storage:"512GB SSD",screen:'14" 1920×1080 IPS 触屏',weight:1.43,battery:"约 11 小时",ports:"USB-A、USB-C、microSD",q:"Acer Chromebook Plus 514",
+  fit:"Google 办公套件、上网课",pros:["512GB 存储","触屏","有 microSD 读卡器"],cons:["ChromeOS 不能装常见 Windows 软件","8GB 内存焊死"],s:{perf:2,gpu:1,port:3,bat:3,disp:3,val:3},src:"tomsG",
+  img:[IC("baf8b0ae2350ee109813145b3231c1663e21d2da"),IC("a87e3bffcc49112a742e78750350c58def876a25"),IC("ead148a19c8e5a7ae94af53779a23d295bab70c5"),IC("30616213d9c88842cef972391e07eff834f5aae7")]},
+ {id:"vivo15",name:"华硕 ASUS Vivobook 15 F1504VA",type:"laptop",form:"laptop",os:"Windows",price:681,pn:"MediaWorld",cpu:"Intel Core 5 120U（10 核）",gpu:"集成",ram:16,storage:"512GB SSD",screen:'15.6" 1920×1080 IPS 防眩光，250 尼特',weight:1.7,battery:"42Wh",ports:"USB-A、USB-C、HDMI",q:"ASUS Vivobook 15 F1504VA Core 5 120U",
+  fit:"办公、学习",pros:["办公配置扎实","摄像头有隐私挡板","3 年保修"],cons:["集成显卡","屏幕亮度偏低","1.7kg，比小尺寸重"],s:{perf:3,gpu:1,port:2,bat:2,disp:2,val:4},src:"tomsE",
+  img:[PCI("1095/10954384/155-portatil-asus-vivobook-15-f1504va-bq125w-156-intel-core-5-120u-16gb-512gb-ssd-windows-11-plata-cool-foto"),PCI("1095/10954384/298-portatil-asus-vivobook-15-f1504va-bq125w-156-intel-core-5-120u-16gb-512gb-ssd-windows-11-plata-cool-b12bf212-09db-441b-8537-4ec6c76c8812"),PCI("1095/10954384/3782-portatil-asus-vivobook-15-f1504va-bq125w-156-intel-core-5-120u-16gb-512gb-ssd-windows-11-plata-cool-2878e715-caa4-4123-aec7-08b82fa5b6f7"),PCI("1095/10954384/4404-portatil-asus-vivobook-15-f1504va-bq125w-156-intel-core-5-120u-16gb-512gb-ssd-windows-11-plata-cool-e28b7216-a14a-47f5-8f7e-a1b5f3bf6dbf")]},
+ {id:"neo",name:"Apple MacBook Neo 13\"（256GB）",type:"laptop",form:"laptop",os:"macOS",price:799,pn:"官方价（6月涨价后），512GB 版 €899",cpu:"Apple A18 Pro（6 核 CPU / 5 核 GPU）",gpu:"集成 5 核",ram:8,storage:"256GB",screen:'13" 2408×1506，500 尼特',weight:1.23,battery:"最长 16 小时",ports:"USB-C 10Gb/s、USB-C 2.0、耳机孔",q:"MacBook Neo",apple:"https://www.apple.com/it/shop/buy-mac",
+  fit:"学生、日常使用、配合 iPhone",pros:["最便宜的苹果电脑","铝合金机身，1.23kg","续航长，屏幕好，四种颜色"],cons:["8GB 内存和存储都不能升级","接口少：没有雷电、HDMI、读卡器","键盘没有背光，256GB 版没有 Touch ID","不送电源适配器"],s:{perf:3,gpu:2,port:5,bat:4,disp:4,val:4},src:"tomsE",
+  img:[AP("2026/03/say-hello-to-macbook-neo/article/Apple-MacBook-Neo-silver-260304"),AP("2026/03/say-hello-to-macbook-neo/article/Apple-MacBook-Neo-color-lineup-260304"),AP("2026/03/say-hello-to-macbook-neo/article/Apple-MacBook-Neo-indigo-260304"),AP("2026/03/say-hello-to-macbook-neo/article/Apple-MacBook-Neo-hero-260304")]},
+ {id:"slim3",name:"联想 IdeaPad Slim 3 15IRH10",type:"laptop",form:"laptop",os:"Windows",price:968.30,pn:"亚马逊",cpu:"Intel Core i5-13420H（8 核）",gpu:"集成",ram:16,storage:"512GB SSD",screen:'15.3" 1920×1200 IPS 16:10，300 尼特',weight:1.59,battery:"50Wh",ports:"USB-A、USB-C（充电/视频）、HDMI、SD 卡槽",q:"Lenovo IdeaPad Slim 3 15IRH10 i5-13420H",
+  fit:"办公、学习、多任务",pros:["16:10 屏幕更高","USB-C 可充电和接显示器","有 SD 读卡器和数字键盘"],cons:["屏幕色彩一般，不适合调色","集成显卡","同配置这个价偏高，建议比价"],s:{perf:3,gpu:1,port:3,bat:3,disp:3,val:2},src:"tomsE",
+  img:[IC("4b8b25cd45593e509619ddbb7ad6348120e60d76"),IC("9f8def153be18762bfb1bf9aad1df033dd6b0b71"),IC("1191fd85b35b63d0980ae59e89035269e79778e7"),IC("0c80cc55673661ce717a6781163a430f0c752072")]},
+ {id:"vivos14",name:"华硕 ASUS Vivobook S14 OLED",type:"laptop",form:"laptop",os:"Windows",price:999,pn:"亚马逊",cpu:"AMD Ryzen AI 7 350（8 核）",gpu:"集成 Radeon 860M",ram:16,storage:"1TB SSD",screen:'14" OLED 16:10',weight:1.3,battery:"75Wh",ports:"USB-A、USB-C、HDMI",q:"ASUS Vivobook S14 OLED Ryzen AI 7 350",
+  fit:"轻薄全能、经常带出门",pros:["OLED 屏","铝机身 1.3kg，75Wh 大电池","指纹识别、背光键盘","1TB 存储"],cons:["集成显卡，大型游戏不行","内存焊死不能加"],s:{perf:4,gpu:2,port:4,bat:4,disp:5,val:5},src:"mig",
+  img:[LD("00/06/31/63/LD0006316378"),LD("00/06/31/63/LD0006316379"),LD("00/06/31/63/LD0006316380"),LD("00/06/31/63/LD0006316381")]},
+ {id:"swiftgo16",name:"Acer Swift Go 16 AI OLED",type:"laptop",form:"laptop",os:"Windows",price:1099,pn:"亚马逊（原价 €1,299）",cpu:"Intel Core Ultra 7 258V",gpu:"集成 Arc 140V",ram:32,storage:"1TB SSD",screen:'16" 2048×1280 OLED 120Hz',weight:1.52,battery:"官方称最长约 25 小时",ports:"雷电、USB-A、HDMI",q:"Acer Swift Go 16 AI SFG16-74",
+  fit:"大屏办公、多开",pros:["16 寸 120Hz OLED","32GB 内存 + 1TB","16 寸只有 1.52kg"],cons:["内存焊死，不能升级","集成显卡，不适合大型游戏"],s:{perf:4,gpu:2,port:3,bat:4,disp:5,val:4},src:"tomsG",
+  img:[IC("621cdd3730f4206f9f19262d6cb86534134df4d5"),IC("1d6ecb89ed610ad224dd408dfca48dca7925bc8c"),IC("5196205538db66d8a64845daba734464cb011aac"),IC("2d26188b205697ea3f2158d3ac214ca285c08695")]},
+ {id:"nitrov15",name:"Acer Nitro V 15（RTX 5060）",type:"laptop",form:"laptop",os:"Windows",price:1192.10,pn:"亚马逊史低价（10月20日），平时约 €1,760",cpu:"Intel Core 9 270H（14 核）",gpu:"RTX 5060 8GB",ram:16,storage:"1TB SSD",screen:'15.6" 1920×1080 IPS 165Hz，300 尼特',weight:2.11,battery:"约 8 小时（76Wh）",ports:"USB-A、USB-C、HDMI、网口",q:"Acer Nitro V 15 ANV15-52 RTX 5060",
+  fit:"1080p 游戏入门",pros:["史低价","165Hz 屏","内存可加到 32GB，1TB 存储"],cons:["屏幕亮度一般","2.11kg，偏重"],s:{perf:4,gpu:4,port:1,bat:2,disp:3,val:5},src:"nitro",
+  img:[YP("l-6a3012e90b2e3df4f60e232d_0_72b22972-e209-4809-9a1b-574e65368690.jpg?v=1786122437"),YP("l-6a3012e90b2e3df4f60e232d_1.jpg?v=1786122437"),YP("l-6a3012e90b2e3df4f60e232d_2.jpg?v=1786122437"),YP("l-6a3012e90b2e3df4f60e232d_3.jpg?v=1786122438"),YP("l-6a3012e90b2e3df4f60e232d_4.jpg?v=1786122437")]},
+ {id:"loq15",name:"联想 Lenovo LOQ 15（RTX 5060）",type:"laptop",form:"laptop",os:"Windows",price:1199,pn:"亚马逊 Prime 会员价（10月6日），可能已恢复原价",cpu:"Intel Core i7-13645HX",gpu:"RTX 5060 8GB",ram:16,storage:"1TB SSD",screen:'15.6" 1920×1080 144Hz，300 尼特',weight:2.4,battery:"60Wh",ports:"USB-A、USB-C、HDMI、网口",q:"Lenovo LOQ 15 RTX 5060 i7-13645HX",
+  fit:"1080p 游戏入门",pros:["RTX 5060 能玩主流游戏","1TB 存储","背光键盘"],cons:["促销价可能已结束","2.4kg，电池只有 60Wh","只是 FHD 屏"],s:{perf:4,gpu:4,port:1,bat:1,disp:3,val:5},src:"loq",
+  img:["https://cdn.x-kom.pl/i/produkt/product-new-big,,2025/10/pr_2025_10_10_12_40_20_258_00.jpg","https://cdn.x-kom.pl/i/produkt/product-new-big,,2025/7/pr_2025_7_16_7_47_27_304_01.jpg","https://cdn.x-kom.pl/i/produkt/product-new-big,,2025/7/pr_2025_7_16_7_47_29_257_02.jpg","https://cdn.x-kom.pl/i/produkt/product-new-big,,2025/7/pr_2025_7_16_7_47_34_976_05.jpg"]},
+ {id:"e14g7",name:"联想 ThinkPad E14 Gen 7（AMD）",type:"laptop",form:"laptop",os:"Windows",price:1290.99,pn:"Yeppon",cpu:"AMD Ryzen 7 250（8 核）",gpu:"集成 Radeon 780M",ram:16,storage:"512GB SSD",screen:'14" 1920×1200 IPS，300 尼特',weight:1.41,battery:"48Wh",ports:"USB-A、USB-C、HDMI、网口",q:"Lenovo ThinkPad E14 Gen 7 AMD Ryzen 7 250",
+  fit:"商务办公、写代码",pros:["ThinkPad 键盘手感好","内存可加到 64GB","接口齐全"],cons:["屏幕只是 300 尼特","电池 48Wh 偏小"],s:{perf:3,gpu:2,port:3,bat:3,disp:2,val:3},src:"kelE14",
+  img:[IC("5ab44bf3fe192fe952785a99c310083ddac0692e"),IC("488a5e9f09ad1f619166a3aae27a377be7f2a983"),IC("00601dd9d6e1093c68d355d7bd818a1c9d52ae52"),IC("228c1be7812089fbd9c920d15e90f1e031670b15")]},
+ {id:"book6",name:"三星 Samsung Galaxy Book6 16\"",type:"laptop",form:"laptop",os:"Windows",price:1349,pn:"亚马逊（Yeppon €1,258.99，缺货）",cpu:"Intel Core Ultra 7 355",gpu:"集成",ram:16,storage:"512GB（可扩展）",screen:'16" 1920×1200 IPS 16:10',weight:1.75,battery:"最长 21 小时",ports:"雷电、USB-A、HDMI",q:"Samsung Galaxy Book6 Core Ultra 7 355",
+  fit:"长续航办公、大屏",pros:["最长 21 小时续航","16 寸 16:10 大屏","存储可扩展"],cons:["1.75kg，不算轻","集成显卡"],s:{perf:4,gpu:2,port:3,bat:5,disp:3,val:3},src:"mig",
+  img:[YP("l-69ef9144d6bcef329e0ceb1b_0.jpg?v=1777927940"),YP("l-69ef9144d6bcef329e0ceb1b_1.jpg?v=1777927940"),YP("l-69ef9144d6bcef329e0ceb1b_2.jpg?v=1777927940"),YP("l-69ef9144d6bcef329e0ceb1b_3.jpg?v=1777927940"),YP("l-69ef9144d6bcef329e0ceb1b_4.jpg?v=1777927940")]},
+ {id:"air13",name:"Apple MacBook Air 13\" M5",type:"laptop",form:"laptop",os:"macOS",price:1449,pn:"亚马逊，官方价约 €1,449–1,499",cpu:"Apple M5（10 核 CPU / 8 核 GPU）",gpu:"集成 8 核",ram:16,storage:"512GB",screen:'13.6" 2560×1664，500 尼特',weight:1.23,battery:"最长 18 小时（53.8Wh）",ports:"2×雷电 4、MagSafe、耳机孔",q:"MacBook Air 13 M5 16GB 512GB",apple:"https://www.apple.com/it/shop/buy-mac/macbook-air",
+  fit:"轻办公、学习、轻度剪辑",pros:["无风扇，完全静音","1.23kg，续航 18 小时","两个雷电 4 + MagSafe，Wi-Fi 7"],cons:["内存和存储不能升级","没有 HDMI 和读卡器","长时间高负载会降速","电源适配器要另买"],s:{perf:4,gpu:3,port:5,bat:5,disp:4,val:3},src:"tomsG",
+  img:[AP("2026/03/apple-introduces-the-new-macbook-air-with-m5/article/Apple-MacBook-Air-hero-260303"),AP("2026/03/apple-introduces-the-new-macbook-air-with-m5/article/Apple-MacBook-Air-Liquid-Retina-display-260303"),AP("2026/03/apple-introduces-the-new-macbook-air-with-m5/article/Apple-MacBook-Air-lifestyle-01-260303"),AP("2026/03/apple-introduces-the-new-macbook-air-with-m5/article/Apple-MacBook-Air-lifestyle-03-260303")]},
+ {id:"prestige16",name:"MSI Prestige A16 AI+",type:"laptop",form:"laptop",os:"Windows",price:1499,pn:"亚马逊",cpu:"AMD Ryzen AI 9 365（10 核）",gpu:"集成 AMD",ram:32,storage:"1TB SSD",screen:'16" 3840×2400 OLED 60Hz',weight:1.9,battery:"82Wh",ports:"USB-C、USB-A、HDMI",q:"MSI Prestige A16 AI+ Ryzen AI 9 365",
+  fit:"创作、修图、多任务",pros:["4K 级 OLED","32GB 内存","82Wh 大电池，Wi-Fi 7"],cons:["屏幕只有 60Hz","1.9kg","集成显卡，不适合大型游戏"],s:{perf:5,gpu:2,port:3,bat:4,disp:5,val:4},src:"mig",
+  img:[LD("00/06/18/20/LD0006182022"),LD("00/06/18/20/LD0006182023"),LD("00/06/18/20/LD0006182024"),LD("00/06/18/20/LD0006182025")]},
+ {id:"legion5",name:"联想 Legion 5 15IAX10 OLED（RTX 5070）",type:"laptop",form:"laptop",os:"Windows",price:1497.62,pn:"亚马逊最低价（比价网站，41 个报价）",cpu:"Intel Core Ultra 9 275HX（24 核）",gpu:"RTX 5070 8GB",ram:32,storage:"1TB SSD",screen:'15.1" 2560×1600 OLED 165Hz，1000 尼特',weight:1.9,battery:"80Wh",ports:"USB-A、USB-C、HDMI、网口",q:"Lenovo Legion 5 15IAX10 RTX 5070",
+  fit:"2K 游戏、兼顾剪辑",pros:["高亮 OLED 屏","CPU 很强，32GB 内存","游戏本里算轻（1.9kg）"],cons:["显存 8GB","游戏本续航有限"],s:{perf:5,gpu:4,port:2,bat:2,disp:5,val:4},src:"kelL5",
+  img:[IC("3a4a4ac01d10b3daefcacc670de06c578abd111a"),IC("1075e619e7f14a6167a4378861d45edf70c01ead"),IC("9cea66f90d4e91bd95daa595e31ec8e731de6eb4"),IC("f7e02717faeba5f90ff59612670dcf3a27f7a9fb")]},
+ {id:"t14g6",name:"联想 ThinkPad T14 Gen 6（AMD）",type:"laptop",form:"laptop",os:"Windows",price:1506.99,pn:"Yeppon（原价 €1,587.99）",cpu:"AMD Ryzen AI 5 PRO 340（6 核）",gpu:"集成 Radeon 840M",ram:16,storage:"512GB SSD",screen:'14" 1920×1200 IPS 防反光，400 尼特',weight:1.38,battery:"57Wh",ports:"USB-A、USB-C、HDMI、网口",q:"Lenovo ThinkPad T14 Gen 6 Ryzen AI 5 PRO 340",
+  fit:"商务办公、经常出差",pros:["做工扎实，键盘好","内存可加到 64GB","1.38kg，Windows 11 Pro"],cons:["同价位性能不算强","价格偏商务"],s:{perf:3,gpu:2,port:4,bat:4,disp:3,val:2},src:"ypT14",
+  img:[YP("l-assets.commerceclarity.com_compressed_20260703_d17e9095-757b-4532-a100-049ecfa33422.jpg?v=1791462203")]},
+ {id:"zenbooks14",name:"华硕 ASUS Zenbook S14 UX5406AA",type:"laptop",form:"laptop",os:"Windows",price:1717.99,pn:"亚马逊",cpu:"Intel Core Ultra 9 386H（16 核）",gpu:"集成",ram:32,storage:"1TB SSD",screen:'14" 2880×1800 OLED 120Hz 触屏',weight:1.2,battery:"77Wh",ports:"2×雷电 4、USB-A、HDMI",q:"ASUS Zenbook S14 UX5406AA",
+  fit:"高端轻薄办公",pros:["只有约 1.2kg","3K 120Hz OLED","雷电 4、HDMI、USB-A、Wi-Fi 7"],cons:["内存不能扩展","镜面屏会反光"],s:{perf:5,gpu:2,port:5,bat:4,disp:5,val:3},src:"tomsG",
+  img:[IC("bdf10809c59e1f4464ce38be633e45768e2bf326"),IC("25b31d3432003614af1edd64448afa66eeb3c9fe"),IC("d133ec9cfcc4ae2213f60bd9956357ad0998c800"),IC("396be6a6fe4401ad93c6b3dec40444a277a07e02")]},
+ {id:"air15",name:"Apple MacBook Air 15\" M5",type:"laptop",form:"laptop",os:"macOS",price:1732.99,pn:"Yeppon（目前缺货），官方价约 €1,749–1,799",cpu:"Apple M5（10 核 CPU / 10 核 GPU）",gpu:"集成 10 核",ram:16,storage:"512GB",screen:'15.3" 2880×1864，500 尼特',weight:1.51,battery:"最长 18 小时（66.5Wh）",ports:"2×雷电 4、MagSafe、耳机孔",q:"MacBook Air 15 M5",apple:"https://www.apple.com/it/shop/buy-mac/macbook-air",
+  fit:"大屏轻薄办公、学习",pros:["15 寸大屏只有 1.51kg","无风扇静音","续航 18 小时"],cons:["内存和存储不能升级","没有 HDMI 和读卡器","价格比 13 寸高不少"],s:{perf:4,gpu:3,port:4,bat:5,disp:5,val:3},src:"ypAir15",
+  img:[YP("l-6a355cb3c465ed98670857d3_0.jpg?v=1786146188"),YP("l-69bd32f4d8f7591752097d54_1.jpg?v=1783869589"),YP("l-69bd32f4d8f7591752097d54_2_9d976050-2255-4066-bd42-40cf9c32a14d.jpg?v=1783869590"),YP("l-69bd32f4d8f7591752097d54_3_998a9ae5-00e7-4a08-8f12-5c5189347995.jpg?v=1786146188"),YP("l-69bd32f4d8f7591752097d54_4.jpg?v=1783869590")]},
+ {id:"tufa16",name:"华硕 ASUS TUF Gaming A16（RTX 5070）",type:"laptop",form:"laptop",os:"无系统",price:1999,pn:"Unieuro（原价 €2,399）",cpu:"AMD Ryzen 7 260（8 核）",gpu:"RTX 5070 8GB",ram:16,storage:"1TB SSD",screen:'16" 1920×1200 144Hz，300 尼特',weight:2.2,battery:"90Wh",ports:"USB-A、USB-C、HDMI、网口",q:"ASUS TUF Gaming A16 FA608UP RTX 5070",
+  fit:"游戏、要大电池",pros:["90Wh 大电池","内存可加到 64GB","铝合金顶盖，耐用"],cons:["屏幕只是 FHD+","不带 Windows 系统","2.2kg"],s:{perf:4,gpu:4,port:1,bat:3,disp:3,val:3},src:"uniTuf",
+  img:[IC("c885c2c6b66fc195751e837b7fee2ab29f28ba4e"),IC("4d9bd5bceb31f8929c7a092985c5e80540d0da5d"),IC("1159b410072d99800ce15aa453ab78dd20df3c53"),IC("75b47bbd30101544a3c8625a4074f241f766f34d")]},
+ {id:"g14",name:"华硕 ROG Zephyrus G14（2026）",type:"laptop",form:"laptop",os:"Windows",price:2199,pn:"起售价约数",cpu:"Intel Core Ultra 9 386H（16 核）",gpu:"RTX 5070 Ti 12GB",ram:32,storage:"1TB SSD",screen:'14" 2880×1800 OLED，500 尼特',weight:1.58,battery:"73Wh",ports:"雷电、USB-A、HDMI",q:"ASUS ROG Zephyrus G14 2026 GU405 RTX 5070 Ti",
+  fit:"能带出门的游戏本",pros:["游戏本里很轻（1.58kg）","3K OLED 屏","12GB 显存"],cons:["内存焊死，不能扩展","高负载发热、风扇吵"],s:{perf:5,gpu:5,port:4,bat:2,disp:5,val:3},src:"ti",
+  img:[IC("247a52f0de5c8838fc40efee2efb2eaaa45c2347"),IC("811fc34cebdc32d3c0ee2ecc2bc9c24206cbd06f"),IC("3de9a0524f262e62634e5918febd1ff296b9e235"),IC("62a8eb6ba93bc9b876c4ff5d0db0824c87d5e50e"),"https://dlcdnwebimgs.asus.com/gain/5A7EC039-7097-47E1-A8F9-A29ADF62FF25"]},
+ {id:"mbp14",name:"Apple MacBook Pro 14\" M5",type:"laptop",form:"laptop",os:"macOS",price:2249,pn:"官方价（6月涨价后）",cpu:"Apple M5（10 核 CPU / 10 核 GPU）",gpu:"集成 10 核",ram:16,storage:"1TB",screen:'14.2" 3024×1964 XDR 120Hz，1000 尼特',weight:1.55,battery:"最长 24 小时（72.4Wh）",ports:"3×雷电 4、HDMI、SDXC、MagSafe",q:"MacBook Pro 14 M5",apple:"https://www.apple.com/it/shop/buy-mac/macbook-pro",
+  fit:"专业工作、剪辑、编程",pros:["性能强、续航最长 24 小时","顶级 XDR 屏","接口全：HDMI、SD 卡槽"],cons:["价格高","内存不能升级","不送充电器"],s:{perf:5,gpu:3,port:4,bat:5,disp:5,val:2},src:"isp",
+  img:["https://cdn.kelaptop.com/img/apple/gallery/pro-m5-14-2025/silver.jpg","https://cdn.kelaptop.com/img/apple/gallery/pro-m5-14-2025/silver-2.jpg","https://cdn.kelaptop.com/img/apple/gallery/pro-m5-14-2025/silver-3.jpg",AP("2026/03/apple-introduces-macbook-pro-with-all-new-m5-pro-and-m5-max/article/Apple-MacBook-Pro-M5-Pro-and-M5-Max-Capture-One-260303")]},
+ {id:"helios16s",name:"Acer Predator Helios Neo 16S AI",type:"laptop",form:"laptop",os:"Windows",price:2399,pn:"亚马逊",cpu:"Intel Core Ultra 9 275HX（24 核）",gpu:"RTX 5070 8GB",ram:32,storage:"1TB SSD",screen:'16" 2560×1600 OLED 240Hz，400 尼特',weight:2.3,battery:"76Wh",ports:"雷电、USB-A、HDMI、网口",q:"Acer Predator Helios Neo 16S AI RTX 5070",
+  fit:"2K 高刷游戏",pros:["240Hz OLED","32GB 内存，可加到 64GB","支持 DLSS 4"],cons:["显存 8GB，高画质贴图要注意","2.3kg 加大电源，不便携"],s:{perf:5,gpu:5,port:1,bat:1,disp:5,val:3},src:"tomsG",
+  img:[IC("cd2fcd972edfadb49c017192032210f15f569e02"),IC("4286f35cbc4690d783a6fb6fdf503e6114c8ec82"),IC("1dad3e832997c8613351fd2fe22f1f2762a8e8e1"),IC("af97c25a5f165c248a26e10067832b2ca5573a22")]},
+ {id:"strixg16",name:"华硕 ROG Strix G16（RTX 5080）",type:"laptop",form:"laptop",os:"Windows",price:2739,pn:"文章价",cpu:"Intel Core Ultra 9 275HX（24 核）",gpu:"RTX 5080 16GB",ram:32,storage:"1TB SSD",screen:'16" 2560×1600 240Hz，500 尼特',weight:2.73,battery:"90Wh",ports:"雷电、USB-A、HDMI、网口",q:"ASUS ROG Strix G16 G615 RTX 5080",
+  fit:"2K/4K 高画质游戏",pros:["16GB 显存","内存可加到 64GB","240Hz 高亮屏"],cons:["2.73kg，基本不便携","游戏时风扇响"],s:{perf:5,gpu:5,port:1,bat:2,disp:4,val:3},src:"ti",
+  img:[IC("dd71cbe5c6d17a1762cfd7072a3fbaced79ec9fd"),IC("8c2800b34bb03191acfcff817b0128b134dac96d"),IC("d47d0f7cc95c018943ec8a728c91a960b83ac9ba"),IC("9eed9eab9d182ab84be4330e42a23ea029a14f2b")]},
+ {id:"xps14",name:"戴尔 Dell XPS 14（2026）",type:"laptop",form:"laptop",os:"Windows",price:2947.99,pn:"亚马逊（比价网站）",cpu:"Intel Core Ultra X7 358H（16 核）",gpu:"集成 Arc B390",ram:32,storage:"1TB SSD",screen:'14" 2880×1800 OLED 120Hz 触屏，400 尼特',weight:1.36,battery:"70Wh",ports:"雷电 / USB-C",q:"Dell XPS 14 2026",
+  fit:"高端轻薄、设计感",pros:["做工和设计高端","3K OLED 触屏","集成显卡性能在轻薄本里很强"],cons:["这个配置很贵","接口基本只有 USB-C"],s:{perf:5,gpu:3,port:4,bat:4,disp:5,val:2},src:"kelXps",
+  img:[IC("0d917f9604ac76f78df49395b5ffe79716828491"),IC("41045baf70f3c0f0208ee8f61cd8075593acc860"),IC("35254772b6c0ac526fb350936d204ce73b30c428"),IC("535fbcd202f005ff35c5b687436524580c7d3525")]},
+ {id:"mbp16max",name:"Apple MacBook Pro 16\" M5 Max",type:"laptop",form:"laptop",os:"macOS",price:4099,pn:"亚马逊（原价 €5,199）",cpu:"Apple M5 Max（18 核 CPU / 32 核 GPU）",gpu:"集成 32 核",ram:36,storage:"2TB",screen:'16.2" 3456×2234 XDR 120Hz',weight:2.15,battery:"99.6Wh",ports:"3×雷电 5、HDMI、SDXC、MagSafe",q:"MacBook Pro 16 M5 Max",apple:"https://www.apple.com/it/shop/buy-mac/macbook-pro",
+  fit:"专业音视频剪辑",pros:["长时间高负载也稳","3 个雷电 5、HDMI、SD 卡槽","参考级色彩模式"],cons:["非常贵","2.15kg","不能自己升级"],s:{perf:5,gpu:5,port:2,bat:4,disp:5,val:2},src:"tomsG",
+  img:[AP("2026/03/apple-introduces-macbook-pro-with-all-new-m5-pro-and-m5-max/article/Apple-MacBook-Pro-M5-Pro-and-M5-Max-NukeX-260303"),AP("2026/03/apple-introduces-macbook-pro-with-all-new-m5-pro-and-m5-max/article/Apple-MacBook-Pro-M5-Pro-and-M5-Max-LM-Studio-and-Autodesk-Maya-260303"),AP("2026/03/apple-introduces-macbook-pro-with-all-new-m5-pro-and-m5-max/article/Apple-MacBook-Pro-M5-Pro-and-M5-Max-QuPath-260303")]},
+ {id:"legionpro7",name:"联想 Legion Pro 7i Gen 10（RTX 5090）",type:"laptop",form:"laptop",os:"Windows",price:4962.99,pn:"Yeppon",cpu:"Intel Core Ultra 9 275HX（24 核）",gpu:"RTX 5090 24GB（175W）",ram:64,storage:"2TB SSD",screen:'16" 2560×1600 OLED 240Hz，500 尼特',weight:2.57,battery:"99.9Wh",ports:"雷电、USB-A、HDMI、网口",q:"Lenovo Legion Pro 7 16IAX10H RTX 5090",
+  fit:"顶级游戏、本地 AI、渲染",pros:["笔记本里最强的显卡","64GB 内存 + 2TB","长时间高负载稳定"],cons:["非常贵","2.57kg，续航一般","没有指纹和人脸识别"],s:{perf:5,gpu:5,port:1,bat:2,disp:5,val:2},src:"kelLP7",
+  img:[IC("65e33c77a8d61ae65c76c5fd655873ebd8df5a35"),IC("a595860261910519af5e8a68d4c60090ee19674e"),IC("a9ff34c1d90af7735ed12322e8f83e74de11d803"),IC("55ca550f87b9334b3a0f79b6e58ef8053f1a39cc")]},
+
+ {id:"ak1",name:"NiPoGi AK1 Plus 迷你主机",type:"desktop",form:"mini",os:"Windows",price:389.99,pn:"亚马逊（6月数据）",cpu:"Intel N97（4 核）",gpu:"集成",ram:16,storage:"1TB",screen:"无，需另配显示器",weight:null,battery:null,ports:"USB-A、HDMI、网口，Wi-Fi 6",q:"NiPoGi AK1 Plus N97",
+  fit:"办公、4K 视频、桌面空间小",pros:["非常小，能挂在显示器背后","可加 2.5 寸硬盘"],cons:["没有 USB-C","性能弱，不能玩大型游戏","需另买显示器键鼠"],s:{perf:2,gpu:1,port:0,bat:0,disp:3,val:4},src:"qs",
+  img:["https://www.notebookcheck.it/fileadmin/Notebooks/News/_nc4/NiPoGi-AK1-Plus-N97.jpg","https://www.notebookcheck.it/fileadmin/Notebooks/News/_nc4/NiPoGi-AK1-Plus-N97-ports.jpg"]},
+ {id:"aio24",name:"联想 IdeaCentre AIO 24IRH9 一体机",type:"desktop",form:"aio",os:"Windows",price:736.58,pn:"亚马逊（6月数据）",cpu:"Intel Core i5-13420H（8 核）",gpu:"集成",ram:8,storage:"512GB",screen:'23.8" 1920×1080 一体屏',weight:null,battery:null,ports:"USB-A、HDMI、摄像头",q:"Lenovo IdeaCentre AIO 24IRH9",
+  fit:"家庭、办公，一体机不占地",pros:["自带屏幕，桌面整洁","Harman 音箱","低蓝光"],cons:["只有 8GB 内存（可扩展）","集成显卡"],s:{perf:3,gpu:1,port:0,bat:0,disp:3,val:3},src:"qs",
+  img:["https://static01.galaxus.com/productimages/6/2/8/0/2/6/5/6/4/1/4/1/0/0/2/5/5/2/5/0196d07a-d251-7280-a4dd-53f1bdaa2890_720.jpeg","https://static01.galaxus.com/productimages/9/5/8/1/1/4/2/8/0/1/1/9/4/1/8/5/0/2/01a07c11-e221-7275-a08e-adb90058a3d9_720.jpeg","https://static01.galaxus.com/productimages/8/0/2/9/8/7/9/8/4/8/3/9/4/6/2/9/1/2/3/01a07c11-54bc-73d1-bb75-c70b797df3c5_720.jpeg","https://static01.galaxus.com/productimages/5/2/2/7/2/4/6/3/0/4/4/0/0/7/3/8/7/7/1/0197088d-3cc6-7354-a2df-c3cb86d93b0b_720.jpeg"]},
+ {id:"minim6",name:"Apple Mac mini M6",type:"desktop",form:"mini",os:"macOS",price:999,pn:"亚马逊，官方价 €1,079",cpu:"Apple M6（12 核 CPU / 12 核 GPU）",gpu:"集成 12 核",ram:16,storage:"256GB",screen:"无，需另配显示器",weight:null,battery:null,ports:"前 2×USB-C；后 3×雷电 4、HDMI、2.5G 网口；Wi-Fi 7",q:"Mac mini M6",apple:"https://www.apple.com/it/shop/buy-mac/mac-mini",
+  fit:"安静的小主机，办公和创作",pros:["体积小、很安静","性能好，标配 2.5G 网口","前面也有 USB-C 和耳机孔"],cons:["256GB 存储偏小","内存不能升级","需另买显示器键鼠"],s:{perf:4,gpu:3,port:0,bat:0,disp:3,val:5},src:"mac",
+  img:[AP("2026/08/apple-unveils-a-more-powerful-mac-mini-featuring-the-all-new-m6-and-m5-pro/article/Apple-Mac-mini-hero-260825"),AP("2026/08/apple-unveils-a-more-powerful-mac-mini-featuring-the-all-new-m6-and-m5-pro/article/Apple-Mac-mini-lifestyle-productivity-260825"),AP("2026/08/apple-unveils-a-more-powerful-mac-mini-featuring-the-all-new-m6-and-m5-pro/article/Apple-Mac-mini-agentic-AI-260825")]},
+ {id:"k8plus",name:"GMKtec NucBox K8 Plus 迷你主机",type:"desktop",form:"mini",os:"Windows",price:1009,pn:"PcComponentes.it",cpu:"AMD Ryzen 7 8845HS（8 核）",gpu:"集成 Radeon 780M",ram:32,storage:"1TB SSD",screen:"无，需另配显示器",weight:null,battery:null,ports:"USB-C、HDMI、2×2.5G 网口，Wi-Fi 6",q:"GMKtec NucBox K8 Plus Ryzen 7 8845HS",
+  fit:"小巧但性能不错，办公、轻度游戏",pros:["13×12.5cm，很小","32GB 内存，可加到 96GB","双 2.5G 网口，Windows 11 Pro"],cons:["集成显卡，大型游戏只能低画质","同价位的苹果 Mac mini 也值得比一比"],s:{perf:4,gpu:2,port:0,bat:0,disp:3,val:3},src:"pcK8",
+  img:[PCI("1100/11003388/1566-gmktec-nucbox-k8-plus-amd-ryzen-7-8845hs-32gb-1tb-ssd-radeon-780m-windows-11-pro-mini-pc-especificaciones"),PCI("1100/11003388/2749-gmktec-nucbox-k8-plus-amd-ryzen-7-8845hs-32gb-1tb-ssd-radeon-780m-windows-11-pro-mini-pc-caracteristicas"),PCI("1100/11003388/3768-gmktec-nucbox-k8-plus-amd-ryzen-7-8845hs-32gb-1tb-ssd-radeon-780m-windows-11-pro-mini-pc-opiniones")]},
+ {id:"mag",name:"MSI MAG Infinite E1 14NVL5",type:"desktop",form:"tower",os:"Windows",price:1261.99,pn:"亚马逊",cpu:"Intel Core i5-14400F（10 核）",gpu:"RTX 5060 8GB",ram:16,storage:"1TB SSD",screen:"无，需另配显示器",weight:null,battery:null,ports:"前 USB-C；后 3×DP、HDMI、网口；Wi-Fi 6E；500W 电源",q:"MSI MAG Infinite E1 14NVL5",
+  fit:"1080p 游戏",pros:["RTX 5060 整机里价格较低","内存可加到 64GB，1TB 存储","Wi-Fi 6E"],cons:["需另买显示器键鼠","SSD 是 PCIe 3.0"],s:{perf:4,gpu:4,port:0,bat:0,disp:3,val:4},src:"tg",
+  img:[LD("00/06/21/40/LD0006214054_0006288683"),LD("00/06/21/40/LD0006214004_0006288679"),LD("00/06/21/40/LD0006214005_0006288680"),LD("00/06/21/40/LD0006214006_0006288681")]},
+ {id:"omen16l",name:"HP OMEN 16L",type:"desktop",form:"tower",os:"Windows",price:1349.99,pn:"亚马逊（原价 €1,499.99）",cpu:"AMD Ryzen 7 8700F（8 核）",gpu:"RTX 5060 8GB",ram:16,storage:"512GB SSD",screen:"无，需另配显示器",weight:null,battery:null,ports:"前面 USB-C ×2；后 3×DP、HDMI、2.5G 网口；400W 电源",q:"HP OMEN 16L Ryzen 7 8700F RTX 5060",
+  fit:"白天工作、晚上游戏",pros:["外观低调","免工具打开机箱","还有空 M.2 位可加硬盘"],cons:["只有 512GB","原装散热器长时间高负载会吵","电源只有 400W，升级空间小"],s:{perf:4,gpu:4,port:0,bat:0,disp:3,val:4},src:"tg",
+  img:["https://assets.mmsrg.com/isr/166325/c1/-/ASSET_MMS_175069124/fee_786_587_png","https://image.coolblue.de/max/700xauto/products/2202511"]},
+ {id:"pccom",name:"PcCom Lite 游戏主机",type:"desktop",form:"tower",os:"Windows",price:1399,pn:"亚马逊",cpu:"AMD Ryzen 5 8400F（6 核）",gpu:"RTX 5060 8GB",ram:16,storage:"1TB SSD",screen:"无，需另配显示器",weight:null,battery:null,ports:"华硕 A620 主板，650W 电源，玻璃侧板",q:"PcCom Lite Ryzen 5 8400F RTX 5060",
+  fit:"中端游戏，以后想升级",pros:["标准配件，好升级","AM5 平台，以后能换 CPU","650W 电源有余量"],cons:["灯光外观很花","8GB 显存，超过 1080p 吃力"],s:{perf:4,gpu:4,port:0,bat:0,disp:3,val:4},src:"tg",
+  img:[PCI("1099/10996367/112-pccom-lite-amd-ryzen-5-8400f-16gb-1tb-ssd-rtx-5060-8gb-v2"),PCI("1099/10996367/2103-pccom-lite-amd-ryzen-5-8400f-16gb-1tb-ssd-rtx-5060-8gb-v2-opiniones"),PCI("1099/10996367/345-pccom-lite-amd-ryzen-5-8400f-16gb-1tb-ssd-rtx-5060-8gb-v2-review"),PCI("1099/10996367/4172-pccom-lite-amd-ryzen-5-8400f-16gb-1tb-ssd-rtx-5060-8gb-v2-foto")]},
+ {id:"imac24",name:"Apple iMac 24\" M4",type:"desktop",form:"aio",os:"macOS",price:1599,pn:"亚马逊，官方价 €1,829",cpu:"Apple M4（8 核 CPU / 8 核 GPU）",gpu:"集成 8 核",ram:16,storage:"256GB",screen:'24" 4.5K Retina 一体屏',weight:null,battery:null,ports:"雷电 / USB-C，送键盘鼠标",q:"iMac 24 M4",apple:"https://www.apple.com/it/shop/buy-mac/imac",
+  fit:"修图、设计、家庭",pros:["4.5K 好屏幕和音箱一体","很安静，七种颜色","送键盘鼠标"],cons:["内存和存储不能升级","256GB 偏小","没有 HDMI 和 USB-A"],s:{perf:4,gpu:3,port:0,bat:0,disp:5,val:3},src:"tg",
+  img:[AP("2024/10/apple-introduces-new-imac-supercharged-by-m4/article/Apple-iMac-M4-hero"),AP("2024/10/apple-introduces-new-imac-supercharged-by-m4/article/Apple-iMac-M4-green-iMac"),AP("2024/10/apple-introduces-new-imac-supercharged-by-m4/article/Apple-iMac-M4-Thunderbolt-4-ports"),AP("2024/10/apple-introduces-new-imac-supercharged-by-m4/article/Apple-iMac-M4-lifestyle-24-inch-Retina-display")]},
+ {id:"loq17l",name:"联想 LOQ Tower 17L",type:"desktop",form:"tower",os:"Windows",price:1699,pn:"亚马逊",cpu:"Intel Core Ultra 7 255HX（20 核）",gpu:"RTX 5060 Ti 8GB",ram:16,storage:"1TB SSD",screen:"无，需另配显示器",weight:null,battery:null,ports:"USB-C 20Gb、HDMI 2.1、网口；500W 电源",q:"Lenovo LOQ Tower 17IAX10 RTX 5060 Ti",
+  fit:"电竞游戏 1080p / 2K，桌面小",pros:["约 17 升小机箱","安静，散热好","前置 USB-C 20Gb/s"],cons:["4K 游戏不够","16GB 内存"],s:{perf:4,gpu:4,port:0,bat:0,disp:3,val:3},src:"tg",
+  img:[PCI("1116/11160960/1652-pc-sobremesa-lenovo-loq-tower-17iax10-intel-core-ultra-7-255hx-16gb-1tb-ssd-rtx-5060-ti-windows-11"),PCI("1116/11160960/2269-pc-sobremesa-lenovo-loq-tower-17iax10-intel-core-ultra-7-255hx-16gb-1tb-ssd-rtx-5060-ti-windows-11-comprar"),PCI("1116/11160960/3556-pc-sobremesa-lenovo-loq-tower-17iax10-intel-core-ultra-7-255hx-16gb-1tb-ssd-rtx-5060-ti-windows-11-mejor-precio"),PCI("1116/11160960/4757-pc-sobremesa-lenovo-loq-tower-17iax10-intel-core-ultra-7-255hx-16gb-1tb-ssd-rtx-5060-ti-windows-11-especificaciones")]},
+ {id:"minim5pro",name:"Apple Mac mini M5 Pro",type:"desktop",form:"mini",os:"macOS",price:1897,pn:"亚马逊，官方价 €2,029",cpu:"Apple M5 Pro（15 核 CPU / 16 核 GPU）",gpu:"集成 16 核",ram:24,storage:"512GB",screen:"无，需另配显示器",weight:null,battery:null,ports:"前 2×USB-C；后 3×雷电 5、HDMI、2.5G 网口",q:"Mac mini M5 Pro",apple:"https://www.apple.com/it/shop/buy-mac/mac-mini",
+  fit:"专业剪辑、音乐制作",pros:["专业级性能","3 个雷电 5","小巧安静"],cons:["价格高","需另买显示器键鼠"],s:{perf:5,gpu:4,port:0,bat:0,disp:3,val:3},src:"mac",
+  img:[AP("2026/08/apple-unveils-a-more-powerful-mac-mini-featuring-the-all-new-m6-and-m5-pro/article/Apple-Mac-mini-hero-260825"),AP("2026/08/apple-unveils-a-more-powerful-mac-mini-featuring-the-all-new-m6-and-m5-pro/article/Apple-M5-Pro-chip-260825"),AP("2026/08/apple-unveils-a-more-powerful-mac-mini-featuring-the-all-new-m6-and-m5-pro/article/Apple-Mac-mini-lifestyle-productivity-260825")]},
+ {id:"legiont5",name:"联想 Legion Tower 5（RTX 5070）",type:"desktop",form:"tower",os:"无系统",price:2269,pn:"PcComponentes.it",cpu:"AMD Ryzen 7 7800X3D（8 核）",gpu:"RTX 5070 12GB",ram:32,storage:"2TB SSD",screen:"无，需另配显示器",weight:null,battery:null,ports:"850W 电源",q:"Lenovo Legion Tower 5 7800X3D RTX 5070",
+  fit:"2K 高帧游戏",pros:["7800X3D 是游戏最强 CPU 之一","12GB 显存，32GB 内存，2TB","850W 电源，好升级显卡"],cons:["不带 Windows 系统","机箱较大"],s:{perf:5,gpu:5,port:0,bat:0,disp:3,val:4},src:"pcT5",
+  img:[PCI("1096/10962064/1876-pc-sobremesa-lenovo-legion-t5-30agb10-amd-ryzen-7-7800x3d-32gb-2tb-ssd-rtx-5070-negro"),PCI("1096/10962064/2526-pc-sobremesa-lenovo-legion-t5-30agb10-amd-ryzen-7-7800x3d-32gb-2tb-ssd-rtx-5070-negro-comprar"),PCI("1096/10962064/390-pc-sobremesa-lenovo-legion-t5-30agb10-amd-ryzen-7-7800x3d-32gb-2tb-ssd-rtx-5070-negro-mejor-precio"),PCI("1096/10962064/4425-pc-sobremesa-lenovo-legion-t5-30agb10-amd-ryzen-7-7800x3d-32gb-2tb-ssd-rtx-5070-negro-especificaciones")]},
+ {id:"omen35l",name:"HP OMEN 35L",type:"desktop",form:"tower",os:"Windows",price:2399.99,pn:"亚马逊",cpu:"AMD Ryzen 9 9900X（12 核）",gpu:"RTX 5070 12GB",ram:32,storage:"1TB",screen:"无，需另配显示器",weight:null,battery:null,ports:"80 Plus 金牌电源，内存最多 128GB",q:"HP OMEN 35L Ryzen 9 9900X RTX 5070",
+  fit:"2K 游戏、渲染",pros:["12GB 显存，2K 更从容","32GB 内存，CPU 很强","可升级空间大"],cons:["机箱大","同价位 Legion Tower 5 存储更大"],s:{perf:5,gpu:5,port:0,bat:0,disp:3,val:3},src:"tg",
+  img:["https://www.proshop.nl/Images/915x900/3501458_d9db80909688.jpg"]},
+ {id:"luxe",name:"CyberpowerPC Luxe 游戏主机",type:"desktop",form:"tower",os:"Windows",price:3119,pn:"亚马逊",cpu:"AMD Ryzen 7 9800X3D（8 核）",gpu:"RTX 5080 16GB",ram:32,storage:"2TB SSD",screen:"无，需另配显示器",weight:null,battery:null,ports:"850W 电源，360mm 水冷，白色机箱",q:"CyberpowerPC Luxe 9800X3D RTX 5080",
+  fit:"4K 高帧游戏、3D 渲染",pros:["4K 光追也流畅","360mm 水冷","2TB 存储"],cons:["很贵","机箱很大"],s:{perf:5,gpu:5,port:0,bat:0,disp:3,val:2},src:"tg",
+  img:["https://mcgrocer.com/cdn/shop/files/383052991823902.jpg?v=1791449607","https://mcgrocer.com/cdn/shop/files/383052992380958.jpg?v=1791449607","https://mcgrocer.com/cdn/shop/files/383052990906398.jpg?v=1791449607","https://mcgrocer.com/cdn/shop/files/383052990480414.jpg?v=1791449607"]}
+];
+
+const USES=[["study","上课 / 上网"],["office","办公文档"],["game","打游戏"],["create","剪辑 / 设计"],["code","写代码"],["carry","经常带出门"]];
+const TYPES=[["any","都可以"],["laptop","笔记本"],["desktop","台式机"]];
+const OSES=[["any","不限"],["Windows","Windows"],["macOS","macOS"]];
+const state={budget:1000,type:"any",os:"any",uses:new Set(["study","office"]),cmp:[],allType:"any",sort:"asc"};
+const byId=Object.fromEntries(P.map(p=>[p.id,p]));
+const $=s=>document.querySelector(s);
+const fmt=n=>"€"+n.toLocaleString("en-US",{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2});
+const kindName=p=>p.type==="laptop"?(p.form==="tablet"?"二合一":"笔记本"):({mini:"迷你主机",aio:"一体机"}[p.form]||"台式机");
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const osOk=(p,o)=>o==="any"||p.os===o||(o==="Windows"&&p.os==="无系统");
+
+/* images: track loads and failures; drop broken photos, fall back to a sketch */
+const img={ok:0,bad:0,dead:new Set()};
+function sketch(p){
+  const s={laptop:'<rect x="30" y="14" width="140" height="88" rx="6" fill="none" stroke="currentColor" stroke-width="4"/><rect x="40" y="24" width="120" height="68" rx="2" fill="currentColor" opacity=".12"/><path d="M12 108h176l-10 12H22z" fill="currentColor" opacity=".55"/>',
+    tablet:'<rect x="36" y="12" width="128" height="84" rx="8" fill="none" stroke="currentColor" stroke-width="4"/><rect x="46" y="22" width="108" height="64" rx="2" fill="currentColor" opacity=".12"/><path d="M30 104h140l-6 10H36z" fill="currentColor" opacity=".45"/>',
+    tower:'<rect x="66" y="8" width="68" height="112" rx="6" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="100" cy="44" r="16" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="100" cy="86" r="16" fill="none" stroke="currentColor" stroke-width="3"/><rect x="76" y="16" width="20" height="4" fill="currentColor"/>',
+    mini:'<rect x="46" y="54" width="108" height="44" rx="10" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="66" cy="76" r="4" fill="currentColor"/><rect x="104" y="73" width="36" height="6" rx="3" fill="currentColor" opacity=".5"/>',
+    aio:'<rect x="22" y="10" width="156" height="92" rx="6" fill="none" stroke="currentColor" stroke-width="4"/><rect x="32" y="20" width="136" height="66" rx="2" fill="currentColor" opacity=".12"/><path d="M88 102h24l6 16H82z" fill="currentColor" opacity=".55"/>'}[p.form]||"";
+  return `<div class="sketch"><svg viewBox="0 0 200 128" aria-hidden="true">${s}</svg><small>示意图 · <a href="https://www.google.com/search?tbm=isch&q=${encodeURIComponent(p.q)}" target="_blank" rel="noopener">看实物图</a></small></div>`;
+}
+function gallery(p){
+  const list=p.img.filter(u=>!img.dead.has(u));
+  if(!list.length)return `<div class="gal" data-n="0">${sketch(p)}</div>`;
+  return `<div class="gal" data-id="${p.id}" data-n="${list.length}">
+    <div class="track">${list.map((u,i)=>`<div class="slide" data-i="${i}"><img src="${esc(u)}" alt="${esc(p.name)} 图 ${i+1}" ${i?'loading="lazy"':""} referrerpolicy="no-referrer" decoding="async"></div>`).join("")}</div>
+    <span class="gcount">1/${list.length}</span>
+    <button type="button" class="gnav prev" aria-label="上一张">‹</button><button type="button" class="gnav next" aria-label="下一张">›</button>
+    <div class="dots">${list.map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div></div>`;
+}
+function syncGal(g){
+  const t=g.querySelector(".track");if(!t)return;
+  const n=t.children.length;g.dataset.n=n;
+  if(!n){const p=byId[g.dataset.id];g.outerHTML=`<div class="gal" data-n="0">${sketch(p)}</div>`;return}
+  const i=Math.round(t.scrollLeft/Math.max(1,t.clientWidth));
+  const c=g.querySelector(".gcount");if(c)c.textContent=`${Math.min(i+1,n)}/${n}`;
+  const d=g.querySelector(".dots");if(d){if(d.children.length!==n)d.innerHTML=Array.from({length:n},()=>"<i></i>").join("");[...d.children].forEach((e,k)=>e.classList.toggle("on",k===i))}
+}
+document.addEventListener("error",e=>{
+  const el=e.target;if(!(el instanceof HTMLImageElement))return;
+  const src=el.getAttribute("src");
+  if(el.id==="lbImg"){return}
+  if(el.closest("thead")){el.remove();return}
+  const slide=el.closest(".slide");if(!slide)return;
+  img.bad++;img.dead.add(src);
+  const g=slide.closest(".gal");slide.remove();syncGal(g);
+  if(img.bad>=6&&img.ok===0)$("#imgNotice").hidden=false;
+},true);
+document.addEventListener("load",e=>{if(e.target instanceof HTMLImageElement&&e.target.closest(".slide")){img.ok++;$("#imgNotice").hidden=true}},true);
+document.addEventListener("scroll",e=>{const t=e.target;if(t.classList&&t.classList.contains("track"))syncGal(t.closest(".gal"))},true);
+
+function chips(el,list,isOn,onTap){
+  el.innerHTML="";
+  list.forEach(([k,t])=>{const b=document.createElement("button");b.type="button";b.className="chip";b.textContent=t;
+    b.setAttribute("aria-pressed",isOn(k)?"true":"false");b.onclick=()=>onTap(k);el.append(b)});
+}
+function drawControls(){
+  chips($("#typeSeg"),TYPES,k=>state.type===k,k=>{state.type=k;drawControls();drawRec()});
+  chips($("#osSeg"),OSES,k=>state.os===k,k=>{state.os=k;drawControls();drawRec()});
+  chips($("#useSeg"),USES,k=>state.uses.has(k),k=>{state.uses.has(k)?state.uses.delete(k):state.uses.add(k);drawControls();drawRec()});
+  chips($("#allSeg"),TYPES.map(([k,t])=>[k,k==="any"?"全部":t]),k=>state.allType===k,k=>{state.allType=k;drawControls();drawAll()});
+}
+
+const W={study:{val:2,bat:1,port:1},office:{perf:1,bat:1,disp:1,val:1},game:{gpu:3,perf:1},create:{perf:2,disp:2,gpu:1},code:{perf:2,val:1},carry:{port:2,bat:2}};
+const LBL={perf:"性能强",gpu:"显卡强",port:"轻便",bat:"续航长",disp:"屏幕好",val:"性价比高"};
+function score(p){
+  if(state.type!=="any"&&p.type!==state.type)return null;
+  if(!osOk(p,state.os))return null;
+  if(p.price>state.budget*1.05)return null;
+  const uses=state.uses.size?[...state.uses]:["office"];
+  let s=0,max=0;const w={};
+  uses.forEach(u=>Object.entries(W[u]).forEach(([k,v])=>{w[k]=(w[k]||0)+v}));
+  Object.entries(w).forEach(([k,v])=>{s+=v*p.s[k];max+=v*5});
+  let r=s/max;
+  if(p.os==="ChromeOS"&&(state.uses.has("game")||state.uses.has("code")||state.uses.has("create")))r-=.35;
+  if(p.os==="macOS"&&state.uses.has("game"))r-=.12;
+  if(state.uses.has("code")&&(p.ram||8)<16)r-=.1;
+  r+=.08*Math.min(1,p.price/state.budget);
+  const strong=Object.keys(w).sort((a,b)=>w[b]-w[a]).filter(k=>p.s[k]>=4).map(k=>LBL[k]);
+  return {r,strong};
+}
+function links(p){
+  const q=encodeURIComponent(p.q);
+  let h=`<a href="https://www.amazon.it/s?k=${q}" target="_blank" rel="noopener">亚马逊</a><a href="https://www.idealo.it/MainSearchProductCategory.html?q=${q}" target="_blank" rel="noopener">idealo 比价</a>`;
+  if(p.apple)h+=`<a href="${p.apple}" target="_blank" rel="noopener">Apple 官网</a>`;
+  return h;
+}
+function card(p,extra){
+  const on=state.cmp.includes(p.id);
+  const rows=[["处理器",p.cpu],["显卡",p.gpu],["内存",p.ram?p.ram+"GB":"—"],["存储",p.storage],["屏幕",p.screen],["接口",p.ports]];
+  if(p.type==="laptop")rows.push(["重量","约 "+p.weight+"kg"],["电池",p.battery]);
+  return `<article class="item${extra?" pick":""}">${gallery(p)}<div class="body">
+  <div class="item-head"><div>${extra?`<span class="rank">${esc(extra.rank)}</span>`:""}<div class="kind">${kindName(p)} · ${p.os}</div><h3>${esc(p.name)}</h3></div>
+  <div class="price" aria-label="价格 ${fmt(p.price)}"><small>€</small>${fmt(p.price).slice(1)}</div></div>
+  <div class="pnote">${esc(p.pn)}</div>
+  ${extra&&extra.why?`<p class="why"><b>为什么推荐：</b>${esc(extra.why)}</p>`:""}
+  <dl class="specs">${rows.map(([k,v])=>`<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl>
+  <p class="fit"><b>适合：</b>${esc(p.fit)}</p>
+  <div class="pc"><ul class="pros">${p.pros.map(x=>`<li>${esc(x)}</li>`).join("")}</ul><ul class="cons">${p.cons.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
+  <div class="actions">${links(p)}<button type="button" class="cmp" data-cmp="${p.id}" aria-pressed="${on}">${on?"已加入对比":"加入对比"}</button></div>
+  <div class="src">价格来源：<a href="${SRC[p.src].u}" target="_blank" rel="noopener">${esc(SRC[p.src].n)}</a></div>
+  </div></article>`;
+}
+function drawRec(){
+  const picks=P.map(p=>({p,sc:score(p)})).filter(x=>x.sc).sort((a,b)=>b.sc.r-a.sc.r).slice(0,3);
+  const useTxt=state.uses.size?[...state.uses].map(u=>USES.find(x=>x[0]===u)[1]).join("、"):"日常办公";
+  $("#recSub").textContent=`预算 ${fmt(state.budget)} 以内 · ${useTxt}`;
+  $("#recGrid").innerHTML=picks.length?picks.map((x,i)=>card(x.p,{rank:"第 "+(i+1)+" 推荐",why:(x.sc.strong.length?x.sc.strong.join("、")+"，":"")+"符合你选的用途"})).join("")
+    :`<div class="empty">这个预算和条件下没有收录的型号。试试提高预算，或者把系统改成“不限”。</div>`;
+}
+function drawAll(){
+  const list=P.filter(p=>state.allType==="any"||p.type===state.allType).sort((a,b)=>state.sort==="asc"?a.price-b.price:b.price-a.price);
+  $("#allGrid").innerHTML=list.map(p=>card(p)).join("");
+}
+function syncCmpButtons(){
+  document.querySelectorAll("[data-cmp]").forEach(b=>{const on=state.cmp.includes(b.dataset.cmp);b.setAttribute("aria-pressed",on);b.textContent=on?"已加入对比":"加入对比"});
+}
+function drawCmp(){
+  const ps=state.cmp.map(id=>byId[id]);
+  $("#cbar").hidden=!ps.length;
+  $("#cbarNames").textContent=ps.length?`对比 ${ps.length}/3：`+ps.map(p=>p.name).join("、"):"";
+  if(!ps.length){$("#cmpOut").innerHTML=`<div class="empty">还没有选择要对比的电脑</div>`;return}
+  const minP=Math.min(...ps.map(p=>p.price)),maxR=Math.max(...ps.map(p=>p.ram||0));
+  const row=(k,f,cls)=>`<tr><th scope="row">${k}</th>${ps.map(p=>`<td class="${cls||""}">${f(p)}</td>`).join("")}</tr>`;
+  const sc=k=>p=>"●".repeat(p.s[k])+"○".repeat(5-p.s[k]);
+  const first=p=>p.img.find(u=>!img.dead.has(u));
+  $("#cmpOut").innerHTML=`<div class="table-wrap"><table>
+   <thead><tr><th></th>${ps.map(p=>`<th scope="col">${first(p)?`<img src="${esc(first(p))}" alt="" referrerpolicy="no-referrer">`:""}${esc(p.name)}</th>`).join("")}</tr></thead><tbody>
+   ${row("价格",p=>`<span class="${p.price===minP&&ps.length>1?"best":""}">${fmt(p.price)}</span><br><small>${esc(p.pn)}</small>`,"mono")}
+   ${row("类型",p=>kindName(p)+" · "+p.os)}
+   ${row("处理器",p=>esc(p.cpu),"mono")}
+   ${row("显卡",p=>esc(p.gpu),"mono")}
+   ${row("内存",p=>p.ram?`<span class="${p.ram===maxR&&ps.length>1?"best":""}">${p.ram}GB</span>`:"—","mono")}
+   ${row("存储",p=>esc(p.storage),"mono")}
+   ${row("屏幕",p=>esc(p.screen),"mono")}
+   ${row("接口",p=>esc(p.ports),"mono")}
+   ${row("重量",p=>p.weight?p.weight+"kg":"—","mono")}
+   ${row("电池",p=>p.battery?esc(p.battery):"—","mono")}
+   ${row("性能",sc("perf"),"mono")}
+   ${row("游戏",sc("gpu"),"mono")}
+   ${row("性价比",sc("val"),"mono")}
+   ${row("适合",p=>esc(p.fit))}
+   ${row("优点",p=>`<ul>${p.pros.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`)}
+   ${row("缺点",p=>`<ul>${p.cons.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`)}
+   ${row("购买",p=>`<div class="actions">${links(p)}</div>`)}
+   </tbody></table></div><p class="hint" style="margin-top:8px">性能、游戏、性价比是按收录型号相互比较的 5 分制，仅作参考。</p>`;
+}
+
+/* lightbox */
+const lb={list:[],i:0,name:""};
+function lbShow(){
+  const u=lb.list[lb.i];$("#lbImg").src=u;$("#lbImg").alt=lb.name+" 大图";
+  $("#lbTitle").textContent=lb.name;$("#lbNum").textContent=`${lb.i+1} / ${lb.list.length}`;
+  $("#lbPrev").disabled=$("#lbNext").disabled=lb.list.length<2;$("#lbStage").classList.remove("zoom");
+}
+function lbOpen(id,i){
+  const p=byId[id];lb.list=p.img.filter(u=>!img.dead.has(u));if(!lb.list.length)return;
+  lb.i=Math.min(i,lb.list.length-1);lb.name=p.name;$("#lb").hidden=false;lbShow();$("#lbClose").focus();
+}
+const lbClose=()=>{$("#lb").hidden=true;$("#lbImg").removeAttribute("src")};
+$("#lbClose").onclick=lbClose;
+$("#lbPrev").onclick=()=>{lb.i=(lb.i-1+lb.list.length)%lb.list.length;lbShow()};
+$("#lbNext").onclick=()=>{lb.i=(lb.i+1)%lb.list.length;lbShow()};
+$("#lbImg").onclick=()=>$("#lbStage").classList.toggle("zoom");
+$("#lb").addEventListener("click",e=>{if(e.target.id==="lb")lbClose()});
+document.addEventListener("keydown",e=>{if($("#lb").hidden)return;if(e.key==="Escape")lbClose();if(e.key==="ArrowLeft")$("#lbPrev").click();if(e.key==="ArrowRight")$("#lbNext").click()});
+
+document.addEventListener("click",e=>{
+  const nav=e.target.closest(".gnav");
+  if(nav){const t=nav.closest(".gal").querySelector(".track");t.scrollBy({left:(nav.classList.contains("next")?1:-1)*t.clientWidth,behavior:"smooth"});return}
+  const sl=e.target.closest(".slide");
+  if(sl){const g=sl.closest(".gal");lbOpen(g.dataset.id,[...sl.parentNode.children].indexOf(sl));return}
+  const b=e.target.closest("[data-cmp]");if(!b)return;
+  const id=b.dataset.cmp,i=state.cmp.indexOf(id);
+  if(i>=0)state.cmp.splice(i,1);else{if(state.cmp.length>=3)state.cmp.shift();state.cmp.push(id)}
+  syncCmpButtons();drawCmp();
+});
+$("#cbarClear").onclick=()=>{state.cmp=[];syncCmpButtons();drawCmp()};
+$("#cbarGo").onclick=()=>$("#compare").scrollIntoView({behavior:"smooth"});
+const syncBudget=v=>{v=Math.max(250,Math.min(5000,Number(v)||1000));state.budget=v;$("#budget").value=v;$("#budgetRange").value=v;drawRec()};
+$("#budget").addEventListener("change",e=>syncBudget(e.target.value));
+$("#budgetRange").addEventListener("input",e=>syncBudget(e.target.value));
+$("#sort").onchange=e=>{state.sort=e.target.value;drawAll()};
+$("#needs").addEventListener("submit",e=>e.preventDefault());
+$("#count").textContent=P.length;
+$("#srcList").innerHTML=Object.values(SRC).map(s=>`<li><a href="${s.u}" target="_blank" rel="noopener">${esc(s.n)}</a></li>`).join("");
+
+drawControls();drawRec();drawAll();drawCmp();
+</script>
+
+</body>
+</html>

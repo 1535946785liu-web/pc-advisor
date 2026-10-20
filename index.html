@@ -321,6 +321,13 @@ html.mo-off .mascot{display:none}
 .mo.wave .mo-arm-r{animation:mo-wave 1s ease-in-out}
 .mo.wave .mo-svg{animation:mo-hop .6s ease-out}
 @media (prefers-reduced-motion:reduce){.mo-body,.mo-eyes,.mo.wave .mo-arm-r,.mo.wave .mo-svg{animation:none}}
+/* 性能：只给少数浮动元素保留毛玻璃，避免手机浏览器内存不足崩溃 */
+.glass,.gnav{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.glass{background:var(--glass-2)}
+.needbar.glass{-webkit-backdrop-filter:blur(14px)!important;backdrop-filter:blur(14px)!important;background:var(--glass)}
+.space .fog{filter:none;opacity:.9}
+.space .f1{background:radial-gradient(closest-side,var(--glow),transparent)}
+.space .f2{background:radial-gradient(closest-side,color-mix(in srgb,var(--accent-2) 16%,transparent),transparent)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 

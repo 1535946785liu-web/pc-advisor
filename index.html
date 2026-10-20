@@ -150,6 +150,8 @@ section{min-width:0}
 .pb-top{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap}
 .pb-top .lbl{display:block;font-size:11.5px;color:var(--ink-3);letter-spacing:.08em;margin-bottom:2px}
 .pb-top .low{font-family:var(--f-tech);font-weight:600;font-size:30px;line-height:1;color:var(--ink)}
+.pb-top .low.dim{color:var(--ink-3)}
+.verdict.na{color:var(--ink-3);border-style:dashed}
 .pb-top .low small{font-size:15px;margin-right:2px;color:var(--ink-2)}
 .verdict{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;padding:3px 10px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
 .verdict::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
@@ -463,7 +465,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 </g>
 </svg></button>
     </aside>
-    <p class="lede">选好要买的东西，条件可以随意叠加，每一类马上挑出最合适的 5 款。每款都同时标出找到的最低价和市场价，附多角度实物图、优缺点和购买链接。</p>
+    <p class="lede">选好要买的东西，条件可以随意叠加，每一类马上挑出最合适的 5 款。每款标出官网或大平台的现价、市场价和历史低价，附多角度实物图、优缺点和购买链接。</p>
     <div class="stats" id="stats"></div>
     <p class="upd">价格整理于 <b id="upd"></b>　·　每月自动更新一次</p>
     <div class="notice glass" id="imgNotice" hidden>这里显示不了商店图片，先用示意图代替。用浏览器打开 GitHub 上的网址就能看到实物图。</div>
@@ -500,7 +502,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   </div>
 
   <footer class="glass">
-    <div><b>价格怎么看：</b>“现价”是这次找到的最低报价；“市场价”是原价、建议零售价、官方价或其他卖家的价格；“历史低价”来自意大利优惠资讯网站报道过的最低价（Tom's Hardware、Punto Informatico、TuttoTech 等），只收录了能查到的型号。“推荐入手价”有历史低价时取已知最低价再加 8%，没有时按市场价打 85 折或现价打 9 折估算，只是参考。现价不高于推荐价显示“现在入手合适”，高出不到 12% 显示“价格还行”，再高就建议等降价。<span id="saleNote"></span>价格会变，以商店页面为准。外设部分商店页面的键盘是西班牙或美式布局，买前请选意大利布局。图片来自品牌官网、Icecat 产品库和商店页面。</div>
+    <div><b>价格怎么看：</b>“现价”只采用品牌官网或知名大平台（Unieuro、PcComponentes、LDLC、Yeppon 等）自营、有货的价格，不用第三方小卖家或一闪而过的优惠价；标“暂时缺货”的是该平台的标价但现在买不到；标“参考价”的型号主要在 Amazon / MediaWorld 销售、暂未核实，只作参考，不参与划算判断；“市场价”是原价、建议零售价、官方价或其他卖家的价格；“历史低价”来自意大利优惠资讯网站报道过的最低价（Tom's Hardware、Punto Informatico、TuttoTech 等），只收录了能查到的型号。“推荐入手价”有历史低价时取已知最低价再加 8%，没有时按市场价打 85 折或现价打 9 折估算，只是参考。现价不高于推荐价显示“现在入手合适”，高出不到 12% 显示“价格还行”，再高就建议等降价。<span id="saleNote"></span>价格会变，以商店页面为准。外设部分商店页面的键盘是西班牙或美式布局，买前请选意大利布局。图片来自品牌官网、Icecat 产品库和商店页面。</div>
     <ul id="srcList"></ul>
   </footer>
 </div>
@@ -515,9 +517,9 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   <div class="lb-foot"><button type="button" id="lbPrev">上一张</button><span id="lbNum"></span><button type="button" id="lbNext">下一张</button></div>
 </div>
 
-<script src="data/meta.js?v=2026-10-20"></script>
-<script src="data/pcs.js?v=2026-10-20"></script>
-<script src="data/peripherals.js?v=2026-10-20"></script>
+<script src="data/meta.js?v=2026-10-20b"></script>
+<script src="data/pcs.js?v=2026-10-20b"></script>
+<script src="data/peripherals.js?v=2026-10-20b"></script>
 <script>
 /* ---------- meta (date & seasonal note) ---------- */
 (function(){var u=document.getElementById('upd'),s=document.getElementById('saleNote');if(typeof META!=='undefined'){if(u)u.textContent=META.updated;if(s)s.textContent=META.sale||''}})();
@@ -544,10 +546,11 @@ ALL.forEach(p=>{
   if(lowKnown){r=lowKnown*1.08;basis="已知最低价 +8%"}else if(p.market&&p.market>p.price){r=p.market*.85;basis="市场价 −15% 估算"}else{r=(p.market||p.price)*.9;basis="现价 −10% 估算"}
   if(p.market)r=Math.min(r,p.market);
   p.rec=roundP(r);p.recBasis=basis;p.recFromHist=!!lowKnown;
-  p.verdict=p.price<=p.rec?"good":p.price<=p.rec*1.12?"ok":"wait";
-  p.deal=p.price/p.rec;
+  p.st=p.st||"ref";
+  p.verdict=p.st!=="ok"?"na":p.price<=p.rec?"good":p.price<=p.rec*1.12?"ok":"wait";
+  p.deal=p.verdict==="na"?9+p.price/p.rec:p.price/p.rec;
 });
-const VERDICT={good:"现在入手合适",ok:"价格还行，可等促销",wait:"偏贵，建议等降价"};
+const VERDICT={good:"现在入手合适",ok:"价格还行，可等促销",wait:"偏贵，建议等降价",na:"暂不判断"};
 const byId=Object.fromEntries(ALL.map(p=>[p.id,p]));
 const CONN={wired:"有线",rf:"2.4G 无线",bt:"蓝牙"};
 
@@ -601,7 +604,7 @@ const CATS={
   tags:p=>[{over:"头戴式",on:"贴耳式",in:"入耳式"}[p.f.form],...p.f.conn.map(c=>CONN[c]),p.f.anc?"主动降噪":"",p.f.batt?p.f.batt+" 小时":"",p.f.water?"防水":""]}
 };
 const ORDER=["pc","kb","mouse","audio"];
-const DEALGROUP={k:"deal",t:"价格状态",o:[["good","现在入手合适",p=>p.verdict==="good"],["okp","合适或还行",p=>p.verdict!=="wait"],["hist","有历史低价数据",p=>!!p.hist]]};
+const DEALGROUP={k:"deal",t:"价格状态",o:[["good","现在入手合适",p=>p.verdict==="good"],["okp","合适或还行",p=>p.verdict==="good"||p.verdict==="ok"],["stock","官网/大平台有货",p=>p.st==="ok"],["hist","有历史低价数据",p=>!!p.hist]]};
 ORDER.forEach(c=>CATS[c].groups.push(DEALGROUP));
 
 /* ---------- state ---------- */
@@ -636,6 +639,7 @@ function score(p){
   const strong=Object.keys(w).sort((a,b)=>w[b]-w[a]).filter(k=>(p.s[k]||0)>=4).map(k=>def.dims[k]);
   if(p.save>=10)strong.push("比市场价便宜 "+p.save+"%");
   if(p.verdict==="good"){r+=.03;strong.push("现价已到推荐入手价")}
+  if(p.st==="ref")r-=.06;else if(p.st==="oos")r-=.04;
   return {r:Math.max(0,Math.min(1,r)),strong};
 }
 function summary(c){
@@ -710,19 +714,19 @@ function priceBox(p){
   const hi=Math.max(p.market||0,p.price,p.rec)*1.03,lo=Math.min(p.lowKnown||p.rec,p.rec,p.price)*.94,pct=v=>Math.max(0,Math.min(100,(v-lo)/(hi-lo)*100));
   const zoneL=pct(p.lowKnown||lo),zoneR=pct(p.rec);
   return `<div class="pricebox">
-    <div class="pb-top"><div><span class="lbl">现价 · 找到的最低报价</span><span class="low"><small>€</small>${money(p.price)}</span></div><span class="verdict ${p.verdict}">${VERDICT[p.verdict]}</span></div>
+    <div class="pb-top"><div><span class="lbl">${p.st==="ok"?"现价 · "+esc(p.pn):p.st==="oos"?esc(p.pn)+" 标价 · 暂时缺货":"参考价 · 未在官网或大平台核实"}</span><span class="low${p.st==="ok"?"":" dim"}"><small>€</small>${money(p.price)}</span></div><span class="verdict ${p.verdict}">${p.st==="oos"?"暂时缺货":VERDICT[p.verdict]}</span></div>
     <div class="ruler" role="img" aria-label="现价在推荐区间中的位置"><span class="bar"></span><span class="zone" style="left:${zoneL}%;width:${Math.max(2,zoneR-zoneL)}%"></span><span class="rec" style="left:${zoneR}%"></span><span class="now" style="left:${pct(p.price)}%"></span></div>
     <dl class="pb-grid">
       <div><dt>历史低价</dt>${p.hist?`<dd>€${money(p.hist.v)}</dd>`:`<dd class="na">暂无数据</dd>`}</div>
       <div><dt>推荐入手价</dt><dd class="rec">≤ €${money(p.rec)}</dd></div>
       <div><dt>市场价</dt>${p.market?`<dd>${p.save?`<s>€${money(p.market)}</s><em>省 ${p.save}%</em>`:"€"+money(p.market)}</dd>`:`<dd class="na">暂无</dd>`}</div>
     </dl>
-    <p class="note">现价：${esc(p.pn)}${p.market&&p.mnote?`；市场价：${esc(p.mnote)}`:""}${p.hist?`；历史低价：<a href="${p.hist.u}" target="_blank" rel="noopener">${esc(p.hist.n)}</a>${p.hist.d?"（"+p.hist.d+"）":""}`:""}；推荐价按${p.recBasis}。</p>
+    <p class="note">${p.st==="ref"?`参考价来源：${esc(p.pn)}。这个型号主要在 Amazon / MediaWorld 销售，暂未核实到官网或大平台的有货价，仅供参考`:`现价来源：<a href="${esc(p.buy)}" target="_blank" rel="noopener">${esc(p.pn)}</a>${p.st==="oos"?"（目前缺货）":""}`}${p.market&&p.mnote?`；市场价：${esc(p.mnote)}`:""}${p.hist?`；历史低价：<a href="${p.hist.u}" target="_blank" rel="noopener">${esc(p.hist.n)}</a>${p.hist.d?"（"+p.hist.d+"）":""}`:""}；推荐价按${p.recBasis}。</p>
   </div>`;
 }
 function links(p){
   const q=encodeURIComponent(p.q);
-  let h=`<a class="primary" href="https://www.amazon.it/s?k=${q}" target="_blank" rel="noopener">亚马逊</a><a href="https://www.idealo.it/MainSearchProductCategory.html?q=${q}" target="_blank" rel="noopener">比价</a>`;
+  let h=(p.buy?`<a class="primary" href="${esc(p.buy)}" target="_blank" rel="noopener">去${esc(p.pn.replace(/（.*）/,"").replace(" 自营",""))}</a>`:"")+`<a${p.buy?"":' class="primary"'} href="https://www.amazon.it/s?k=${q}" target="_blank" rel="noopener">亚马逊</a><a href="https://www.idealo.it/MainSearchProductCategory.html?q=${q}" target="_blank" rel="noopener">比价</a>`;
   if(p.apple)h+=`<a href="${p.apple}" target="_blank" rel="noopener">官网</a>`;
   return h;
 }
@@ -772,7 +776,7 @@ function drawCmp(){
     const keys=[...new Set(g.flatMap(p=>p.rows.map(r=>r[0])))];
     const row=(k,f)=>`<tr><th scope="row">${k}</th>${g.map(p=>`<td>${f(p)}</td>`).join("")}</tr>`;
     return `<div class="cmpgroup"><h3>${CATS[c].t}</h3><div class="table-wrap glass"><table><thead><tr><th></th>${g.map(p=>`<th scope="col">${first(p)?`<img src="${esc(first(p))}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">`:""}${esc(p.name)}</th>`).join("")}</tr></thead><tbody>
-      ${row("最低价",p=>`<span class="tech ${p.price===minP&&g.length>1?"best":""}">€${money(p.price)}</span>`)}
+      ${row("现价",p=>`<span class="tech ${p.price===minP&&g.length>1?"best":""}">€${money(p.price)}</span>${p.st==="ok"?`<br><small>${esc(p.pn)}</small>`:p.st==="oos"?"<br><small>暂时缺货</small>":"<br><small>参考价</small>"}`)}
       ${row("市场价",p=>p.market?`<span class="tech">€${money(p.market)}</span>${p.save?" · 省 "+p.save+"%":""}`:"暂无")}
       ${row("历史低价",p=>p.hist?`<span class="tech">€${money(p.hist.v)}</span>`:"暂无")}
       ${row("推荐入手价",p=>`<span class="tech">≤ €${money(p.rec)}</span><br><small>${VERDICT[p.verdict]}</small>`)}

@@ -13,7 +13,9 @@
 
 ## 字段含义（只更新这些）
 
-- `price`：这次在意大利（EUR，含税）找到的**最低现价**；`pn`：卖家名（如 "Amazon.it"、"PcComponentes.it"、"Yeppon"）。
+- `price`：**现价**，只采用品牌官网或知名大平台的**自营、有货**价格（EUR，含税）。可用来源：品牌官网（苹果、罗技、雷蛇、森海塞尔、Acer 等）、Amazon.it 自营、MediaWorld、Unieuro、Euronics、PcComponentes 自营、LDLC、Yeppon。**不要**用第三方小卖家价格、限时闪购或优惠文章里的"史低价"当现价。同一款在多个可靠来源都有货时，取其中最低的。
+- `pn`：现价来源的名字（如 "罗技官网"、"Unieuro"、"PcComponentes 自营"）；`buy`：该来源的商品页网址。
+- `st`：`"ok"` 有货；`"oos"` 只查到可靠来源的标价但缺货；`"ref"` 没在任何可靠来源核实到（此时 `price` 是参考价，`buy` 为空）。每次更新都尽量把 `ref` 和 `oos` 核实成 `ok`；某款长期 `ref`/`oos`，可以换成同定位、同价位、能核实的型号（要同时补齐配置、优缺点、图片、`src`）。
 - 电脑的市场价在 `MARKET[id] = [价格, "说明"]`；外设的市场价是条目里的 `market` 和 `mnote`。市场价 = 原价 / 建议零售价 / 官方价 / 其他卖家价，必须 ≥ 现价，查不到就保持原值或设为 `null`。
 - `HIST[id] = [历史最低价, "来源站名", "来源网址", ""]`：只有在意大利优惠资讯网站（Tom's Hardware Italia、Punto Informatico、TuttoTech、HTML.it、SmartWorld 等）真的报道过 "minimo storico" 时才写；发现更低的新纪录就替换。没有可靠来源就不要新增。
 - 推荐入手价由页面自动计算，不用手填。

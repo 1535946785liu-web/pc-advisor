@@ -5,222 +5,503 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 </head>
 <body>
-<title>电脑选购参谋</title>
+<title>莫比价 MobiPrice · 电脑与外设选购参谋</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Saira:wght@500;600;700&display=swap">
 <style>
-/* Layout: a shop shelf. Needs form on the left, shelf-tag cards with photo galleries on the right; one column on phones. */
+/* Layout: a quiet "control room". Frosted panels float over a soft fog with a faint receding grid floor.
+   Needs console on the left (one panel per product kind you chose), shortlists of five per kind on the right, then compare and the full shelf. */
 :root{
-  --paper:#eef2f5; --card:#ffffff; --photo:#ffffff; --ink:#15212d; --ink-2:#4d5b69; --rule:#d3dbe2;
-  --tag:#ffd23f; --tag-ink:#231c00; --act:#0b6a65; --act-ink:#ffffff; --act-soft:#dcefed;
-  --good:#1d7a4b; --bad:#b0442b; --shade:rgba(10,16,22,.88);
-  --f-display:"Noto Serif SC","Songti SC","STSong",serif;
+  --bg1:#e8eef3; --bg2:#dce5ec; --glass:rgba(255,255,255,.64); --glass-2:rgba(255,255,255,.86); --sunk:rgba(35,52,66,.05);
+  --line:rgba(35,52,66,.10); --line-2:rgba(35,52,66,.18); --photo:#f6f8fa;
+  --ink:#22303b; --ink-2:#53616d; --ink-3:#85929d;
+  --accent:#14909d; --accent-2:#4a72d6; --mo-face:#ffffff; --mo-ink:#22303b; --accent-ink:#ffffff; --accent-soft:rgba(20,144,157,.12); --glow:rgba(20,144,157,.20);
+  --save:#cf5428; --good:#23845a; --warn:#b07a0e; --bad:#bb4a33; --shade:rgba(12,20,28,.88);
+  --shadow:0 1px 1px rgba(20,32,44,.04),0 14px 34px -16px rgba(20,32,44,.22);
+  --lift:0 2px 2px rgba(20,32,44,.05),0 26px 46px -18px rgba(20,32,44,.32);
+  --r:18px; --r-s:10px;
   --f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
-  --f-data:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --f-tech:"Saira","Bahnschrift","DIN Alternate",system-ui,sans-serif;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --paper:#0e141a; --card:#161f28; --photo:#f4f6f8; --ink:#e5ecf2; --ink-2:#9aa9b6; --rule:#28333e;
-  --tag:#e8bf2e; --tag-ink:#1d1600; --act:#3fc0b5; --act-ink:#04211f; --act-soft:#163430;
-  --good:#5cc48b; --bad:#ef7f62; --shade:rgba(0,0,0,.92); color-scheme:dark}}
+  --bg1:#0e151c; --bg2:#121c26; --glass:rgba(27,39,51,.62); --glass-2:rgba(29,42,55,.9); --sunk:rgba(200,225,245,.05);
+  --line:rgba(190,215,235,.09); --line-2:rgba(190,215,235,.17); --photo:#e8ecef;
+  --ink:#d6e1ea; --ink-2:#9fb1c0; --ink-3:#6f8393;
+  --accent:#5ccdc4; --accent-2:#86a3ff; --mo-face:#22313f; --mo-ink:#e3edf5; --accent-ink:#04201d; --accent-soft:rgba(92,205,196,.13); --glow:rgba(92,205,196,.16);
+  --save:#ff9161; --good:#64c996; --warn:#e8b860; --bad:#f08b71; --shade:rgba(0,0,0,.9);
+  --shadow:0 1px 1px rgba(0,0,0,.25),0 16px 36px -16px rgba(0,0,0,.55); --lift:0 2px 2px rgba(0,0,0,.3),0 28px 50px -18px rgba(0,0,0,.7); color-scheme:dark}}
 :root[data-theme="dark"]{
-  --paper:#0e141a; --card:#161f28; --photo:#f4f6f8; --ink:#e5ecf2; --ink-2:#9aa9b6; --rule:#28333e;
-  --tag:#e8bf2e; --tag-ink:#1d1600; --act:#3fc0b5; --act-ink:#04211f; --act-soft:#163430;
-  --good:#5cc48b; --bad:#ef7f62; --shade:rgba(0,0,0,.92); color-scheme:dark}
+  --bg1:#0e151c; --bg2:#121c26; --glass:rgba(27,39,51,.62); --glass-2:rgba(29,42,55,.9); --sunk:rgba(200,225,245,.05);
+  --line:rgba(190,215,235,.09); --line-2:rgba(190,215,235,.17); --photo:#e8ecef;
+  --ink:#d6e1ea; --ink-2:#9fb1c0; --ink-3:#6f8393;
+  --accent:#5ccdc4; --accent-2:#86a3ff; --mo-face:#22313f; --mo-ink:#e3edf5; --accent-ink:#04201d; --accent-soft:rgba(92,205,196,.13); --glow:rgba(92,205,196,.16);
+  --save:#ff9161; --good:#64c996; --warn:#e8b860; --bad:#f08b71; --shade:rgba(0,0,0,.9);
+  --shadow:0 1px 1px rgba(0,0,0,.25),0 16px 36px -16px rgba(0,0,0,.55); --lift:0 2px 2px rgba(0,0,0,.3),0 28px 50px -18px rgba(0,0,0,.7); color-scheme:dark}
+
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 img{max-width:100%}
-body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;margin:0;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 96px}
-.wrap{max-width:1180px;margin:0 auto;display:grid;gap:28px}
-a{color:var(--act)}
+html{background:var(--bg2)}
+body{margin:0;min-height:100vh;background:linear-gradient(180deg,var(--bg1),var(--bg2)) fixed;color:var(--ink);font-family:var(--f-body);font-size:15.5px;line-height:1.75;-webkit-font-smoothing:antialiased;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 100px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg1)}
+.space{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.space .fog{position:absolute;border-radius:50%;filter:blur(60px);opacity:.55}
+.space .f1{width:520px;height:520px;left:-140px;top:-120px;background:var(--glow)}
+.space .f2{width:460px;height:460px;right:-120px;top:30%;background:color-mix(in srgb,var(--accent-2) 16%,transparent)}
+.space .floor{position:absolute;left:-50%;right:-50%;bottom:-10%;height:60%;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:56px 56px;
+  transform:perspective(520px) rotateX(64deg);transform-origin:50% 100%;
+  -webkit-mask-image:linear-gradient(to top,#000 0%,transparent 75%);mask-image:linear-gradient(to top,#000 0%,transparent 75%)}
+.wrap{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr);gap:30px;position:relative}
+a{color:var(--accent)}
 button,input,select{font:inherit;color:inherit}
-:focus-visible{outline:2px solid var(--act);outline-offset:2px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tech{font-family:var(--f-tech);font-variant-numeric:tabular-nums;letter-spacing:.01em}
+.glass{background:var(--glass);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(18px) saturate(140%);backdrop-filter:blur(18px) saturate(140%)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.glass{background:var(--glass-2)}}
 
-header.top{display:grid;gap:10px;border-bottom:2px solid var(--ink);padding-bottom:16px}
-.eyebrow{font-family:var(--f-data);font-size:12px;letter-spacing:.08em;color:var(--ink-2);text-transform:uppercase}
-h1{font-family:var(--f-display);font-weight:900;font-size:clamp(30px,6vw,46px);line-height:1.15;margin:0;text-wrap:balance}
-.lede{margin:0;color:var(--ink-2);max-width:62ch}
-.stamp{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px;color:var(--ink-2)}
-.stamp b{font-family:var(--f-data);color:var(--ink);font-weight:600}
-.notice{border-left:3px solid var(--tag);background:var(--card);padding:10px 14px;font-size:14px;border-radius:0 4px 4px 0}
+.preview{position:relative;margin-top:10px;padding:8px 14px;border-radius:999px;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center;justify-content:space-between;font-size:13px;color:var(--ink-2)}
+.preview b{color:var(--accent);font-family:var(--f-tech);letter-spacing:.08em}
 
-.main{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:28px;align-items:start}
-@media (max-width:860px){.main{grid-template-columns:minmax(0,1fr)}}
+header.top{display:grid;gap:14px;padding-top:28px}
+.eyebrow{font-family:var(--f-tech);font-size:12px;letter-spacing:.22em;color:var(--accent);text-transform:uppercase}
+h1{font-weight:700;font-size:clamp(34px,7vw,58px);line-height:1.12;margin:0;letter-spacing:.04em;text-wrap:balance}
+h1 span{display:inline-block;position:relative}
+h1 span::after{content:"";position:absolute;left:2%;right:2%;bottom:.06em;height:.16em;border-radius:1em;background:linear-gradient(90deg,var(--accent),var(--accent-2));opacity:.35;filter:blur(1px)}
+.lede{margin:0;color:var(--ink-2);max-width:60ch;font-size:16px}
+.stats{display:flex;flex-wrap:wrap;gap:10px}
+.stat{padding:8px 14px;border-radius:var(--r-s);display:grid;line-height:1.3}
+.stat b{font-family:var(--f-tech);font-size:20px;color:var(--ink);font-weight:600}
+.stat span{font-size:12px;color:var(--ink-3)}
+.notice{padding:10px 14px;font-size:14px;border-left:3px solid var(--accent)}
 
-form.needs{background:var(--card);border:1px solid var(--rule);border-radius:6px;padding:18px;display:grid;gap:18px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px)}
-@media (max-width:860px){form.needs{position:static}}
-.field{display:grid;gap:8px}
-.label{font-size:13px;font-weight:700;letter-spacing:.02em}
-.budget-row{display:flex;align-items:baseline;gap:6px;font-family:var(--f-data)}
-.budget-row input{width:120px;padding:8px 10px;border:1px solid var(--rule);border-radius:4px;background:var(--paper);font-family:var(--f-data);font-size:18px;font-weight:600}
-input[type=range]{width:100%;accent-color:var(--act)}
+.main{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:900px){.main{grid-template-columns:minmax(0,1fr)}}
+
+/* needs console */
+.console{padding:16px;display:grid;gap:14px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);max-height:calc(100vh - 32px);overflow:auto}
+@media (max-width:900px){.console{position:static;max-height:none}}
+.console h2{margin:0;font-size:18px;display:flex;justify-content:space-between;align-items:baseline}
+.console h2 small{font-family:var(--f-tech);font-size:12px;color:var(--ink-3);font-weight:500;letter-spacing:.12em}
+.cats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.cat{border:1px solid var(--line-2);background:var(--sunk);border-radius:var(--r-s);padding:9px 4px 7px;cursor:pointer;display:grid;justify-items:center;gap:2px;font-size:13px}
+.cat svg{width:26px;height:26px}
+.cat[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--ink);box-shadow:0 0 0 3px var(--glow)}
+details.block{border:1px solid var(--line);border-radius:var(--r-s);background:var(--sunk)}
+details.block>summary{cursor:pointer;list-style:none;padding:10px 12px;display:grid;gap:1px}
+details.block>summary::-webkit-details-marker{display:none}
+details.block>summary b{font-size:15px;display:flex;justify-content:space-between}
+details.block>summary b::after{content:"展开";font-size:12px;font-weight:500;color:var(--accent)}
+details.block[open]>summary b::after{content:"收起"}
+details.block>summary span{font-size:12px;color:var(--ink-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.block-body{padding:4px 12px 14px;display:grid;gap:14px}
+.field{display:grid;gap:7px}
+.label{font-size:12.5px;font-weight:700;color:var(--ink-2);display:flex;justify-content:space-between;gap:8px;letter-spacing:.02em}
+.label span{font-weight:400;color:var(--ink-3)}
+.budget{display:flex;align-items:center;gap:10px}
+.budget output{font-family:var(--f-tech);font-weight:600;font-size:22px;min-width:96px}
+input[type=range]{width:100%;accent-color:var(--accent)}
 .seg{display:flex;flex-wrap:wrap;gap:6px}
-.chip{border:1px solid var(--rule);background:var(--paper);border-radius:999px;padding:6px 12px;font-size:14px;cursor:pointer}
-.chip[aria-pressed="true"]{background:var(--act);border-color:var(--act);color:var(--act-ink)}
-.hint{font-size:12px;color:var(--ink-2);margin:0}
+.chip{border:1px solid var(--line-2);background:transparent;border-radius:999px;padding:5px 12px;font-size:13px;cursor:pointer;line-height:1.35;color:var(--ink-2)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);box-shadow:0 4px 14px -6px var(--accent)}
+.presets{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:6px}
+.preset{border:1px dashed var(--line-2);background:transparent;border-radius:var(--r-s);padding:7px 6px;font-size:12px;cursor:pointer;text-align:center;line-height:1.3;color:var(--ink-3)}
+.preset b{display:block;font-size:13.5px;color:var(--ink)}
+.preset[aria-pressed="true"]{border:1px solid var(--accent);background:var(--accent-soft)}
+.blockfoot{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:10px}
+.blockfoot b{font-family:var(--f-tech);color:var(--ink)}
+.linkbtn{border:0;background:none;color:var(--accent);cursor:pointer;padding:2px 0;font-size:12.5px;font-weight:700}
+
+.needbar{display:none}
+@media (max-width:900px){.needbar{display:flex;position:sticky;top:calc(env(safe-area-inset-top,0px) + 10px);z-index:6;gap:10px;align-items:center;justify-content:space-between;padding:9px 10px 9px 14px;font-size:13px;border-radius:999px}
+  .needbar span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink-2)}
+  .needbar button{flex:none;border:0;background:var(--accent);color:var(--accent-ink);border-radius:999px;padding:6px 14px;font-weight:700;cursor:pointer}}
 
 section{min-width:0}
-section h2{font-family:var(--f-display);font-weight:900;font-size:24px;margin:0;text-wrap:balance}
-.sec-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:10px;margin-bottom:14px}
-.sec-head p{margin:0;color:var(--ink-2);font-size:14px}
+.sec-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:6px 12px;margin-bottom:14px}
+.sec-head h2{font-size:24px;margin:0;display:flex;align-items:baseline;gap:10px}
+.sec-head h2 small{font-family:var(--f-tech);font-size:12px;color:var(--accent);letter-spacing:.18em;font-weight:600}
+.sec-head p{margin:0;color:var(--ink-3);font-size:13.5px;min-width:0}
+.recs{display:grid;gap:40px}
 
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:16px}
-.item{background:var(--card);border:1px solid var(--rule);border-radius:6px;overflow:hidden;display:grid;align-content:start;min-width:0}
-.item.pick{border-color:var(--act);box-shadow:0 0 0 1px var(--act)}
-.body{padding:14px 16px 16px;display:grid;gap:12px;min-width:0}
+.row{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr));gap:24px}
+@media (max-width:700px){.row.scroll{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:min(88%,330px);overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 14px;margin:0 -2px;scrollbar-width:thin}
+  .row.scroll>*{scroll-snap-align:start}}
 
-/* photo gallery */
-.gal{position:relative;background:var(--photo);aspect-ratio:4/3;max-width:100%}
-.track{display:flex;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
-.track::-webkit-scrollbar{display:none}
-.slide{flex:0 0 100%;min-width:0;height:100%;scroll-snap-align:center;display:flex;align-items:center;justify-content:center;padding:10px;cursor:zoom-in}
-.slide img{max-width:100%;max-height:100%;object-fit:contain;display:block}
-.gnav{position:absolute;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;border:0;background:rgba(21,33,45,.72);color:#fff;font-size:18px;line-height:1;cursor:pointer;display:grid;place-items:center}
-.gnav.prev{left:8px}.gnav.next{right:8px}
-.gal[data-n="1"] .gnav,.gal[data-n="1"] .dots{display:none}
-.dots{position:absolute;bottom:8px;left:0;right:0;display:flex;justify-content:center;gap:5px;pointer-events:none}
-.dots i{width:7px;height:7px;border-radius:50%;background:rgba(21,33,45,.25)}
-.dots i.on{background:rgba(21,33,45,.85)}
-.gcount{position:absolute;top:8px;left:8px;font-family:var(--f-data);font-size:11px;background:rgba(21,33,45,.72);color:#fff;padding:2px 7px;border-radius:10px}
-.sketch{display:grid;place-items:center;height:100%;color:var(--ink-2);background:var(--paper);text-align:center;gap:4px;padding:12px}
-.sketch svg{width:62%;max-width:220px;height:auto}
-.sketch small{font-size:12px}
-
-.item-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:start}
-.kind{font-family:var(--f-data);font-size:11px;letter-spacing:.06em;color:var(--ink-2);text-transform:uppercase}
-.item h3{margin:2px 0 0;font-size:17px;line-height:1.35}
-.rank{display:inline-block;font-size:12px;font-weight:700;color:var(--act);margin-bottom:2px}
-.price{background:var(--tag);color:var(--tag-ink);font-family:var(--f-data);font-weight:600;font-size:20px;padding:4px 10px 4px 14px;border-radius:2px;white-space:nowrap;position:relative;font-variant-numeric:tabular-nums}
-.price::before{content:"";position:absolute;left:5px;top:50%;width:5px;height:5px;margin-top:-2.5px;border-radius:50%;background:var(--card)}
-.price small{font-size:13px;margin-right:2px}
-.pnote{font-size:12px;color:var(--ink-2);margin-top:-6px}
-.why{font-size:14px;margin:0}
-.why b{color:var(--act)}
-dl.specs{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;font-size:13px;border-top:1px dashed var(--rule);padding-top:10px}
-dl.specs dt{color:var(--ink-2)}
-dl.specs dd{margin:0;font-family:var(--f-data);font-size:12.5px;overflow-wrap:anywhere}
-.fit{font-size:13px;margin:0}
-.pc{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13px}
+/* card */
+.item{display:grid;align-content:start;min-width:0;overflow:hidden;transition:transform .25s ease,box-shadow .25s ease}
+@media (hover:hover) and (prefers-reduced-motion:no-preference){.item:hover{transform:translateY(-4px);box-shadow:var(--lift)}}
+.body{padding:18px 18px 20px;display:grid;gap:16px;min-width:0}
+.rankrow{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.rank{font-family:var(--f-tech);font-weight:700;font-size:13px;color:var(--accent);letter-spacing:.12em}
+.match{font-size:12px;color:var(--ink-3);display:flex;align-items:center;gap:6px}
+.match i{display:block;width:60px;height:4px;border-radius:2px;background:var(--line-2);overflow:hidden}
+.match i b{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+.match .tech{color:var(--ink);font-weight:600}
+.kind{font-family:var(--f-tech);font-size:11.5px;letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase}
+.item h3{margin:2px 0 0;font-size:16.5px;line-height:1.4;font-weight:700}
+.why{font-size:13.5px;margin:0;color:var(--ink-2);line-height:1.65}
+.why b{color:var(--ink)}
+.pricebox{display:grid;gap:12px;padding:14px 14px 12px;border-radius:var(--r-s);background:var(--sunk);border:1px solid var(--line)}
+.pb-top{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap}
+.pb-top .lbl{display:block;font-size:11.5px;color:var(--ink-3);letter-spacing:.08em;margin-bottom:2px}
+.pb-top .low{font-family:var(--f-tech);font-weight:600;font-size:30px;line-height:1;color:var(--ink)}
+.pb-top .low small{font-size:15px;margin-right:2px;color:var(--ink-2)}
+.verdict{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;padding:3px 10px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.verdict::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.verdict.good{color:var(--good)}.verdict.ok{color:var(--warn)}.verdict.wait{color:var(--bad)}
+.ruler{position:relative;height:22px;margin:2px 4px 0}
+.ruler .bar{position:absolute;left:0;right:0;top:9px;height:4px;border-radius:2px;background:var(--line-2)}
+.ruler .zone{position:absolute;top:9px;height:4px;border-radius:2px;background:linear-gradient(90deg,var(--good),color-mix(in srgb,var(--good) 40%,transparent))}
+.ruler .now{position:absolute;top:4px;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:var(--ink);border:3px solid var(--glass-2);box-shadow:0 0 0 1px var(--line-2)}
+.ruler .rec{position:absolute;top:2px;width:2px;height:18px;margin-left:-1px;background:var(--good);border-radius:1px}
+.pb-grid{margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(86px,1fr));gap:10px 12px}
+.pb-grid div{display:grid;gap:1px;min-width:0}
+.pb-grid dt{font-size:11.5px;color:var(--ink-3);letter-spacing:.04em}
+.pb-grid dd{margin:0;font-family:var(--f-tech);font-weight:600;font-size:15px;color:var(--ink);white-space:nowrap}
+.pb-grid dd.rec{color:var(--good)}
+.pb-grid dd s{color:var(--ink-3);font-weight:500}
+.pb-grid dd em{font-style:normal;font-family:var(--f-body);font-size:11.5px;color:var(--save);font-weight:700;margin-left:4px}
+.pb-grid dd.na{font-family:var(--f-body);font-weight:400;font-size:13px;color:var(--ink-3)}
+.pricebox .note{font-size:11.5px;color:var(--ink-3);line-height:1.6;margin:0}
+.pricebox .note a{color:inherit}
+.tags{display:flex;flex-wrap:wrap;gap:5px}
+.tags span{font-size:11.5px;border:1px solid var(--line-2);border-radius:999px;padding:1px 9px;color:var(--ink-2)}
+.actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.actions a{font-size:13px;font-weight:700;text-decoration:none;border:1px solid var(--line-2);border-radius:var(--r-s);padding:7px 12px;color:var(--ink)}
+.actions a.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);box-shadow:0 6px 16px -8px var(--accent)}
+.cmp{margin-left:auto;font-size:13px;border:1px dashed var(--ink-3);background:transparent;border-radius:var(--r-s);padding:7px 10px;cursor:pointer;color:var(--ink-2)}
+.cmp[aria-pressed="true"]{background:var(--ink);color:var(--bg1);border:1px solid var(--ink)}
+details.more{border-top:1px solid var(--line);padding-top:10px}
+details.more summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--accent);list-style:none}
+details.more summary::-webkit-details-marker{display:none}
+details.more summary::after{content:" ＋"}
+details.more[open] summary::after{content:" －"}
+dl.specs{margin:10px 0 0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:5px 12px;font-size:13px}
+dl.specs dt{color:var(--ink-3)}
+dl.specs dd{margin:0;overflow-wrap:anywhere}
+.pc{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13px;margin-top:10px}
 @media (max-width:420px){.pc{grid-template-columns:1fr}}
 .pc ul{margin:0;padding:0;list-style:none;display:grid;gap:4px}
 .pc li{padding-left:16px;position:relative}
 .pc .pros li::before{content:"+";position:absolute;left:0;color:var(--good);font-weight:700}
 .pc .cons li::before{content:"−";position:absolute;left:0;color:var(--bad);font-weight:700}
-.actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.actions a{font-size:13px;font-weight:700;text-decoration:none;border:1px solid var(--rule);border-radius:4px;padding:6px 10px}
-.actions a:hover{border-color:var(--act)}
-.cmp{margin-left:auto;font-size:13px;border:1px solid var(--rule);background:transparent;border-radius:4px;padding:6px 10px;cursor:pointer}
-.cmp[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-.src{font-size:11.5px;color:var(--ink-2)}
+.src{font-size:11.5px;color:var(--ink-3);margin-top:8px}
 .src a{color:inherit}
-.empty{padding:22px;border:1px dashed var(--rule);border-radius:6px;color:var(--ink-2);text-align:center}
+.empty{padding:26px;color:var(--ink-2);text-align:center}
+
+/* gallery */
+.gal{position:relative;background:var(--photo);aspect-ratio:4/3;max-width:100%;border-bottom:1px solid var(--line)}
+.track{display:flex;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.track::-webkit-scrollbar{display:none}
+.slide{flex:0 0 100%;min-width:0;height:100%;scroll-snap-align:center;display:flex;align-items:center;justify-content:center;padding:14px;cursor:zoom-in}
+.slide img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.gnav{position:absolute;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.4);background:rgba(20,32,44,.55);color:#fff;font-size:17px;cursor:pointer;display:grid;place-items:center;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.gnav.prev{left:8px}.gnav.next{right:8px}
+.gal[data-n="1"] .gnav,.gal[data-n="1"] .dots{display:none}
+.dots{position:absolute;bottom:8px;left:0;right:0;display:flex;justify-content:center;gap:5px;pointer-events:none}
+.dots i{width:6px;height:6px;border-radius:3px;background:rgba(20,32,44,.22);transition:width .2s}
+.dots i.on{background:rgba(20,32,44,.75);width:16px}
+.gcount{position:absolute;top:8px;right:8px;font-family:var(--f-tech);font-size:11px;background:rgba(20,32,44,.55);color:#fff;padding:1px 8px;border-radius:10px}
+.sketch{display:grid;place-items:center;height:100%;color:#7a8894;text-align:center;gap:4px;padding:12px;background:radial-gradient(circle at 50% 40%,#ffffff,#eef2f5)}
+.sketch svg{width:56%;max-width:200px;height:auto}
+.sketch small{font-size:12px}
+.sketch a{color:#14909d}
 
 .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.toolbar select{padding:6px 8px;border:1px solid var(--rule);border-radius:4px;background:var(--card)}
+.toolbar select{padding:7px 10px;border:1px solid var(--line-2);border-radius:var(--r-s);background:var(--glass-2)}
 
-.table-wrap{overflow-x:auto;border:1px solid var(--rule);border-radius:6px;background:var(--card)}
+/* compare */
+.cmpgroup{display:grid;gap:8px;margin-bottom:18px}
+.cmpgroup h3{margin:0;font-size:15px}
+.table-wrap{overflow-x:auto}
 table{border-collapse:collapse;width:100%;min-width:560px;font-size:13px}
-th,td{padding:9px 12px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
-thead th{font-size:15px;background:var(--card)}
-thead img{display:block;width:100%;max-width:160px;aspect-ratio:4/3;object-fit:contain;background:var(--photo);border-radius:4px;margin-bottom:6px}
-tbody th{color:var(--ink-2);font-weight:500;white-space:nowrap;width:76px}
-td.mono{font-family:var(--f-data);font-size:12.5px}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+thead th{font-size:14px}
+thead img{display:block;width:100%;max-width:140px;aspect-ratio:4/3;object-fit:contain;background:var(--photo);border-radius:var(--r-s);margin-bottom:6px}
+tbody th{color:var(--ink-3);font-weight:500;white-space:nowrap;width:76px}
 td ul{margin:0;padding-left:16px}
 .best{color:var(--good);font-weight:700}
+.hint{font-size:12px;color:var(--ink-3);margin:8px 0 0}
 
-.cbar{position:fixed;left:0;right:0;bottom:0;background:var(--ink);color:var(--paper);
-  padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
-  display:flex;gap:10px;align-items:center;justify-content:space-between;z-index:5}
-.cbar .names{font-size:13px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.cbar .btns{display:flex;gap:8px;flex:none}
-.cbar button{border:1px solid var(--paper);background:transparent;color:var(--paper);border-radius:4px;padding:6px 10px;cursor:pointer;font-size:13px}
-.cbar button.go{background:var(--tag);color:var(--tag-ink);border-color:var(--tag);font-weight:700}
+.cbar{position:fixed;left:max(10px,env(safe-area-inset-left,0px));right:max(10px,env(safe-area-inset-right,0px));bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:5;border-radius:999px;
+  padding:8px 8px 8px 16px;display:flex;gap:10px;align-items:center;justify-content:space-between;max-width:760px;margin:0 auto}
+.cbar .names{font-size:13px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink-2)}
+.cbar .btns{display:flex;gap:6px;flex:none}
+.cbar button{border:1px solid var(--line-2);background:transparent;border-radius:999px;padding:6px 12px;cursor:pointer;font-size:13px}
+.cbar button.go{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:700}
 
-.lb{position:fixed;inset:0;z-index:20;background:var(--shade);display:grid;grid-template-rows:auto 1fr auto;
-  padding:calc(10px + env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));color:#fff}
+.lb{position:fixed;inset:0;z-index:20;background:var(--shade);display:grid;grid-template-rows:auto 1fr auto;color:#fff;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  padding:calc(10px + env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px))}
 .lb-top{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px}
-.lb-top button,.lb-nav{border:1px solid rgba(255,255,255,.5);background:transparent;color:#fff;border-radius:4px;padding:6px 12px;cursor:pointer}
+.lb button{border:1px solid rgba(255,255,255,.45);background:transparent;color:#fff;border-radius:999px;padding:6px 14px;cursor:pointer}
 .lb-stage{display:grid;place-items:center;min-height:0;overflow:auto}
-.lb-stage img{max-width:100%;max-height:100%;object-fit:contain;background:#fff;border-radius:4px;cursor:zoom-in}
+.lb-stage img{max-width:100%;max-height:100%;object-fit:contain;background:#fff;border-radius:var(--r-s);cursor:zoom-in}
 .lb-stage.zoom img{max-width:none;max-height:none;width:200%;cursor:zoom-out}
-.lb-foot{display:flex;justify-content:center;gap:12px;align-items:center;font-family:var(--f-data);font-size:13px}
+.lb-foot{display:flex;justify-content:center;gap:12px;align-items:center;font-family:var(--f-tech);font-size:13px}
 
-footer{font-size:12.5px;color:var(--ink-2);border-top:1px solid var(--rule);padding-top:14px;display:grid;gap:6px}
+footer{font-size:12.5px;color:var(--ink-3);padding:16px;display:grid;gap:6px}
 footer ul{margin:0;padding-left:18px}
-@media (prefers-reduced-motion:reduce){.track{scroll-behavior:auto}}
+/* ===== 品牌 & 开场动画 ===== */
+html.intro-on{overflow:hidden}
+.brand{display:flex;align-items:center;gap:clamp(12px,2.6vw,20px);margin:4px 0 2px}
+.brand-mark{flex:none;border:0;background:none;padding:0;cursor:pointer;border-radius:22px;-webkit-tap-highlight-color:transparent}
+.brand-mark canvas{display:block;width:clamp(70px,16vw,96px);height:clamp(70px,16vw,96px)}
+html.intro-on .brand-mark canvas{visibility:hidden}
+.brand h1{font-weight:900;letter-spacing:.1em}
+.brand-en{font-family:var(--f-tech);font-weight:600;font-size:13px;letter-spacing:.26em;color:var(--accent);margin-top:6px;line-height:1.4}
+.brand-en em{font-style:normal;font-family:var(--f-body);letter-spacing:.08em;color:var(--ink-2);font-weight:500;white-space:nowrap}
+.intro{position:fixed;inset:0;z-index:100;display:grid;place-items:center;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.intro-bg{position:absolute;inset:0;background:radial-gradient(55% 45% at 50% 42%,var(--glass-2),transparent 72%),linear-gradient(180deg,var(--bg1),var(--bg2));transition:opacity .55s ease}
+.intro-box{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px}
+#introMark{width:min(48vw,220px);height:min(48vw,220px);transform-origin:center center;transition:transform .7s cubic-bezier(.65,0,.2,1)}
+.intro-word{display:flex;flex-direction:column;align-items:center;gap:6px;transition:opacity .3s ease}
+.intro-word b{display:flex;font-size:clamp(36px,9vw,50px);font-weight:900;letter-spacing:.14em;line-height:1.1;color:var(--ink)}
+.intro-word b i{font-style:normal;display:inline-block;opacity:0;transform:translateY(16px);filter:blur(6px);transition:opacity .5s ease,transform .7s cubic-bezier(.2,.75,.2,1),filter .5s ease}
+.intro-word b i:nth-child(2){transition-delay:.09s}.intro-word b i:nth-child(3){transition-delay:.18s}
+.intro-word span{font-family:var(--f-tech);font-weight:600;font-size:13px;letter-spacing:.12em;color:var(--accent);opacity:0;transition:opacity .6s ease .3s,letter-spacing 1s cubic-bezier(.2,.75,.2,1) .25s}
+.intro-word em{font-style:normal;font-size:14.5px;color:var(--ink-2);letter-spacing:.12em;opacity:0;transform:translateY(6px);transition:opacity .6s ease .55s,transform .6s ease .55s}
+.intro.on .intro-word b i{opacity:1;transform:none;filter:none}
+.intro.on .intro-word span{opacity:1;letter-spacing:.42em}
+.intro.on .intro-word em{opacity:1;transform:none}
+.intro-skip{position:absolute;left:0;right:0;bottom:calc(26px + env(safe-area-inset-bottom,0px));text-align:center;font-size:12px;letter-spacing:.14em;color:var(--ink-2);opacity:.7;transition:opacity .3s ease}
+.intro.out .intro-bg,.intro.out .intro-word,.intro.out .intro-skip{opacity:0}
+.intro.out{pointer-events:none}
+.mo-svg .mf{fill:var(--accent);stroke:var(--accent);stroke-width:.7;stroke-linejoin:round}
+.mo-svg .mb{fill:var(--accent-2);stroke:var(--accent-2);stroke-width:.7;stroke-linejoin:round}
+.mo-svg .mface{fill:var(--mo-face)}
+.mo-svg .mlimb{fill:none;stroke:var(--mo-ink);stroke-width:6;stroke-linecap:round}
+.mo-svg .mfoot{fill:var(--mo-ink)}
+.mo-svg .meye{fill:var(--mo-ink)}
+.mo-svg .mshine{fill:var(--mo-face)}
+.mo-svg .mblush{fill:#ff8a9a;opacity:.45}
+.mo-svg .mmouth{fill:none;stroke:var(--mo-ink);stroke-width:2.6;stroke-linecap:round}
+.mo-svg .mtag{fill:#ffb547;stroke:var(--mo-ink);stroke-width:2}
+.mo-svg .mtagt{font:700 13px var(--f-tech);fill:#3a2600}
+
+.toprow{display:flex;justify-content:space-between;align-items:center;gap:10px 16px;flex-wrap:wrap}
+.theme-sw{display:inline-flex;padding:3px;border-radius:999px;background:var(--glass);border:1px solid var(--line);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.theme-sw button{border:0;background:none;color:var(--ink-2);font:inherit;font-size:12.5px;padding:0 12px;min-height:36px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;line-height:1}
+.theme-sw button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);font-weight:700}
+.theme-sw svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.mascot{display:flex;align-items:center;gap:12px;margin:2px 0}
+.mo{flex:none;border:0;background:none;padding:0;cursor:pointer;width:112px;height:112px;border-radius:24px;-webkit-tap-highlight-color:transparent;order:-1}
+.mo-svg{display:block;width:100%;height:100%;overflow:visible}
+.mo-bubble{margin:0;flex:1;min-width:0;padding:12px 16px;border-radius:18px;font-size:14px;line-height:1.65;color:var(--ink);background:var(--glass-2);border:1px solid var(--line);box-shadow:var(--shadow);position:relative;transition:opacity .25s ease,transform .25s ease}
+.mo-bubble::before{content:"";position:absolute;left:-7px;top:50%;width:12px;height:12px;margin-top:-6px;background:var(--glass-2);border-left:1px solid var(--line);border-bottom:1px solid var(--line);transform:rotate(45deg)}
+.mo-bubble b{color:var(--accent)}
+html.mo-off .mascot{display:none}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.mo-toggle{display:inline-flex;align-items:center;gap:8px;min-height:38px;padding:0 6px 0 14px;border-radius:999px;border:1px solid var(--line);background:var(--glass);color:var(--ink-2);font:inherit;font-size:12.5px;cursor:pointer;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.mo-toggle i{width:32px;height:20px;border-radius:999px;background:var(--line-2);position:relative;transition:background .2s}
+.mo-toggle i::after{content:"";position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.mo-toggle[aria-pressed="true"]{color:var(--ink)}
+.mo-toggle[aria-pressed="true"] i{background:var(--accent)}
+.mo-toggle[aria-pressed="true"] i::after{transform:translateX(12px)}
+.mo-bubble.swap{opacity:0;transform:translateY(4px)}
+@media (min-width:860px){
+  html:not(.mo-off) header.top{grid-template-columns:minmax(0,1fr) 280px;column-gap:40px}
+  header.top>.toprow{grid-column:1/-1}
+  header.top>:not(.toprow):not(.mascot){grid-column:1}
+  header.top>.mascot{grid-column:2;grid-row:2/span 5;flex-direction:column;align-self:center;gap:14px}
+  .mo{width:200px;height:200px;order:0}
+  .mo-bubble{flex:none;width:100%;box-sizing:border-box}
+  .mo-bubble::before{left:50%;top:auto;bottom:-7px;margin:0 0 0 -6px;border-left:0;border-bottom:1px solid var(--line);border-right:1px solid var(--line)}
+}
+@keyframes mo-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes mo-blink{0%,90%,100%{transform:scaleY(1)}94%{transform:scaleY(.12)}}
+@keyframes mo-wave{0%,100%{transform:rotate(0)}25%{transform:rotate(-20deg)}50%{transform:rotate(8deg)}75%{transform:rotate(-14deg)}}
+@keyframes mo-hop{0%,100%{transform:translateY(0)}35%{transform:translateY(-12px) rotate(-3deg)}70%{transform:translateY(0) rotate(1deg)}}
+.mo-body{animation:mo-bob 3.4s ease-in-out infinite}
+.mo-eyes{transform-box:fill-box;transform-origin:center;animation:mo-blink 4.8s infinite}
+.mo-arm-r{transform-box:view-box;transform-origin:160px 96px}
+.mo.wave .mo-arm-r{animation:mo-wave 1s ease-in-out}
+.mo.wave .mo-svg{animation:mo-hop .6s ease-out}
+@media (prefers-reduced-motion:reduce){.mo-body,.mo-eyes,.mo.wave .mo-arm-r,.mo.wave .mo-svg{animation:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="intro-bg"></div>
+  <div class="intro-box">
+    <canvas id="introMark"></canvas>
+    <div class="intro-word"><b><i>莫</i><i>比</i><i>价</i></b><span>MOBIPRICE</span><em>看透价格的每一面</em></div>
+  </div>
+  <div class="intro-skip">轻点任意处跳过</div>
+</div>
+<script>
+(function(){
+var TK='mbp-theme',doc0=document.documentElement;function applyTheme(t){if(t==='light'||t==='dark')doc0.setAttribute('data-theme',t);else doc0.removeAttribute('data-theme')}
+try{applyTheme(localStorage.getItem(TK));if(localStorage.getItem('mbp-mo')==='off')doc0.classList.add('mo-off')}catch(e){}
+window.MBPtheme=applyTheme;
+var N=150,W=.46,FIN={ax:.75,ay:.4,az:0},ST={ax:-.9,ay:-2.2,az:-2.8},PI2=Math.PI*2,doc=document.documentElement;
+function hex(c){c=(c||'').trim();if(c.charAt(0)!=='#')return null;if(c.length===4)c='#'+c[1]+c[1]+c[2]+c[2]+c[3]+c[3];return[parseInt(c.substr(1,2),16),parseInt(c.substr(3,2),16),parseInt(c.substr(5,2),16)]}
+function cols(){var cs=getComputedStyle(doc);return[hex(cs.getPropertyValue('--accent'))||[20,144,157],hex(cs.getPropertyValue('--accent-2'))||[74,114,214]]}
+function pt(u,v,p){var c=Math.cos(u/2),x=(1+v*c)*Math.cos(u),y=(1+v*c)*Math.sin(u),z=v*Math.sin(u/2),t,a=Math.cos(p.ax),b=Math.sin(p.ax);
+ t=y*a-z*b;z=y*b+z*a;y=t;a=Math.cos(p.ay);b=Math.sin(p.ay);t=x*a+z*b;z=-x*b+z*a;x=t;a=Math.cos(p.az);b=Math.sin(p.az);t=x*a-y*b;y=x*b+y*a;x=t;return[x,y,z]}
+function draw(cv,p,prog,shade,px,bg){
+ var d=window.devicePixelRatio||1,s=px||Math.max(1,Math.round(cv.getBoundingClientRect().width*d));
+ if(cv.width!==s){cv.width=s;cv.height=s}
+ var g=cv.getContext('2d'),C=cols(),q=[],n=Math.max(0,Math.min(N,Math.ceil(prog*N))),k=s/2/1.42*(bg?.78:1),ll=Math.sqrt(.98);
+ g.clearRect(0,0,s,s);if(bg){g.fillStyle=bg;g.fillRect(0,0,s,s)}
+ for(var i=0;i<n;i++){var u0=PI2*i/N,u1=PI2*(i+1)/N,P=[pt(u0,-W,p),pt(u1,-W,p),pt(u1,W,p),pt(u0,W,p)],
+  a0=P[1][0]-P[0][0],a1=P[1][1]-P[0][1],a2=P[1][2]-P[0][2],c0=P[3][0]-P[0][0],c1=P[3][1]-P[0][1],c2=P[3][2]-P[0][2],
+  nx=a1*c2-a2*c1,ny=a2*c0-a0*c2,nz=a0*c1-a1*c0,nl=Math.sqrt(nx*nx+ny*ny+nz*nz)||1,
+  lam=Math.abs((nx*.3-ny*.5+nz*.8)/nl/ll),base=nz>0?C[0]:C[1],f=1-shade*(1-lam)*.55,h=shade*.3*Math.pow(lam,8);
+  q.push([(P[0][2]+P[1][2]+P[2][2]+P[3][2])/4,P,'rgb('+Math.round(Math.min(255,base[0]*f+255*h))+','+Math.round(Math.min(255,base[1]*f+255*h))+','+Math.round(Math.min(255,base[2]*f+255*h))+')'])}
+ q.sort(function(x,y){return x[0]-y[0]});g.lineJoin='round';g.lineWidth=Math.max(.7,s/260);
+ for(var j=0;j<q.length;j++){var Q=q[j][1];g.beginPath();for(var m=0;m<4;m++){var X=s/2+Q[m][0]*k,Y=s/2-Q[m][1]*k;if(m)g.lineTo(X,Y);else g.moveTo(X,Y)}g.closePath();g.fillStyle=g.strokeStyle=q[j][2];g.fill();g.stroke()}
+}
+window.MBP={draw:draw,FIN:FIN};
+var intro=document.getElementById('intro'),im=document.getElementById('introMark'),raf=0,timers=[],done=true;
+function cl(t){return t<0?0:t>1?1:t}
+function eio(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
+function eo(t){return 1-Math.pow(1-t,3)}
+function lp(a,b,t){return{ax:a.ax+(b.ax-a.ax)*t,ay:a.ay+(b.ay-a.ay)*t,az:a.az+(b.az-a.az)*t}}
+function clear(){cancelAnimationFrame(raf);timers.forEach(clearTimeout);timers=[]}
+function finish(){intro.hidden=true;intro.className='intro';im.style.transform='';doc.classList.remove('intro-on');done=true;wave()}
+function wave(){var m=document.getElementById('moBtn');if(!m)return;m.classList.remove('wave');void m.offsetWidth;m.classList.add('wave')}
+function exit(){
+ if(done)return;clear();draw(im,FIN,1,0);intro.classList.add('on','out');
+ var hb=document.getElementById('brandCanvas'),r=hb&&hb.getBoundingClientRect(),s=im.getBoundingClientRect();
+ if(r&&r.width&&r.bottom>0&&r.top<innerHeight){
+  im.style.transform='translate('+(r.left+r.width/2-s.left-s.width/2)+'px,'+(r.top+r.height/2-s.top-s.height/2)+'px) scale('+(r.width/s.width)+')';
+  timers.push(setTimeout(finish,720));
+ }else{im.style.transition='opacity .5s ease';im.style.opacity='0';timers.push(setTimeout(function(){im.style.transition='';im.style.opacity='';finish()},520))}
+}
+function play(){
+ clear();done=false;intro.hidden=false;intro.className='intro';im.style.transform='';doc.classList.add('intro-on');
+ var t0=performance.now();
+ (function fr(now){var e=now-t0,r=eio(cl(e/1600));draw(im,lp(ST,FIN,r),eo(cl(e/1150)),.9*(1-r));if(e<1600)raf=requestAnimationFrame(fr)})(t0);
+ timers.push(setTimeout(function(){intro.classList.add('on')},750));
+ timers.push(setTimeout(exit,2500));
+}
+intro.addEventListener('pointerdown',exit);
+addEventListener('keydown',function(){if(!done)exit()});
+var seen=false,rm=false;try{seen=sessionStorage.getItem('mbp-intro')==='1'}catch(e){}
+try{rm=matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){}
+if(seen||rm){intro.hidden=true}else{try{sessionStorage.setItem('mbp-intro','1')}catch(e){}play()}
+function brand(){
+ var hb=document.getElementById('brandCanvas');if(hb)draw(hb,FIN,1,0);
+ try{var c=document.createElement('canvas');draw(c,FIN,1,0,64);setIcon('icon',c.toDataURL('image/png'));
+  var c2=document.createElement('canvas'),bg=getComputedStyle(doc).getPropertyValue('--bg1').trim()||'#e8eef3';draw(c2,FIN,1,0,180,bg);setIcon('apple-touch-icon',c2.toDataURL('image/png'))}catch(e){}
+}
+function setIcon(rel,href){var l=document.querySelector('link[rel="'+rel+'"]');if(!l){l=document.createElement('link');l.rel=rel;document.head.appendChild(l)}l.href=href}
+var TIPS=['嗨，我是<b>小莫</b>！先在下面选好要买什么，我帮你挑出最合适的 5 款。',
+'需求可以<b>叠加</b>：比如「学生」和「游戏」一起点，我会两边都照顾到。',
+'每款都有<b>推荐入手价</b>，是参考历史低价算出来的。标着「现在入手合适」就可以考虑下手啦。',
+'看到「偏贵，建议等降价」先别急，今年<b>黑色星期五是 11 月 27 日</b>，前后折扣通常最多。',
+'价格<b>每月更新一次</b>，下单前记得点进商店页面再确认一遍价格。',
+'买键盘记得看清<b>意大利布局</b>，有些商店页面是西班牙或美式布局。',
+'右上角可以切换<b>浅色 / 深色</b>，晚上看深色更护眼。不想看到我的话，也可以用「小莫」开关把我藏起来。',
+'点「莫比价」旁边的<b>缎带标志</b>，可以重看开场动画。'],ti=0;
+function wire(){brand();
+ var mb=document.getElementById('moBtn'),tip=document.getElementById('moTip');
+ if(mb&&tip)mb.addEventListener('click',function(){ti=(ti+1)%TIPS.length;tip.classList.add('swap');setTimeout(function(){tip.innerHTML=TIPS[ti];tip.classList.remove('swap')},180);wave()});
+ if(mb)mb.addEventListener('animationend',function(e){if(e.animationName==='mo-hop')mb.classList.remove('wave')});
+ if(done)setTimeout(wave,500);
+ var mt=document.getElementById('moToggle');function mtm(){if(mt)mt.setAttribute('aria-pressed',String(!doc.classList.contains('mo-off')))}
+ if(mt)mt.addEventListener('click',function(){var off=doc.classList.toggle('mo-off');try{localStorage.setItem('mbp-mo',off?'off':'on')}catch(e){}mtm();if(!off)setTimeout(wave,50)});mtm();
+ var sw=document.querySelectorAll('.theme-sw button');function mark(){var cur=doc.getAttribute('data-theme')||'auto';for(var i=0;i<sw.length;i++)sw[i].setAttribute('aria-pressed',String(sw[i].getAttribute('data-t')===cur))}
+ for(var i=0;i<sw.length;i++)sw[i].addEventListener('click',function(){var v=this.getAttribute('data-t');applyTheme(v);try{if(v==='auto')localStorage.removeItem(TK);else localStorage.setItem(TK,v)}catch(e){}mark()});mark();
+var b=document.getElementById('brandMark');if(b)b.addEventListener('click',function(){if(!rm)play()});
+ addEventListener('resize',function(){var hb=document.getElementById('brandCanvas');if(hb)draw(hb,FIN,1,0)});
+ try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',brand)}catch(e){}
+ try{new MutationObserver(brand).observe(doc,{attributes:true,attributeFilter:['data-theme']})}catch(e){}}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',wire);else wire();
+})();
+</script>
+
+<div class="space" aria-hidden="true"><div class="fog f1"></div><div class="fog f2"></div><div class="floor"></div></div>
+
 <div class="wrap">
+  
+
   <header class="top">
-    <div class="eyebrow">Italia · prezzi in euro</div>
-    <h1>电脑选购参谋</h1>
-    <p class="lede">在左边填写预算和用途，马上给出最合适的三台。每台都有多角度实物图、配置、优缺点和购买链接，最多三台并排对比。</p>
-    <div class="stamp"><span>价格整理于 <b>2026-10-20</b></span><span>收录 <b id="count">0</b> 款笔记本和台式机</span><span>价格会变动，下单前以商店页面为准</span></div>
-    <div class="notice" id="imgNotice" hidden>这里显示不了商店图片，卡片上先用示意图代替。把这个网页文件下载下来，用手机或电脑的浏览器打开，就能看到实物图；也可以点每台电脑的“看实物图”。</div>
+    <div class="toprow">
+      <div class="eyebrow">电脑与外设选购参谋 · Italia · EUR</div>
+      <div class="tools">
+      <button type="button" class="mo-toggle" id="moToggle" aria-pressed="true">小莫<i aria-hidden="true"></i></button>
+      <div class="theme-sw" role="group" aria-label="显示模式">
+        <button type="button" data-t="auto" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg>自动</button>
+        <button type="button" data-t="light" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>浅色</button>
+        <button type="button" data-t="dark" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>深色</button>
+      </div>
+      </div>
+    </div>
+    <div class="brand">
+      <button type="button" class="brand-mark" id="brandMark" aria-label="莫比价标志，点一下重播开场动画"><canvas id="brandCanvas"></canvas></button>
+      <div><h1><span>莫比价</span></h1><div class="brand-en">MOBIPRICE　<em>看透价格的每一面</em></div></div>
+    </div>
+    <aside class="mascot" aria-label="吉祥物小莫">
+      <p class="mo-bubble" id="moTip" aria-live="polite">嗨，我是<b>小莫</b>！先在下面选好要买什么，我帮你挑出最合适的 5 款。</p>
+      <button type="button" class="mo" id="moBtn" aria-label="小莫，点我换一条小提示"><svg class="mo-svg" viewBox="0 0 200 200" aria-hidden="true">
+<g class="mo-body">
+<ellipse class="mface" cx="89" cy="101" rx="29" ry="38" transform="rotate(32 89 101)"/>
+<g class="mo-arm-l"><path class="mlimb" d="M40 112 Q26 120 22 132"/></g>
+<g class="mo-arm-r"><path class="mlimb" d="M160 96 Q174 86 178 72"/><g transform="rotate(14 182 58)"><rect class="mtag" x="170" y="44" width="24" height="18" rx="4"/><circle class="mface" cx="174.5" cy="53" r="2"/><text class="mtagt" x="185" y="57.6" text-anchor="middle">€</text></g></g>
+<ellipse class="mfoot" cx="80" cy="147" rx="10" ry="5.5"/><ellipse class="mfoot" cx="109" cy="144" rx="10" ry="5.5"/>
+<path class="mf" d="M108.2,137.0L112.3,135.9L106.0,125.8L104.7,127.1 Z"/><path class="mf" d="M104.2,137.8L108.2,137.0L104.7,127.1L103.3,128.3 Z"/><path class="mf" d="M112.3,135.9L116.2,134.8L107.3,124.5L106.0,125.8 Z"/><path class="mf" d="M100.2,138.5L104.2,137.8L103.3,128.3L101.8,129.5 Z"/><path class="mf" d="M116.2,134.8L120.2,133.4L108.5,123.1L107.3,124.5 Z"/><path class="mf" d="M96.1,139.0L100.2,138.5L101.8,129.5L100.3,130.7 Z"/><path class="mf" d="M120.2,133.4L124.0,131.9L109.7,121.7L108.5,123.1 Z"/><path class="mf" d="M92.1,139.4L96.1,139.0L100.3,130.7L98.7,131.7 Z"/><path class="mf" d="M124.0,131.9L127.8,130.3L110.8,120.3L109.7,121.7 Z"/><path class="mf" d="M88.1,139.5L92.1,139.4L98.7,131.7L97.1,132.8 Z"/><path class="mf" d="M127.8,130.3L131.4,128.5L111.8,118.8L110.8,120.3 Z"/><path class="mf" d="M84.2,139.5L88.1,139.5L97.1,132.8L95.5,133.7 Z"/><path class="mf" d="M131.4,128.5L135.0,126.6L112.8,117.3L111.8,118.8 Z"/><path class="mf" d="M80.3,139.4L84.2,139.5L95.5,133.7L93.8,134.6 Z"/><path class="mf" d="M135.0,126.6L138.4,124.6L113.7,115.8L112.8,117.3 Z"/><path class="mf" d="M76.5,139.0L80.3,139.4L93.8,134.6L92.0,135.5 Z"/><path class="mf" d="M138.4,124.6L141.6,122.5L114.5,114.3L113.7,115.8 Z"/><path class="mf" d="M72.9,138.5L76.5,139.0L92.0,135.5L90.2,136.2 Z"/><path class="mf" d="M141.6,122.5L144.7,120.3L115.3,112.7L114.5,114.3 Z"/><path class="mf" d="M69.3,137.9L72.9,138.5L90.2,136.2L88.4,136.9 Z"/><path class="mf" d="M144.7,120.3L147.7,117.9L116.0,111.2L115.3,112.7 Z"/><path class="mf" d="M65.8,137.0L69.3,137.9L88.4,136.9L86.6,137.5 Z"/><path class="mf" d="M147.7,117.9L150.4,115.5L116.7,109.6L116.0,111.2 Z"/><path class="mf" d="M62.5,136.0L65.8,137.0L86.6,137.5L84.8,138.0 Z"/><path class="mf" d="M150.4,115.5L153.0,113.0L117.2,108.0L116.7,109.6 Z"/><path class="mf" d="M59.4,134.9L62.5,136.0L84.8,138.0L82.9,138.4 Z"/><path class="mf" d="M153.0,113.0L155.3,110.5L117.8,106.4L117.2,108.0 Z"/><path class="mf" d="M56.3,133.6L59.4,134.9L82.9,138.4L81.0,138.7 Z"/><path class="mf" d="M155.3,110.5L157.4,107.9L118.2,104.8L117.8,106.4 Z"/><path class="mf" d="M53.5,132.2L56.3,133.6L81.0,138.7L79.2,138.9 Z"/><path class="mf" d="M157.4,107.9L159.4,105.3L118.6,103.2L118.2,104.8 Z"/><path class="mf" d="M50.8,130.7L53.5,132.2L79.2,138.9L77.3,139.0 Z"/><path class="mf" d="M159.4,105.3L161.0,102.7L118.9,101.6L118.6,103.2 Z"/><path class="mf" d="M48.3,129.0L50.8,130.7L77.3,139.0L75.4,139.0 Z"/><path class="mf" d="M161.0,102.7L162.5,100.0L119.2,100.0L118.9,101.6 Z"/><path class="mf" d="M46.0,127.2L48.3,129.0L75.4,139.0L73.6,138.9 Z"/><path class="mb" d="M119.2,100.0L119.4,98.4L163.7,97.3L162.5,100.0 Z"/><path class="mf" d="M43.9,125.3L46.0,127.2L73.6,138.9L71.8,138.7 Z"/><path class="mb" d="M119.4,98.4L119.5,96.8L164.6,94.7L163.7,97.3 Z"/><path class="mf" d="M42.0,123.3L43.9,125.3L71.8,138.7L70.0,138.4 Z"/><path class="mb" d="M119.5,96.8L119.6,95.2L165.3,92.1L164.6,94.7 Z"/><path class="mf" d="M40.3,121.2L42.0,123.3L70.0,138.4L68.3,138.0 Z"/><path class="mb" d="M119.6,95.2L119.6,93.6L165.8,89.5L165.3,92.1 Z"/><path class="mf" d="M38.8,119.1L40.3,121.2L68.3,138.0L66.6,137.4 Z"/><path class="mb" d="M119.6,93.6L119.5,92.0L166.0,87.0L165.8,89.5 Z"/><path class="mf" d="M37.5,116.9L38.8,119.1L66.6,137.4L65.0,136.8 Z"/><path class="mb" d="M119.5,92.0L119.4,90.4L166.0,84.5L166.0,87.0 Z"/><path class="mf" d="M36.4,114.6L37.5,116.9L65.0,136.8L63.5,136.0 Z"/><path class="mb" d="M119.4,90.4L119.1,88.8L165.7,82.1L166.0,84.5 Z"/><path class="mf" d="M35.5,112.2L36.4,114.6L63.5,136.0L62.0,135.1 Z"/><path class="mb" d="M119.1,88.8L118.9,87.3L165.1,79.7L165.7,82.1 Z"/><path class="mf" d="M34.8,109.9L35.5,112.2L62.0,135.1L60.6,134.1 Z"/><path class="mb" d="M118.9,87.3L118.5,85.7L164.3,77.5L165.1,79.7 Z"/><path class="mf" d="M34.3,107.5L34.8,109.9L60.6,134.1L59.3,133.0 Z"/><path class="mb" d="M118.5,85.7L118.1,84.2L163.3,75.4L164.3,77.5 Z"/><path class="mf" d="M34.1,105.0L34.3,107.5L59.3,133.0L58.2,131.7 Z"/><path class="mb" d="M118.1,84.2L117.6,82.7L162.0,73.4L163.3,75.4 Z"/><path class="mf" d="M34.0,102.6L34.1,105.0L58.2,131.7L57.1,130.4 Z"/><path class="mb" d="M117.6,82.7L117.0,81.2L160.5,71.5L162.0,73.4 Z"/><path class="mf" d="M34.1,100.2L34.0,102.6L57.1,130.4L56.1,128.9 Z"/><path class="mb" d="M117.0,81.2L116.4,79.7L158.8,69.7L160.5,71.5 Z"/><path class="mf" d="M34.4,97.8L34.1,100.2L56.1,128.9L55.3,127.4 Z"/><path class="mb" d="M116.4,79.7L115.7,78.3L156.9,68.1L158.8,69.7 Z"/><path class="mf" d="M35.0,95.4L34.4,97.8L55.3,127.4L54.6,125.7 Z"/><path class="mb" d="M115.7,78.3L114.9,76.9L154.8,66.6L156.9,68.1 Z"/><path class="mf" d="M35.6,93.0L35.0,95.4L54.6,125.7L54.1,123.9 Z"/><path class="mb" d="M114.9,76.9L114.0,75.5L152.5,65.2L154.8,66.6 Z"/><path class="mf" d="M36.5,90.7L35.6,93.0L54.1,123.9L53.7,122.1 Z"/><path class="mb" d="M114.0,75.5L113.0,74.2L150.0,64.1L152.5,65.2 Z"/><path class="mf" d="M37.5,88.4L36.5,90.7L53.7,122.1L53.4,120.1 Z"/><path class="mb" d="M113.0,74.2L112.0,72.9L147.4,63.0L150.0,64.1 Z"/><path class="mf" d="M38.7,86.1L37.5,88.4L53.4,120.1L53.3,118.1 Z"/><path class="mb" d="M112.0,72.9L110.9,71.7L144.6,62.2L147.4,63.0 Z"/><path class="mf" d="M40.0,84.0L38.7,86.1L53.3,118.1L53.4,116.0 Z"/><path class="mb" d="M110.9,71.7L109.7,70.5L141.6,61.5L144.6,62.2 Z"/><path class="mf" d="M41.5,81.9L40.0,84.0L53.4,116.0L53.6,113.9 Z"/><path class="mb" d="M109.7,70.5L108.4,69.3L138.5,61.0L141.6,61.5 Z"/><path class="mf" d="M43.1,79.9L41.5,81.9L53.6,113.9L54.1,111.6 Z"/><path class="mb" d="M108.4,69.3L107.1,68.3L135.4,60.6L138.5,61.0 Z"/><path class="mf" d="M44.8,77.9L43.1,79.9L54.1,111.6L54.6,109.3 Z"/><path class="mb" d="M107.1,68.3L105.6,67.2L132.1,60.5L135.4,60.6 Z"/><path class="mf" d="M46.6,76.1L44.8,77.9L54.6,109.3L55.4,107.0 Z"/><path class="mb" d="M105.6,67.2L104.1,66.3L128.7,60.5L132.1,60.5 Z"/><path class="mf" d="M48.5,74.3L46.6,76.1L55.4,107.0L56.4,104.6 Z"/><path class="mb" d="M104.1,66.3L102.5,65.4L125.3,60.6L128.7,60.5 Z"/><path class="mf" d="M50.5,72.6L48.5,74.3L56.4,104.6L57.5,102.2 Z"/><path class="mb" d="M102.5,65.4L100.8,64.5L121.8,61.0L125.3,60.6 Z"/><path class="mf" d="M52.6,71.1L50.5,72.6L57.5,102.2L58.8,99.8 Z"/><path class="mb" d="M100.8,64.5L99.1,63.8L118.3,61.5L121.8,61.0 Z"/><path class="mf" d="M54.8,69.6L52.6,71.1L58.8,99.8L60.3,97.4 Z"/><path class="mb" d="M99.1,63.8L97.3,63.1L114.7,62.1L118.3,61.5 Z"/><path class="mf" d="M57.0,68.3L54.8,69.6L60.3,97.4L61.9,95.0 Z"/><path class="mb" d="M97.3,63.1L95.4,62.5L111.1,63.0L114.7,62.1 Z"/><path class="mf" d="M59.3,67.0L57.0,68.3L61.9,95.0L63.8,92.5 Z"/><path class="mb" d="M95.4,62.5L93.4,62.0L107.6,64.0L111.1,63.0 Z"/><path class="mf" d="M61.6,65.9L59.3,67.0L63.8,92.5L65.8,90.1 Z"/><path class="mb" d="M93.4,62.0L91.4,61.6L104.0,65.1L107.6,64.0 Z"/><path class="mf" d="M63.9,64.9L61.6,65.9L65.8,90.1L67.9,87.8 Z"/><path class="mf" d="M91.4,61.6L89.3,61.3L100.5,66.4L104.0,65.1 Z"/><path class="mf" d="M66.3,64.0L63.9,64.9L67.9,87.8L70.2,85.4 Z"/><path class="mf" d="M89.3,61.3L87.1,61.1L97.1,67.8L100.5,66.4 Z"/><path class="mf" d="M68.7,63.2L66.3,64.0L70.2,85.4L72.7,83.1 Z"/><path class="mf" d="M87.1,61.1L85.0,61.0L93.7,69.3L97.1,67.8 Z"/><path class="mf" d="M71.0,62.6L68.7,63.2L72.7,83.1L75.4,80.9 Z"/><path class="mf" d="M85.0,61.0L82.7,61.0L90.4,71.0L93.7,69.3 Z"/><path class="mf" d="M73.4,62.0L71.0,62.6L75.4,80.9L78.1,78.8 Z"/><path class="mf" d="M82.7,61.0L80.4,61.1L87.2,72.8L90.4,71.0 Z"/><path class="mf" d="M75.8,61.6L73.4,62.0L78.1,78.8L81.0,76.7 Z"/><path class="mf" d="M80.4,61.1L78.1,61.3L84.0,74.7L87.2,72.8 Z"/><path class="mf" d="M78.1,61.3L75.8,61.6L81.0,76.7L84.0,74.7 Z"/>
+<g class="mo-face">
+<ellipse class="mblush" cx="72" cy="109" rx="6" ry="3.6"/><ellipse class="mblush" cx="108" cy="103" rx="6" ry="3.6"/>
+<g class="mo-eyes"><ellipse class="meye" cx="80" cy="97" rx="4.6" ry="5.6"/><ellipse class="meye" cx="99" cy="93" rx="4.6" ry="5.6"/><circle class="mshine" cx="81.6" cy="95" r="1.5"/><circle class="mshine" cx="100.6" cy="91" r="1.5"/></g>
+<path class="mmouth" d="M85 107 Q90.5 112.5 96 105.5"/>
+</g>
+</g>
+</svg></button>
+    </aside>
+    <p class="lede">选好要买的东西，条件可以随意叠加，每一类马上挑出最合适的 5 款。每款都同时标出找到的最低价和市场价，附多角度实物图、优缺点和购买链接。</p>
+    <div class="stats" id="stats"></div>
+    <div class="notice glass" id="imgNotice" hidden>这里显示不了商店图片，先用示意图代替。用浏览器打开 GitHub 上的网址就能看到实物图。</div>
   </header>
 
+  <div class="needbar glass" id="needbar"><span id="needSum"></span><button type="button" id="needEdit">改需求</button></div>
+
   <div class="main">
-    <form class="needs" id="needs" novalidate>
-      <div class="field">
-        <label class="label" for="budget">最高预算</label>
-        <div class="budget-row"><span>€</span><input type="number" id="budget" min="250" max="5000" step="50" value="1000" inputmode="numeric"></div>
-        <input type="range" id="budgetRange" min="250" max="5000" step="50" value="1000" aria-label="预算滑块">
-      </div>
-      <div class="field">
-        <span class="label" id="typeL">电脑类型</span>
-        <div class="seg" role="group" aria-labelledby="typeL" id="typeSeg"></div>
-      </div>
-      <div class="field">
-        <span class="label" id="osL">系统</span>
-        <div class="seg" role="group" aria-labelledby="osL" id="osSeg"></div>
-      </div>
-      <div class="field">
-        <span class="label" id="useL">主要用途（可多选）</span>
-        <div class="seg" role="group" aria-labelledby="useL" id="useSeg"></div>
-        <p class="hint">推荐按收录型号之间的相对评分计算，只作参考。</p>
-      </div>
+    <form class="console glass" id="needs" novalidate>
+      <h2>我的需求 <small>CONSOLE</small></h2>
+      <div class="field"><span class="label">我要买 <span>可多选</span></span><div class="cats" role="group" aria-label="要买的东西" id="cats"></div></div>
+      <div id="blocks" style="display:grid;gap:10px"></div>
+      <div class="blockfoot"><span>条件之间可以叠加：同一组里多选＝任一满足</span><button type="button" class="linkbtn" id="resetAll">全部重置</button></div>
     </form>
 
-    <div style="display:grid;gap:36px;min-width:0">
-      <section id="recSec" aria-live="polite">
-        <div class="sec-head"><h2>为你推荐</h2><p id="recSub"></p></div>
-        <div class="grid" id="recGrid"></div>
-      </section>
-
+    <div style="display:grid;gap:44px;min-width:0">
+      <div class="recs" id="recs" aria-live="polite"></div>
       <section id="compare">
-        <div class="sec-head"><h2>并排对比</h2><p>在任意卡片上点“加入对比”，最多三台</p></div>
-        <div id="cmpOut"><div class="empty">还没有选择要对比的电脑</div></div>
+        <div class="sec-head"><h2>并排对比 <small>COMPARE</small></h2><p>点卡片上的“＋ 对比”，同类最多三款</p></div>
+        <div id="cmpOut"><div class="empty glass">还没有选择要对比的产品</div></div>
       </section>
-
       <section id="all">
-        <div class="sec-head"><h2>全部收录</h2>
+        <div class="sec-head"><h2>全部收录 <small>CATALOG</small></h2>
           <div class="toolbar">
-            <div class="seg" role="group" aria-label="按类型筛选" id="allSeg"></div>
-            <select id="sort" aria-label="排序"><option value="asc">价格从低到高</option><option value="desc">价格从高到低</option></select>
+            <div class="seg" role="group" aria-label="按类别筛选" id="allSeg"></div>
+            <select id="sort" aria-label="排序">
+              <option value="asc">价格从低到高</option><option value="desc">价格从高到低</option><option value="deal">现在最划算</option><option value="save">比市场价省得最多</option>
+            </select>
           </div>
         </div>
-        <div class="grid" id="allGrid"></div>
+        <div class="row" id="allGrid"></div>
       </section>
     </div>
   </div>
 
-  <footer>
-    <div>价格来自以下意大利科技媒体、比价网站和商店页面，促销价可能已结束。“亚马逊”和“idealo 比价”按钮会打开该型号的实时搜索结果，以那里显示的价格为准。图片来自品牌官网、Icecat 产品库和各商店页面，个别商店图片可能显示同系列的其他配色或配置。</div>
+  <footer class="glass">
+    <div><b>价格怎么看：</b>“现价”是这次找到的最低报价；“市场价”是原价、建议零售价、官方价或其他卖家的价格；“历史低价”来自意大利优惠资讯网站报道过的最低价（Tom's Hardware、Punto Informatico、TuttoTech 等），只收录了能查到的型号。“推荐入手价”有历史低价时取已知最低价再加 8%，没有时按市场价打 85 折或现价打 9 折估算，只是参考。现价不高于推荐价显示“现在入手合适”，高出不到 12% 显示“价格还行”，再高就建议等降价。今年黑色星期五是 11 月 27 日，前后通常折扣最多。价格会变，以商店页面为准。外设部分商店页面的键盘是西班牙或美式布局，买前请选意大利布局。图片来自品牌官网、Icecat 产品库和商店页面。</div>
     <ul id="srcList"></ul>
   </footer>
 </div>
 
-<div class="cbar" id="cbar" hidden>
+<div class="cbar glass" id="cbar" hidden>
   <span class="names" id="cbarNames"></span>
   <span class="btns"><button type="button" id="cbarClear">清空</button><button type="button" class="go" id="cbarGo">查看对比</button></span>
 </div>
-
 <div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="查看大图">
   <div class="lb-top"><span id="lbTitle"></span><button type="button" id="lbClose">关闭</button></div>
   <div class="lb-stage" id="lbStage"><img id="lbImg" alt=""></div>
-  <div class="lb-foot"><button type="button" class="lb-nav" id="lbPrev">上一张</button><span id="lbNum"></span><button type="button" class="lb-nav" id="lbNext">下一张</button></div>
+  <div class="lb-foot"><button type="button" id="lbPrev">上一张</button><span id="lbNum"></span><button type="button" id="lbNext">下一张</button></div>
 </div>
 
 <script>
@@ -337,8 +618,8 @@ const P=[
  {id:"mbp16max",name:"Apple MacBook Pro 16\" M5 Max",type:"laptop",form:"laptop",os:"macOS",price:4099,pn:"亚马逊（原价 €5,199）",cpu:"Apple M5 Max（18 核 CPU / 32 核 GPU）",gpu:"集成 32 核",ram:36,storage:"2TB",screen:'16.2" 3456×2234 XDR 120Hz',weight:2.15,battery:"99.6Wh",ports:"3×雷电 5、HDMI、SDXC、MagSafe",q:"MacBook Pro 16 M5 Max",apple:"https://www.apple.com/it/shop/buy-mac/macbook-pro",
   fit:"专业音视频剪辑",pros:["长时间高负载也稳","3 个雷电 5、HDMI、SD 卡槽","参考级色彩模式"],cons:["非常贵","2.15kg","不能自己升级"],s:{perf:5,gpu:5,port:2,bat:4,disp:5,val:2},src:"tomsG",
   img:[AP("2026/03/apple-introduces-macbook-pro-with-all-new-m5-pro-and-m5-max/article/Apple-MacBook-Pro-M5-Pro-and-M5-Max-NukeX-260303"),AP("2026/03/apple-introduces-macbook-pro-with-all-new-m5-pro-and-m5-max/article/Apple-MacBook-Pro-M5-Pro-and-M5-Max-LM-Studio-and-Autodesk-Maya-260303"),AP("2026/03/apple-introduces-macbook-pro-with-all-new-m5-pro-and-m5-max/article/Apple-MacBook-Pro-M5-Pro-and-M5-Max-QuPath-260303")]},
- {id:"legionpro7",name:"联想 Legion Pro 7i Gen 10（RTX 5090）",type:"laptop",form:"laptop",os:"Windows",price:4962.99,pn:"Yeppon",cpu:"Intel Core Ultra 9 275HX（24 核）",gpu:"RTX 5090 24GB（175W）",ram:64,storage:"2TB SSD",screen:'16" 2560×1600 OLED 240Hz，500 尼特',weight:2.57,battery:"99.9Wh",ports:"雷电、USB-A、HDMI、网口",q:"Lenovo Legion Pro 7 16IAX10H RTX 5090",
-  fit:"顶级游戏、本地 AI、渲染",pros:["笔记本里最强的显卡","64GB 内存 + 2TB","长时间高负载稳定"],cons:["非常贵","2.57kg，续航一般","没有指纹和人脸识别"],s:{perf:5,gpu:5,port:1,bat:2,disp:5,val:2},src:"kelLP7",
+ {id:"legionpro7",name:"联想 Legion Pro 7i Gen 10（RTX 5090）",type:"laptop",form:"laptop",os:"Windows",price:4876,pn:"亚马逊（Tech Insider 文章价）",cpu:"Intel Core Ultra 9 275HX（24 核）",gpu:"RTX 5090 24GB（175W）",ram:64,storage:"2TB SSD",screen:'16" 2560×1600 OLED 240Hz，500 尼特',weight:2.57,battery:"99.9Wh",ports:"雷电、USB-A、HDMI、网口",q:"Lenovo Legion Pro 7 16IAX10H RTX 5090",
+  fit:"顶级游戏、本地 AI、渲染",pros:["笔记本里最强的显卡","64GB 内存 + 2TB","长时间高负载稳定"],cons:["非常贵","2.57kg，续航一般","没有指纹和人脸识别"],s:{perf:5,gpu:5,port:1,bat:2,disp:5,val:2},src:"ti",
   img:[IC("65e33c77a8d61ae65c76c5fd655873ebd8df5a35"),IC("a595860261910519af5e8a68d4c60090ee19674e"),IC("a9ff34c1d90af7735ed12322e8f83e74de11d803"),IC("55ca550f87b9334b3a0f79b6e58ef8053f1a39cc")]},
 
  {id:"ak1",name:"NiPoGi AK1 Plus 迷你主机",type:"desktop",form:"mini",os:"Windows",price:389.99,pn:"亚马逊（6月数据）",cpu:"Intel N97（4 核）",gpu:"集成",ram:16,storage:"1TB",screen:"无，需另配显示器",weight:null,battery:null,ports:"USB-A、HDMI、网口，Wi-Fi 6",q:"NiPoGi AK1 Plus N97",
@@ -382,165 +663,515 @@ const P=[
   img:["https://mcgrocer.com/cdn/shop/files/383052991823902.jpg?v=1791449607","https://mcgrocer.com/cdn/shop/files/383052992380958.jpg?v=1791449607","https://mcgrocer.com/cdn/shop/files/383052990906398.jpg?v=1791449607","https://mcgrocer.com/cdn/shop/files/383052990480414.jpg?v=1791449607"]}
 ];
 
-const USES=[["study","上课 / 上网"],["office","办公文档"],["game","打游戏"],["create","剪辑 / 设计"],["code","写代码"],["carry","经常带出门"]];
-const TYPES=[["any","都可以"],["laptop","笔记本"],["desktop","台式机"]];
-const OSES=[["any","不限"],["Windows","Windows"],["macOS","macOS"]];
-const state={budget:1000,type:"any",os:"any",uses:new Set(["study","office"]),cmp:[],allType:"any",sort:"asc"};
-const byId=Object.fromEntries(P.map(p=>[p.id,p]));
-const $=s=>document.querySelector(s);
-const fmt=n=>"€"+n.toLocaleString("en-US",{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2});
-const kindName=p=>p.type==="laptop"?(p.form==="tablet"?"二合一":"笔记本"):({mini:"迷你主机",aio:"一体机"}[p.form]||"台式机");
-const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const osOk=(p,o)=>o==="any"||p.os===o||(o==="Windows"&&p.os==="无系统");
+/* market (typical) price: list price, official price or another store's price. null = not collected yet */
+const MARKET={
+ duet11:[379,"另一商店价（比价网站）"],
+ aspirego:[699,"亚马逊价"],
+ neo:[799,"Apple 官方价"],
+ swiftgo16:[1299,"原价"],
+ nitrov15:[1760.59,"亚马逊中位价"],
+ loq15:[1299,"Prime Day 前原价"],
+ e14g7:[1323.99,"SLG Store 价"],
+ book6:[1399,"文章标价"],
+ air13:[1499,"Apple 官方价"],
+ t14g6:[1587.99,"Yeppon 原价"],
+ air15:[1799,"Apple 官方价"],
+ tufa16:[2399,"Unieuro 原价"],
+ mbp14:[2249,"Apple 官方价"],
+ mbp16max:[5199,"原价"],
+ legionpro7:[4962.99,"Yeppon 价（SLG Store €5,270.99）"],
+ minim6:[1079,"Apple 官方价"],
+ omen16l:[1499.99,"原价"],
+ imac24:[1829,"Apple 官方价"],
+ minim5pro:[2029,"Apple 官方价"]
+};
+P.forEach(p=>{const m=MARKET[p.id];p.market=m?m[0]:null;p.mnote=m?m[1]:"";});
 
-/* images: track loads and failures; drop broken photos, fall back to a sketch */
-const img={ok:0,bad:0,dead:new Set()};
-function sketch(p){
-  const s={laptop:'<rect x="30" y="14" width="140" height="88" rx="6" fill="none" stroke="currentColor" stroke-width="4"/><rect x="40" y="24" width="120" height="68" rx="2" fill="currentColor" opacity=".12"/><path d="M12 108h176l-10 12H22z" fill="currentColor" opacity=".55"/>',
-    tablet:'<rect x="36" y="12" width="128" height="84" rx="8" fill="none" stroke="currentColor" stroke-width="4"/><rect x="46" y="22" width="108" height="64" rx="2" fill="currentColor" opacity=".12"/><path d="M30 104h140l-6 10H36z" fill="currentColor" opacity=".45"/>',
-    tower:'<rect x="66" y="8" width="68" height="112" rx="6" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="100" cy="44" r="16" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="100" cy="86" r="16" fill="none" stroke="currentColor" stroke-width="3"/><rect x="76" y="16" width="20" height="4" fill="currentColor"/>',
-    mini:'<rect x="46" y="54" width="108" height="44" rx="10" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="66" cy="76" r="4" fill="currentColor"/><rect x="104" y="73" width="36" height="6" rx="3" fill="currentColor" opacity=".5"/>',
-    aio:'<rect x="22" y="10" width="156" height="92" rx="6" fill="none" stroke="currentColor" stroke-width="4"/><rect x="32" y="20" width="136" height="66" rx="2" fill="currentColor" opacity=".12"/><path d="M88 102h24l6 16H82z" fill="currentColor" opacity=".55"/>'}[p.form]||"";
-  return `<div class="sketch"><svg viewBox="0 0 200 128" aria-hidden="true">${s}</svg><small>示意图 · <a href="https://www.google.com/search?tbm=isch&q=${encodeURIComponent(p.q)}" target="_blank" rel="noopener">看实物图</a></small></div>`;
+/* peripherals: keyboards (kb), mice (mouse), headphones (audio). Prices from PcComponentes.it / LDLC Italia, 2026-10-20 */
+const PC_IT=p=>"https://www.pccomponentes.it/"+p;
+const Q=[
+ /* keyboards */
+ {id:"k380s",cat:"kb",name:"Logitech Pebble Keys 2 K380s",price:32.99,pn:"PcComponentes.it",market:34.99,mnote:"建议零售价",
+  f:{conn:["bt","rf"],sw:"scissor",size:"compact",bl:false,multi:true,mac:true,hot:false},
+  rows:[["连接","蓝牙 / Logi Bolt 接收器（需另购）"],["按键","剪刀脚，低键程，静音"],["尺寸","紧凑无数字键，415g"],["续航","2 节 AAA，约 36 个月"],["多设备","可切换 3 台"]],
+  fit:"多设备办公、带出门",pros:["很便宜，打字安静","一键切换 3 台设备","电池能用很久"],cons:["没有背光","圆形键帽手感偏浅","没有数字键"],
+  s:{type:3,game:1,port:5,quiet:5,val:5},q:"Logitech Pebble Keys 2 K380s",src:S("PcComponentes.it",PC_IT("logitech-pebble-keys-2-k380s-tastiera-rf-senza-fili-plus-bluetooth-qwerty-spagnolo-grafite")),
+  img:[PCI("1077/10774545/1334-logitech-pebble-keys-2-k380s-teclado-bluetooth-multidispositivo-grafito"),PCI("1077/10774545/2861-logitech-pebble-keys-2-k380s-teclado-bluetooth-multidispositivo-grafito-comprar"),PCI("1077/10774545/3223-logitech-pebble-keys-2-k380s-teclado-bluetooth-multidispositivo-grafito-mejor-precio"),PCI("1077/10774545/4518-logitech-pebble-keys-2-k380s-teclado-bluetooth-multidispositivo-grafito-especificaciones")]},
+ {id:"keychronb1",cat:"kb",name:"Keychron B1 Pro 矮轴机械键盘",price:36.99,pn:"PcComponentes.it",market:null,mnote:"",
+  f:{conn:["bt","rf","wired"],sw:"mech",size:"75",bl:false,multi:true,mac:true,hot:false},
+  rows:[["连接","蓝牙 5.2 / 2.4G / USB-C 有线"],["按键","矮轴机械"],["尺寸","75% 紧凑，425g"],["续航","官方称最长约 1200 小时"],["多设备","支持"]],
+  fit:"想要机械手感又要便携",pros:["几十欧就有机械手感","三种连接方式都有","续航很长"],cons:["没有背光","矮轴手感和传统机械轴不同"],
+  s:{type:4,game:2,port:4,quiet:3,val:5},q:"Keychron B1 Pro",src:S("PcComponentes.it",PC_IT("tastiera-keychron-b1-pro-meccanica-wireless-compatta-grigio-sfumato")),
+  img:[PCI("1087/10873475/1850-keychron-b1-pro-teclado-mecanico-inalambrico-bluetooth-multidispositivo-gris-comprar"),PCI("1087/10873475/2993-keychron-b1-pro-teclado-mecanico-inalambrico-bluetooth-multidispositivo-gris-mejor-precio"),PCI("1087/10873475/3343-keychron-b1-pro-teclado-mecanico-inalambrico-bluetooth-multidispositivo-gris-especificaciones"),PCI("1087/10873475/4154-keychron-b1-pro-teclado-mecanico-inalambrico-bluetooth-multidispositivo-gris-caracteristicas")]},
+ {id:"mxkeyss",cat:"kb",name:"Logitech MX Keys S",price:174.11,pn:"PcComponentes.it（美式布局）",market:null,mnote:"",
+  f:{conn:["bt","rf"],sw:"scissor",size:"full",bl:true,multi:true,mac:true,hot:false},
+  rows:[["连接","蓝牙 / Logi Bolt 接收器"],["按键","剪刀脚，安静精准"],["尺寸","全尺寸带数字键，810g"],["背光","白色，自动感应"],["续航","不开背光最长约 5 个月，USB-C 充电"],["系统","Windows、macOS、Linux、iPadOS"]],
+  fit:"长时间打字、办公",pros:["打字手感好、很安静","背光会自动亮起","跨 3 台设备，Mac/Win 都行"],cons:["价格高","810g，不适合带出门"],
+  s:{type:5,game:1,port:2,quiet:5,val:3},q:"Logitech MX Keys S",src:S("PcComponentes.it",PC_IT("tastiera-logitech-mx-keys-s-wireless-scissor-full-size-layout-us-retroilluminata-bluetooth-grafite")),
+  img:[PCI("1099/10990779/1635-teclado-logitech-mx-keys-s-inalambrico-de-tijera-layout-us-con-retroiluminacion-y-bluetooth"),PCI("1099/10990779/2273-teclado-logitech-mx-keys-s-inalambrico-de-tijera-layout-us-con-retroiluminacion-y-bluetooth-comprar"),PCI("1099/10990779/3559-teclado-logitech-mx-keys-s-inalambrico-de-tijera-layout-us-con-retroiluminacion-y-bluetooth-mejor-precio"),PCI("1099/10990779/4697-teclado-logitech-mx-keys-s-inalambrico-de-tijera-layout-us-con-retroiluminacion-y-bluetooth-especificaciones")]},
+ {id:"gproxtkl",cat:"kb",name:"Logitech G Pro X TKL Lightspeed",price:179.99,pn:"PcComponentes.it",market:189.99,mnote:"建议零售价",
+  f:{conn:["wired","rf","bt"],sw:"mech",size:"tkl",bl:true,multi:false,mac:false,hot:false},
+  rows:[["连接","Lightspeed 2.4G / 蓝牙 / USB 有线"],["按键","GX Brown 段落机械轴"],["尺寸","TKL 无数字键"],["灯光","RGB LIGHTSYNC"],["续航","最长约 50 小时"]],
+  fit:"无线游戏、电竞",pros:["Lightspeed 无线延迟低","三种连接方式","TKL 给鼠标留出空间"],cons:["开灯续航只有约 50 小时","价格偏高"],
+  s:{type:4,game:5,port:3,quiet:2,val:3},q:"Logitech G Pro X TKL Lightspeed",src:S("PcComponentes.it",PC_IT("tastiera-da-gioco-wireless-logitech-g-pro-x-tkl-lightspeed-nera-rgb-lightsync-gx-marrone")),
+  img:[PCI("1077/10772985/1393-logitech-g-pro-x-tkl-lightspeed-teclado-inalambrico-gaming-negro-rgb-lightsync-gx-brown"),PCI("1077/10772985/2868-logitech-g-pro-x-tkl-lightspeed-teclado-inalambrico-gaming-negro-rgb-lightsync-gx-brown-comprar"),PCI("1077/10772985/3439-logitech-g-pro-x-tkl-lightspeed-teclado-inalambrico-gaming-negro-rgb-lightsync-gx-brown-mejor-precio"),PCI("1077/10772985/494-logitech-g-pro-x-tkl-lightspeed-teclado-inalambrico-gaming-negro-rgb-lightsync-gx-brown-especificaciones")]},
+ {id:"magickb",cat:"kb",name:"Apple Magic Keyboard（Touch ID，带数字键）",price:208.99,pn:"PcComponentes.it",market:null,mnote:"",
+  f:{conn:["bt","wired"],sw:"scissor",size:"full",bl:false,multi:false,mac:true,hot:false},
+  rows:[["连接","蓝牙 / USB-C"],["按键","低键程"],["尺寸","全尺寸带数字键，369g"],["特色","Touch ID 指纹解锁"],["兼容","只支持 Apple 芯片的 Mac"]],
+  fit:"Mac 台式机用户",pros:["Touch ID 解锁和付款","轻薄，和 Mac 风格一致"],cons:["只支持 Apple 芯片 Mac","没有背光","价格高"],
+  s:{type:4,game:1,port:3,quiet:5,val:2},q:"Apple Magic Keyboard Touch ID tastierino numerico",src:S("PcComponentes.it",PC_IT("tastiera-apple-magic-keyboard-touch-id-numerica-usb-c-qwerty-spagnolo-bianca")),
+  img:[PCI("1086/10861365/1621-apple-magic-keyboard-con-touch-id-teclado-numerico-y-puerto-usb-c-plata-comprar"),PCI("1086/10861365/2838-apple-magic-keyboard-con-touch-id-teclado-numerico-y-puerto-usb-c-plata-mejor-precio"),PCI("1086/10861365/3745-apple-magic-keyboard-con-touch-id-teclado-numerico-y-puerto-usb-c-plata-especificaciones")]},
+ {id:"bwv475",cat:"kb",name:"Razer BlackWidow V4 75%",price:299.99,pn:"PcComponentes.it（美式布局）",market:389.98,mnote:"原价",
+  f:{conn:["wired"],sw:"mech",size:"75",bl:true,multi:false,mac:false,hot:true},
+  rows:[["连接","USB-C 有线，8000Hz 回报率"],["按键","Razer 橙轴（段落），热插拔"],["尺寸","75%，815g"],["灯光","Razer Chroma RGB"]],
+  fit:"游戏、喜欢折腾换轴",pros:["热插拔，能自己换轴","8000Hz 回报率","做工厚实"],cons:["只能有线","很贵","815g 很重"],
+  s:{type:5,game:5,port:1,quiet:2,val:2},q:"Razer BlackWidow V4 75%",src:S("PcComponentes.it",PC_IT("tastiera-da-gioco-meccanica-razer-blackwidow-v4-75-layout-rgb-usa-nero")),
+  img:[PCI("1080/10802857/1692-razer-blackwidow-v4-75-teclado-mecanico-gaming-rgb-layout-usa-negro"),PCI("1080/10802857/2822-razer-blackwidow-v4-75-teclado-mecanico-gaming-rgb-layout-usa-negro-comprar"),PCI("1080/10802857/3810-razer-blackwidow-v4-75-teclado-mecanico-gaming-rgb-layout-usa-negro-mejor-precio"),PCI("1080/10802857/4850-razer-blackwidow-v4-75-teclado-mecanico-gaming-rgb-layout-usa-negro-especificaciones")]},
+
+ /* mice */
+ {id:"m650",cat:"mouse",name:"Logitech Signature M650",price:40.63,pn:"PcComponentes.it",market:44.99,mnote:"建议零售价",
+  f:{conn:["rf","bt"],wt:101.4,silent:true,multi:false,prog:false,mac:true},
+  rows:[["连接","Logi Bolt 接收器 / 蓝牙"],["DPI","2000"],["重量","101.4g"],["按键","静音点击，带前进后退键"],["续航","1 节 AA，约 24 个月"]],
+  fit:"安静办公、中小手",pros:["点击几乎没声音","电池能用两年","价格低"],cons:["DPI 低，不适合游戏","只有右手版这款"],
+  s:{ergo:4,game:1,port:4,quiet:5,val:5},q:"Logitech Signature M650",src:S("PcComponentes.it",PC_IT("logitech-signature-m650-mouse-mano-destra-rf-senza-fili-plus-bluetooth-ottico-2000-dpi-grigio")),
+  img:[PCI("1000/10009778/1426-logitech-signature-m650-raton-bluetooth-para-manos-pequenas-a-medianas-clics-silenciosos-gris-mejor-precio"),PCI("1000/10009778/2845-logitech-signature-m650-raton-bluetooth-para-manos-pequenas-a-medianas-clics-silenciosos-gris"),PCI("1000/10009778/2673-logitech-signature-m650-raton-bluetooth-para-manos-pequenas-a-medianas-clics-silenciosos-gris-especificaciones"),PCI("1000/10009778/3551-logitech-signature-m650-raton-bluetooth-para-manos-pequenas-a-medianas-clics-silenciosos-gris-caracteristicas")]},
+ {id:"g305",cat:"mouse",name:"Logitech G305 Lightspeed",price:54.99,pn:"PcComponentes.it",market:59.99,mnote:"建议零售价",
+  f:{conn:["rf"],wt:99,silent:false,multi:false,prog:true,mac:true},
+  rows:[["连接","Lightspeed 2.4G 无线"],["DPI","HERO 传感器，200–12000"],["重量","99g"],["按键","6 个可编程"],["续航","1 节 AA，约 250 小时"]],
+  fit:"入门无线游戏",pros:["无线游戏鼠标里很便宜","HERO 传感器准","6 个可编程键"],cons:["没有蓝牙","用 AA 电池，不能充电"],
+  s:{ergo:3,game:4,port:4,quiet:2,val:5},q:"Logitech G305 Lightspeed",src:S("PcComponentes.it",PC_IT("mouse-da-gioco-wireless-logitech-g305-lightspeed-12000-dpi-6-pulsanti-nero")),
+  img:[PCI("1087/10877340/1216-logitech-g305-lightspeed-raton-gaming-inalambrico-12000dpi-6-botones-negro-foto"),PCI("1087/10877340/2698-logitech-g305-lightspeed-raton-gaming-inalambrico-12000dpi-6-botones-negro-25298855-19e0-4232-a9ac-863a7cdbfa8b"),PCI("1087/10877340/3131-logitech-g305-lightspeed-raton-gaming-inalambrico-12000dpi-6-botones-negro-1734c497-3210-495c-9a45-0ee49a10c902"),PCI("1087/10877340/4302-logitech-g305-lightspeed-raton-gaming-inalambrico-12000dpi-6-botones-negro-4eca2806-aa0e-4c76-b78e-03900d001860")]},
+ {id:"magicmouse",cat:"mouse",name:"Apple Magic Mouse（USB-C，黑色）",price:115.75,pn:"PcComponentes.it",market:129,mnote:"建议零售价",
+  f:{conn:["bt"],wt:99,silent:true,multi:false,prog:false,mac:true},
+  rows:[["连接","蓝牙，USB-C 充电"],["表面","多点触控，支持手势"],["重量","99g"],["续航","充一次约用一个月"],["兼容","Mac、iPad"]],
+  fit:"Mac 用户、喜欢手势",pros:["手势操作顺手","很薄，好带"],cons:["握感偏平，久用手累","充电时不能用","不适合游戏"],
+  s:{ergo:2,game:1,port:5,quiet:4,val:2},q:"Apple Magic Mouse USB-C",src:S("PcComponentes.it",PC_IT("superficie-multitouch-apple-magic-mouse-nera")),
+  img:[PCI("1086/10861507/1488-apple-magic-mouse-superficie-multi-touch-negra")]},
+ {id:"dav3pro",cat:"mouse",name:"Razer DeathAdder V3 Pro",price:118.21,pn:"PcComponentes.it",market:159.99,mnote:"建议零售价",
+  f:{conn:["rf","wired"],wt:63,silent:false,multi:false,prog:true,mac:true},
+  rows:[["连接","HyperSpeed 2.4G / USB-C 有线"],["DPI","Focus Pro 30K，最高 30000"],["重量","约 63g"],["续航","1000Hz 下约 90 小时"],["回报率","最高 4000Hz（需另购接收器）"]],
+  fit:"FPS 等竞技游戏",pros:["很轻（约 63g）","顶级传感器","现在比原价便宜不少"],cons:["只适合右手","没有蓝牙"],
+  s:{ergo:4,game:5,port:3,quiet:2,val:4},q:"Razer DeathAdder V3 Pro",src:S("PcComponentes.it",PC_IT("mouse-da-gioco-wireless-razer-deathadder-v3-pro-30000-dpi-nero")),
+  img:[PCI("1064/10643483/1657-razer-deathadder-v3-pro-raton-gaming-inalambrico-30000-dpi-negro"),PCI("1064/10643483/2282-razer-deathadder-v3-pro-raton-gaming-inalambrico-30000-dpi-negro-comprar"),PCI("1064/10643483/3482-razer-deathadder-v3-pro-raton-gaming-inalambrico-30000-dpi-negro-mejor-precio"),PCI("1064/10643483/4824-razer-deathadder-v3-pro-raton-gaming-inalambrico-30000-dpi-negro-especificaciones")]},
+ {id:"mxmaster3s",cat:"mouse",name:"Logitech MX Master 3S",price:130,pn:"PcComponentes.it 第三方卖家",market:155.61,mnote:"其他卖家起价",
+  f:{conn:["rf","bt"],wt:141,silent:true,multi:true,prog:true,mac:true},
+  rows:[["连接","Logi Bolt / 蓝牙，多设备"],["DPI","8000，玻璃上也能用"],["重量","141g"],["按键","7 个可编程，静音点击，电磁滚轮"],["续航","USB-C 充电"]],
+  fit:"办公、修图剪辑、多设备",pros:["握感舒服，适合大手","电磁滚轮和横向滚轮好用","跨 3 台电脑"],cons:["141g 偏重","不适合游戏","只适合右手"],
+  s:{ergo:5,game:2,port:2,quiet:5,val:3},q:"Logitech MX Master 3S",src:S("PcComponentes.it",PC_IT("logitech-mx-master-3s-mouse-mano-destra-rf-senza-fili-plus-bluetooth-laser-8000-dpi")),
+  img:[PCI("1034/10347976/1382-logitech-mx-master-3s-performance-raton-inalambrico-8000-dpi-grafito-9205e5c4-4126-47ed-aa39-26ad1df14282"),PCI("1034/10347976/5514-logitech-mx-master-3s-performance-raton-inalambrico-8000-dpi-grafito-caracteristicas"),PCI("1034/10347976/108-logitech-mx-master-3s-performance-raton-inalambrico-8000-dpi-grafito-770018f4-8086-43be-aa89-e3528152a01e"),PCI("1034/10347976/3192-logitech-mx-master-3s-performance-raton-inalambrico-8000-dpi-grafito-mejor-precio")]},
+ {id:"superlight2c",cat:"mouse",name:"Logitech G Pro X Superlight 2c",price:164.76,pn:"PcComponentes.it",market:null,mnote:"",
+  f:{conn:["rf"],wt:null,silent:false,multi:false,prog:true,mac:true},
+  rows:[["连接","Lightspeed 2.4G 无线"],["DPI","最高 44000"],["按键","5 个"],["重量","商店页面未标注"]],
+  fit:"职业级竞技游戏",pros:["传感器参数顶级","Superlight 系列以轻著称"],cons:["价格高","按键少，不适合办公快捷操作"],
+  s:{ergo:3,game:5,port:4,quiet:2,val:3},q:"Logitech G Pro X Superlight 2c",src:S("PcComponentes.it",PC_IT("recensioni//mouse-logitech-g-pro-x-superlight-2c-rf-wireless-44000-dpi-nero-5-pulsanti")),
+  img:[PCI("1110/11108881/1992-raton-logitech-g-pro-x-superlight-2c-rf-inalambrico-44000-dpi-negro-5-botones-4e611e4d-2d54-4900-b6c1-d36d81b555af")]},
+
+ /* headphones */
+ {id:"jbl520",cat:"audio",name:"JBL Tune 520BT",price:37.25,pn:"LDLC Italia",market:null,mnote:"",
+  f:{form:"on",conn:["bt"],anc:false,mic:true,water:false,batt:57},
+  rows:[["形态","贴耳式，可折叠"],["连接","蓝牙，可同时连两台"],["续航","最长约 57 小时"],["重量","约 157g"],["通话","内置麦克风"]],
+  fit:"预算有限、日常听歌",pros:["几十欧，续航很长","轻，可折叠","能同时连手机和电脑"],cons:["没有主动降噪","贴耳式久戴耳朵会压"],
+  s:{anc:1,sound:3,game:1,call:3,port:4,val:5},q:"JBL Tune 520BT",src:S("LDLC Italia","https://www.ldlc.com/it-it/scheda/PB00745807.html"),
+  img:[LD("00/06/35/46/LD0006354634"),LD("00/06/35/46/LD0006354635"),LD("00/06/35/46/LD0006354636"),LD("00/06/35/46/LD0006354637")]},
+ {id:"cloud3s",cat:"audio",name:"HyperX Cloud III S Wireless",price:139.13,pn:"PcComponentes.it 其他卖家",market:148.99,mnote:"PcComponentes 自营价",
+  f:{form:"over",conn:["rf","bt"],anc:false,mic:true,water:false,batt:120},
+  rows:[["形态","头戴式游戏耳机，封闭"],["连接","2.4G 接收器 / 蓝牙 5.3 多点"],["续航","2.4G 约 120 小时，蓝牙约 200 小时"],["重量","340g"],["麦克风","可拆卸"],["平台","PC、PlayStation"]],
+  fit:"游戏、语音开黑",pros:["续航非常长","2.4G 低延迟 + 蓝牙","麦克风可拆"],cons:["340g 偏重","没有主动降噪","Xbox 要另配适配器"],
+  s:{anc:1,sound:4,game:5,call:4,port:2,val:4},q:"HyperX Cloud III S Wireless",src:S("PcComponentes.it",PC_IT("auricolari-hyperx-cloud-iii-s-wireless-bluetooth-gaming-dts-headphone-x-neri")),
+  img:[PCI("1090/10901061/1622-hyperx-cloud-iii-s-wireless-auriculares-gaming-inalambricos-bluetooth-24ghz-multiplataforma-negros"),PCI("1090/10901061/2991-hyperx-cloud-iii-s-wireless-auriculares-gaming-inalambricos-bluetooth-24ghz-multiplataforma-negros-comprar"),PCI("1090/10901061/322-hyperx-cloud-iii-s-wireless-auriculares-gaming-inalambricos-bluetooth-24ghz-multiplataforma-negros-mejor-precio"),PCI("1090/10901061/4829-hyperx-cloud-iii-s-wireless-auriculares-gaming-inalambricos-bluetooth-24ghz-multiplataforma-negros-especificaciones")]},
+ {id:"airpodspro3",cat:"audio",name:"Apple AirPods Pro 3",price:243.95,pn:"LDLC Italia",market:null,mnote:"",
+  f:{form:"in",conn:["bt"],anc:true,mic:true,water:true,batt:8},
+  rows:[["形态","入耳式真无线"],["降噪","主动降噪 + 通透模式"],["续航","耳机约 8 小时，加充电盒约 24 小时"],["防水","IP57"],["特色","心率检测、MagSafe 充电盒"]],
+  fit:"iPhone 用户通勤、运动",pros:["降噪强，通透模式自然","IP57 防水，能运动","和苹果设备无缝切换"],cons:["对安卓不够友好","单次续航 8 小时"],
+  s:{anc:5,sound:4,game:2,call:4,port:5,val:3},q:"Apple AirPods Pro 3",src:S("LDLC Italia","https://www.ldlc.com/it-it/scheda/PB00702842.html"),
+  img:[LD("00/06/27/53/LD0006275318"),LD("00/06/27/53/LD0006275319"),LD("00/06/27/53/LD0006275320"),LD("00/06/27/53/LD0006275322")]},
+ {id:"boseqcue2",cat:"audio",name:"Bose QuietComfort Ultra Earbuds（第二代）",price:311.27,pn:"PcComponentes.it",market:333.06,mnote:"划线原价",
+  f:{form:"in",conn:["bt"],anc:true,mic:true,water:false,batt:6},
+  rows:[["形态","入耳式真无线"],["降噪","主动降噪"],["续航","耳机约 6 小时"],["充电","USB-C"]],
+  fit:"降噪优先、飞机地铁",pros:["降噪是入耳式里最强的一档","音质饱满"],cons:["单次续航只有约 6 小时","价格高"],
+  s:{anc:5,sound:5,game:1,call:4,port:5,val:2},q:"Bose QuietComfort Ultra Earbuds 2",src:S("PcComponentes.it",PC_IT("cuffie-bose-quietcomfort-ultra-di-seconda-generazione-con-tecnologia-bluetooth-tws-e-cancellazione-del-rumore-nero")),
+  img:[PCI("1095/10955982/1577-auriculares-bose-quiet-comfort-ultra-inalambricos-bluetooth-tws-con-cancelacion-de-ruido-negros"),PCI("1095/10955982/2767-auriculares-bose-quiet-comfort-ultra-inalambricos-bluetooth-tws-con-cancelacion-de-ruido-negros-comprar"),PCI("1095/10955982/3494-auriculares-bose-quiet-comfort-ultra-inalambricos-bluetooth-tws-con-cancelacion-de-ruido-negros-mejor-precio"),PCI("1095/10955982/4751-auriculares-bose-quiet-comfort-ultra-inalambricos-bluetooth-tws-con-cancelacion-de-ruido-negros-especificaciones")]},
+ {id:"xm6",cat:"audio",name:"Sony WH-1000XM6",price:385.99,pn:"PcComponentes.it",market:469,mnote:"建议零售价",
+  f:{form:"over",conn:["bt"],anc:true,mic:true,water:false,batt:30},
+  rows:[["形态","头戴式，可折叠，带硬壳"],["降噪","QN3 芯片，12 个麦克风"],["连接","蓝牙多点"],["续航","约 30 小时，充 3 分钟听 3 小时"],["通话","6 个 AI 麦克风"]],
+  fit:"通勤、出差、长时间佩戴",pros:["头戴降噪顶级","通话清楚","比建议价便宜约 18%"],cons:["很贵","头戴式不方便运动"],
+  s:{anc:5,sound:5,game:2,call:5,port:3,val:3},q:"Sony WH-1000XM6",src:S("PcComponentes.it",PC_IT("cuffie-bluetooth-sony-wh-1000xm6-con-cancellazione-del-rumore-audio-ad-alta-risoluzione-argento")),
+  img:[PCI("1088/10888795/15-sony-wh-1000xm6-auriculares-bluetooth-con-cancelacion-de-ruido-y-estuche-resistente-plata-mejor-precio"),PCI("1088/10888795/2801-sony-wh-1000xm6-auriculares-bluetooth-con-cancelacion-de-ruido-y-estuche-resistente-plata-especificaciones"),PCI("1088/10888795/3886-sony-wh-1000xm6-auriculares-bluetooth-con-cancelacion-de-ruido-y-estuche-resistente-plata-caracteristicas"),PCI("1088/10888795/4471-sony-wh-1000xm6-auriculares-bluetooth-con-cancelacion-de-ruido-y-estuche-resistente-plata-opiniones")]}
+];
+/* ---- batch 2 ---- */
+Q.push(
+ {id:"k120",cat:"kb",name:"Logitech K120（意大利布局）",price:16.99,pn:"PcComponentes.it",market:null,mnote:"",
+  f:{conn:["wired"],sw:"membrane",size:"full",bl:false,multi:false,mac:false,hot:false},
+  rows:[["连接","USB 有线，1.5m 线"],["按键","薄膜，全尺寸带数字键"],["布局","意大利 QWERTY"],["特点","防泼溅"],["重量","550g"]],
+  fit:"办公室、预算很低",pros:["十几欧就能买到","意大利布局","防泼溅，耐用"],cons:["薄膜手感一般","只能有线","没有背光"],
+  s:{type:2,game:1,port:2,quiet:3,val:5},q:"Logitech K120 tastiera italiana",src:S("PcComponentes.it",PC_IT("tastiera-con-cavo-logitech-k120-usb-qwerty-tastiera-italiana-nera")),
+  img:[PCI("1082/10820998/1872-logitech-k120-teclado-usb-layout-italiano"),PCI("1082/10820998/2602-logitech-k120-teclado-usb-layout-italiano-comprar"),PCI("1082/10820998/3561-logitech-k120-teclado-usb-layout-italiano-mejor-precio"),PCI("1082/10820998/4791-logitech-k120-teclado-usb-layout-italiano-especificaciones")]},
+ {id:"mxkeysmini",cat:"kb",name:"Logitech MX Keys Mini（意大利布局）",price:133.23,pn:"PcComponentes.it",market:156.99,mnote:"划线原价",
+  f:{conn:["rf","bt"],sw:"scissor",size:"compact",bl:true,multi:true,mac:true,hot:false},
+  rows:[["连接","2.4G 接收器 / 蓝牙"],["按键","剪刀脚，79 键无数字键"],["布局","意大利 QWERTY"],["背光","有，可调"],["续航","1500mAh，USB-C 充电"],["重量","506g"]],
+  fit:"桌面小、带出门打字",pros:["MX 手感，体积小一圈","背光 + 多设备切换","意大利布局"],cons:["价格不低","没有数字键"],
+  s:{type:5,game:1,port:4,quiet:5,val:3},q:"Logitech MX Keys Mini",src:S("PcComponentes.it",PC_IT("tastiera-logitech-mx-keys-mini-for-business-rf-wireless-bluetooth-qwerty-grafite-italiana")),
+  img:[PCI("1081/10814269/1675-logitech-mx-keys-mini-for-business-teclado-inalambrico-retroiluminado-grafito-teclado-italiano"),PCI("1081/10814269/2148-logitech-mx-keys-mini-for-business-teclado-inalambrico-retroiluminado-grafito-teclado-italiano-comprar"),PCI("1081/10814269/3438-logitech-mx-keys-mini-for-business-teclado-inalambrico-retroiluminado-grafito-teclado-italiano-mejor-precio"),PCI("1081/10814269/4626-logitech-mx-keys-mini-for-business-teclado-inalambrico-retroiluminado-grafito-teclado-italiano-especificaciones")]},
+ {id:"g515",cat:"kb",name:"Logitech G515 Lightspeed TKL（意大利布局）",price:129.99,pn:"PcComponentes.it",market:null,mnote:"",
+  f:{conn:["wired","rf","bt"],sw:"mech",size:"tkl",bl:true,multi:false,mac:false,hot:false},
+  rows:[["连接","Lightspeed 2.4G / 蓝牙 / 有线"],["按键","矮轴机械，GL 段落轴"],["布局","意大利 QWERTY，TKL"],["灯光","RGB"],["续航","最长约 36 小时"],["重量","880g"]],
+  fit:"游戏兼办公、喜欢薄键盘",pros:["矮轴，手腕不累","三种连接方式","意大利布局"],cons:["开灯续航短","重 880g"],
+  s:{type:4,game:5,port:3,quiet:3,val:4},q:"Logitech G515 Lightspeed TKL",src:S("PcComponentes.it",PC_IT("tastiera-logitech-g-g515-lightspeed-tkl-meccanica-layout-it-retroilluminata-wireless-rgb")),
+  img:[PCI("1100/11005127/1449-teclado-logitech-g-g515-lightspeed-tkl-mecanico-qwerty-italiano-inalambrico-rgb"),PCI("1100/11005127/2658-teclado-logitech-g-g515-lightspeed-tkl-mecanico-qwerty-italiano-inalambrico-rgb-comprar"),PCI("1100/11005127/3908-teclado-logitech-g-g515-lightspeed-tkl-mecanico-qwerty-italiano-inalambrico-rgb-mejor-precio"),PCI("1100/11005127/4864-teclado-logitech-g-g515-lightspeed-tkl-mecanico-qwerty-italiano-inalambrico-rgb-especificaciones")]},
+ {id:"apexpro3",cat:"kb",name:"SteelSeries Apex Pro TKL Gen 3（白色）",price:331.72,pn:"PcComponentes.it",market:399.99,mnote:"划线原价",
+  f:{conn:["wired"],sw:"mag",size:"tkl",bl:true,multi:false,mac:false,hot:false},
+  rows:[["连接","USB 有线"],["按键","磁轴（霍尔效应），支持快速触发"],["尺寸","TKL"],["布局","商店页面未写明，买前确认"]],
+  fit:"竞技游戏、FPS",pros:["磁轴可调触发深度","快速触发，反应极快","现价比原价低 17%"],cons:["很贵","只能有线","布局要确认"],
+  s:{type:5,game:5,port:1,quiet:2,val:2},q:"SteelSeries Apex Pro TKL Gen 3",src:S("PcComponentes.it",PC_IT("tastiera-steelseries-apex-pro-tkl-gen-3-bianca")),
+  img:[PCI("1120/11201335/1749-teclado-steelseries-apex-pro-tkl-gen-3-gaming-blanco"),PCI("1120/11201335/28-teclado-steelseries-apex-pro-tkl-gen-3-gaming-blanco-comprar"),PCI("1120/11201335/3593-teclado-steelseries-apex-pro-tkl-gen-3-gaming-blanco-mejor-precio"),PCI("1120/11201335/4445-teclado-steelseries-apex-pro-tkl-gen-3-gaming-blanco-especificaciones")]},
+
+ {id:"m185",cat:"mouse",name:"Logitech M185",price:16.52,pn:"PcComponentes.it",market:null,mnote:"",
+  f:{conn:["rf"],wt:75.2,silent:false,multi:false,prog:false,vert:false},
+  rows:[["连接","2.4G 迷你接收器"],["DPI","1000"],["重量","75.2g，左右手通用"],["续航","1 节 AA，约 12 个月"]],
+  fit:"备用鼠标、预算很低",pros:["十几欧","小巧，左右手都能用","电池能用一年"],cons:["只有 3 个键","没有蓝牙","手感普通"],
+  s:{ergo:2,game:1,port:5,quiet:2,val:5},q:"Logitech M185",src:S("PcComponentes.it",PC_IT("logitech-m185-mouse-ambidestro-rf-wireless-ottico-1000-dpi")),
+  img:[PCI("1063/10638065/1608-logitech-m185-raton-inalambrico-1000-dpi-negro-rojo"),PCI("1063/10638065/2687-logitech-m185-raton-inalambrico-1000-dpi-negro-rojo-comprar"),PCI("1063/10638065/3115-logitech-m185-raton-inalambrico-1000-dpi-negro-rojo-mejor-precio"),PCI("1063/10638065/4381-logitech-m185-raton-inalambrico-1000-dpi-negro-rojo-especificaciones")]},
+ {id:"lift",cat:"mouse",name:"Logitech Lift 垂直鼠标",price:45.27,pn:"PcComponentes.it",market:69.99,mnote:"建议零售价",
+  f:{conn:["rf","bt"],wt:125,silent:true,multi:true,prog:true,vert:true},
+  rows:[["连接","接收器 / 蓝牙，多设备"],["DPI","4000"],["重量","125g"],["形状","垂直人体工学，适合中小手"],["续航","1 节 AA，约 24 个月"]],
+  fit:"手腕不舒服、长时间办公",pros:["垂直握姿减轻手腕压力","静音点击","比建议价便宜很多"],cons:["需要几天适应","不适合游戏"],
+  s:{ergo:5,game:1,port:2,quiet:5,val:4},q:"Logitech Lift mouse verticale",src:S("PcComponentes.it",PC_IT("logitech-lift-mouse-ergonomico-verticale-senza-fili-ricevitore-bluetooth-o-logi-bolt-usb-clic-silenziosi-4-tasti-compatibile-con-windows-macos-ipados-laptop-pc-grafite")),
+  img:[PCI("1022/10221992/1183-logitech-lift-raton-inalambrico-vertical-para-diestros-4000-dpi-negro-gris"),PCI("1022/10221992/2783-logitech-lift-raton-inalambrico-vertical-para-diestros-4000-dpi-negro-gris-comprar"),PCI("1022/10221992/3515-logitech-lift-raton-inalambrico-vertical-para-diestros-4000-dpi-negro-gris-mejor-precio"),PCI("1022/10221992/4967-logitech-lift-raton-inalambrico-vertical-para-diestros-4000-dpi-negro-gris-especificaciones")]},
+ {id:"basiliskv3x",cat:"mouse",name:"Razer Basilisk V3 X HyperSpeed",price:54.99,pn:"PcComponentes.it",market:79.99,mnote:"建议零售价",
+  f:{conn:["rf","bt"],wt:110,silent:false,multi:false,prog:true,vert:false},
+  rows:[["连接","HyperSpeed 2.4G / 蓝牙"],["DPI","最高 18000"],["重量","110g"],["续航","1 节 AA，2.4G 约 285 小时"]],
+  fit:"入门游戏、宏按键多",pros:["双模连接","可编程键多","价格实惠"],cons:["用 AA 电池","110g 不算轻"],
+  s:{ergo:4,game:4,port:3,quiet:2,val:5},q:"Razer Basilisk V3 X HyperSpeed",src:S("PcComponentes.it",PC_IT("mouse-da-gioco-wireless-razer-basilisk-v3-x-hyperspeed-18000-dpi")),
+  img:[PCI("1073/10732256/1149-razer-basilisk-v3-x-hyperspeed-raton-inalambrico-gaming-18000-dpi"),PCI("1073/10732256/2874-razer-basilisk-v3-x-hyperspeed-raton-inalambrico-gaming-18000-dpi-comprar"),PCI("1073/10732256/3901-razer-basilisk-v3-x-hyperspeed-raton-inalambrico-gaming-18000-dpi-mejor-precio"),PCI("1073/10732256/4863-razer-basilisk-v3-x-hyperspeed-raton-inalambrico-gaming-18000-dpi-especificaciones")]},
+ {id:"mxanywhere3s",cat:"mouse",name:"Logitech MX Anywhere 3S",price:81.99,pn:"PcComponentes.it",market:89.99,mnote:"建议零售价",
+  f:{conn:["rf","bt"],wt:null,silent:true,multi:true,prog:true,vert:false},
+  rows:[["连接","Logi Bolt（需另购）/ 蓝牙，多设备"],["DPI","8000，玻璃上也能用"],["按键","安静点击，电磁滚轮"],["续航","充满约 70 天，USB-C"]],
+  fit:"带笔记本出门、多设备办公",pros:["小巧好带","玻璃桌面也能用","电磁滚轮"],cons:["接收器要另买","手大的人握着偏小"],
+  s:{ergo:3,game:2,port:5,quiet:5,val:3},q:"Logitech MX Anywhere 3S",src:S("PcComponentes.it",PC_IT("logitech-mx-anywhere-3s-mouse-wireless-bluetooth-compatto-silenzioso-8000-dpi-rosa")),
+  img:[PCI("1073/10733408/1488-logitech-mx-anywhere-3s-raton-inalambrico-compacto-8000-dpi-rosa"),PCI("1073/10733408/2881-logitech-mx-anywhere-3s-raton-inalambrico-compacto-8000-dpi-rosa-comprar"),PCI("1073/10733408/3645-logitech-mx-anywhere-3s-raton-inalambrico-compacto-8000-dpi-rosa-mejor-precio"),PCI("1073/10733408/4115-logitech-mx-anywhere-3s-raton-inalambrico-compacto-8000-dpi-rosa-especificaciones")]},
+ {id:"g502xplus",cat:"mouse",name:"Logitech G502 X Plus",price:128.99,pn:"PcComponentes.it",market:null,mnote:"",
+  f:{conn:["rf"],wt:106,silent:false,multi:false,prog:true,vert:false},
+  rows:[["连接","Lightspeed 2.4G，USB-C 充电"],["DPI","HERO 25K，最高 25600"],["重量","106g"],["按键","13 个可编程"],["灯光","RGB"]],
+  fit:"MMO、需要很多按键的游戏",pros:["13 个可编程键","LIGHTFORCE 混合微动","支持 POWERPLAY 无线充电"],cons:["106g 偏重","只适合右手"],
+  s:{ergo:4,game:5,port:2,quiet:2,val:3},q:"Logitech G502 X Plus",src:S("PcComponentes.it",PC_IT("mouse-da-gioco-wireless-logitech-g502-x-plus-rgb-13-pulsanti-25600-dpi-nero")),
+  img:[PCI("1074/10744974/130-logitech-g502-x-plus-raton-inalambrico-gaming-rgb-13-botones-25600dpi-negro"),PCI("1074/10744974/3157-logitech-g502-x-plus-raton-inalambrico-gaming-rgb-13-botones-25600dpi-negro-mejor-precio"),PCI("1074/10744974/4939-logitech-g502-x-plus-raton-inalambrico-gaming-rgb-13-botones-25600dpi-negro-especificaciones"),PCI("1074/10744974/5519-logitech-g502-x-plus-raton-inalambrico-gaming-rgb-13-botones-25600dpi-negro-caracteristicas")]},
+ {id:"viperv3pro",cat:"mouse",name:"Razer Viper V3 Pro",price:153,pn:"PcComponentes.it",market:179.99,mnote:"建议零售价",
+  f:{conn:["rf","wired"],wt:55,silent:false,multi:false,prog:true,vert:false},
+  rows:[["连接","HyperSpeed 2.4G / 有线"],["DPI","Focus Pro Gen-2，最高 35000"],["重量","约 55g"],["回报率","最高 8000Hz"],["续航","1000Hz 约 95 小时"]],
+  fit:"职业 FPS",pros:["约 55g 超轻","8000Hz 回报率","左右对称造型"],cons:["价格高","没有蓝牙"],
+  s:{ergo:3,game:5,port:4,quiet:2,val:3},q:"Razer Viper V3 Pro",src:S("PcComponentes.it",PC_IT("mouse-da-gioco-wireless-razer-viper-v3-pro-35000-dpi-nero")),
+  img:[PCI("1082/10828142/1748-razer-viper-v3-pro-raton-gaming-inalambrico-35000-dpi-negro"),PCI("1082/10828142/223-razer-viper-v3-pro-raton-gaming-inalambrico-35000-dpi-negro-comprar"),PCI("1082/10828142/389-razer-viper-v3-pro-raton-gaming-inalambrico-35000-dpi-negro-mejor-precio"),PCI("1082/10828142/4160-razer-viper-v3-pro-raton-gaming-inalambrico-35000-dpi-negro-especificaciones")]},
+
+ {id:"ch720n",cat:"audio",name:"Sony WH-CH720N",price:69.99,pn:"PcComponentes.it",market:82.69,mnote:"其他卖家起价",
+  f:{form:"on",conn:["bt","wired"],anc:true,mic:true,water:false,batt:35},
+  rows:[["形态","头戴，轻量"],["降噪","主动降噪"],["连接","蓝牙 5.2 / 3.5mm 有线"],["续航","开降噪约 35 小时，关闭约 50 小时"],["重量","192g"]],
+  fit:"预算有限想要降噪",pros:["一百欧以内的降噪耳机","很轻，192g","可以插线用"],cons:["降噪不如旗舰","做工偏塑料"],
+  s:{anc:3,sound:3,game:1,call:3,port:4,val:5},q:"Sony WH-CH720N",src:S("PcComponentes.it",PC_IT("sony-wh-ch720-auricolare-con-cavo-e-senza-cavo-a-padiglione-musica-e-chiamate-usb-tipo-c-bluetooth-blu")),
+  img:[PCI("1066/10668576/1708-sony-wh-ch720n-auriculares-bluetooth-con-cancelacion-de-ruido-azules"),PCI("1066/10668576/2815-sony-wh-ch720n-auriculares-bluetooth-con-cancelacion-de-ruido-azules-comprar"),PCI("1066/10668576/389-sony-wh-ch720n-auriculares-bluetooth-con-cancelacion-de-ruido-azules-mejor-precio"),PCI("1066/10668576/4351-sony-wh-ch720n-auriculares-bluetooth-con-cancelacion-de-ruido-azules-especificaciones")]},
+ {id:"spaceone",cat:"audio",name:"Soundcore Space One",price:109.99,pn:"PcComponentes.it",market:null,mnote:"",
+  f:{form:"over",conn:["bt","wired"],anc:true,mic:true,water:false,batt:40},
+  rows:[["形态","头戴式"],["降噪","主动降噪"],["连接","蓝牙 / 3.5mm 有线"],["续航","开降噪约 40 小时，关闭约 55 小时"],["重量","259g"]],
+  fit:"一百欧左右要好降噪",pros:["这个价位降噪很强","续航长","可插线"],cons:["品牌溢价低但做工一般","通话一般"],
+  s:{anc:4,sound:4,game:1,call:3,port:3,val:5},q:"Soundcore Space One",src:S("PcComponentes.it",PC_IT("cuffie-wireless-soundcore-space-one-con-cancellazione-attiva-del-rumore-nere")),
+  img:[PCI("1083/10831433/1962-soundcore-space-one-auriculares-inalambricos-con-cancelacion-activa-de-ruido-negros-cc98ce0c-d8c1-4b7f-b7a6-fba1691c3e8b"),PCI("1083/10831433/2665-soundcore-space-one-auriculares-inalambricos-con-cancelacion-activa-de-ruido-negros-24afc49d-ba64-4349-82ca-97a1874b64cf"),PCI("1083/10831433/3744-soundcore-space-one-auriculares-inalambricos-con-cancelacion-activa-de-ruido-negros-4ac0018c-90b6-4b5f-97c1-ef641f5cae2a"),PCI("1083/10831433/4597-soundcore-space-one-auriculares-inalambricos-con-cancelacion-activa-de-ruido-negros-a0785e2b-9519-42bf-a8aa-2c131436bfc4")]},
+ {id:"airpods4anc",cat:"audio",name:"Apple AirPods 4（主动降噪版）",price:165.99,pn:"Yeppon",market:null,mnote:"",
+  f:{form:"in",conn:["bt"],anc:true,mic:true,water:true,batt:4},
+  rows:[["形态","半入耳式真无线，无耳塞"],["降噪","主动降噪 + 通透模式"],["续航","开降噪约 4 小时，加充电盒约 20 小时"],["防水","IP54"],["重量","每只 4.3g"]],
+  fit:"不喜欢耳塞的 iPhone 用户",pros:["没有硅胶耳塞，戴着不闷","降噪 + 通透","和苹果设备切换方便"],cons:["半入耳降噪有限","单次续航短"],
+  s:{anc:3,sound:3,game:2,call:4,port:5,val:3},q:"Apple AirPods 4 cancellazione attiva del rumore",src:S("Yeppon","https://www.yeppon.it/products/apple-airpods-4-anc-1270636"),
+  img:[YP("l-airpods-4-1725988386.jpg?v=1777639243"),YP("00-00c4a198842640fbd13558a8ff5f67439d3e35b7.jpg?v=1777639243"),YP("1b-1b58e3a5084ff4d68f1d73f7868b091f3114cdde.jpg?v=1777639243"),YP("1c-1c3e2c3cbd4fbc5f06b2e3b38fad4fa695dd054e.jpg?v=1777639243")]},
+ {id:"momentum4",cat:"audio",name:"Sennheiser Momentum 4 Wireless",price:210.85,pn:"PcComponentes.it（黑色）",market:269,mnote:"建议零售价",
+  f:{form:"over",conn:["bt"],anc:true,mic:true,water:false,batt:60},
+  rows:[["形态","头戴式，42mm 单元"],["降噪","自适应混合降噪"],["连接","蓝牙 5.2，支持 aptX Adaptive"],["续航","约 60 小时"]],
+  fit:"音质优先、长途出行",pros:["音质是这几款里最好的之一","60 小时超长续航","支持 aptX"],cons:["不能折叠","降噪略逊 Sony"],
+  s:{anc:4,sound:5,game:1,call:4,port:3,val:4},q:"Sennheiser Momentum 4 Wireless",src:S("PcComponentes.it",PC_IT("sennheiser-momentum-4-cuffie-bluetooth-wireless-con-cancellazione-del-rumore-bianco")),
+  img:[PCI("1075/10752608/1717-sennheiser-momentum-4-wireless-auriculares-bluetooth-con-cancelacion-de-ruido-blancos"),PCI("1075/10752608/2709-sennheiser-momentum-4-wireless-auriculares-bluetooth-con-cancelacion-de-ruido-blancos-comprar"),PCI("1075/10752608/3652-sennheiser-momentum-4-wireless-auriculares-bluetooth-con-cancelacion-de-ruido-blancos-mejor-precio")]}
+);
+/* add vertical flag to earlier mice */
+Q.forEach(p=>{if(p.cat==="mouse"&&p.f.vert===undefined)p.f.vert=false});
+/* historical low seen in Italian deal news: [price, source, url, date] */
+const HIST={
+ mxkeyss:[67,"Punto Informatico","https://www.punto-informatico.it/logitech-mx-keys-s-prezzo-minimo-storico/",""],
+ mxkeysmini:[57,"HTML.it","https://www.html.it/magazine/sconto-bomba-amazon-logitech-mx-keys-mini-a-meno-di-57-euro/",""],
+ magickb:[173,"Punto Informatico","https://www.punto-informatico.it/apple-magic-keyboard-con-touch-id-e-tastierino-numerico-a-soli-173e-deve-essere-vostra/",""],
+ g305:[32,"Telefonino.net","https://www.telefonino.net/notizie/mouse-logitech-da-gaming-non-esiste-di-meglio-con-appena-32e/",""],
+ lift:[44.99,"TuttoTech","https://www.tuttotech.net/news/2026/09/02/logitech-lift-sabbia-a-4499e-su-amazon-minimo-storico-per-il-mouse-ergonomico.html","2026-09"],
+ mxanywhere3s:[49,"Punto Informatico","https://www.punto-informatico.it/nuovo-minimo-storico-per-logitech-mx-anywhere-3s-diventa-tuo-con-49e/",""],
+ mxmaster3s:[77,"TuttoTech","https://www.tuttotech.net/news/2026/02/04/produttivita-al-top-logitech-mx-master-3s-a-77e-e-lacquisto-obbligato-di-oggi-su-amazon.html/amp","2026-02"],
+ g502xplus:[86.49,"Tom's Hardware","https://www.tomshw.it/offerte/hero-25k-e-lightforce-a-8649eur-logitech-g502-x-plus",""],
+ ch720n:[64,"Tom's Hardware","https://www.tomshw.it/hardware/sony-wh-ch720n-a-64-euro-2026-08-18","2026-08"],
+ cloud3s:[94.99,"Tom's Hardware","https://www.tomshw.it/offerte/settimane-senza-cavo-hyperx-cloud-iii-s-200-ore-a-9499eur",""],
+ airpods4anc:[158,"Punto Informatico","https://www.punto-informatico.it/apple-airpods-4-cancellazione-attiva-rumore-soli-158-euro/",""],
+ jbl520:[29.99,"SmartWorld（不到 €30）","https://www.smartworld.it/tecnologia/jbl-tune-520-bt-cuffie-bluetooth-offerta-prime-day.html",""],
+ xm6:[349,"Tom's Hardware","https://www.tomshw.it/hardware/sony-wh-1000xm6-a-349eur-100eur-in-meno-sulle-cuffie-anc-di-punta-2026-08-20","2026-08"],
+ loq15:[1199,"Tom's Hardware（Prime Day 史低）","https://www.tomshw.it/offerte/lenovo-loq-15-al-minimo-storico-di-1199eur-per-giocare-in-mobilita","2026-10"],
+ nitrov15:[1192.10,"Multiplayer.it（亚马逊史低）","https://multiplayer.it/notizie/il-notebook-acer-nitro-v-15-con-rtx-5060-e-al-minimo-storico-su-amazon.html","2026-10"]
+};
+
+/* ---------- unify computers and peripherals ---------- */
+P.forEach(p=>{
+  p.cat="pc";
+  p.cpuBrand=/Apple/.test(p.cpu)?"Apple":/AMD|Ryzen/.test(p.cpu)?"AMD":/Intel/.test(p.cpu)?"Intel":"other";
+  const g=p.gpu.match(/RTX (\d{4})/);p.gpuNum=g?+g[1]:0;
+  const t=p.storage.match(/(\d+)\s*TB/),gb=p.storage.match(/(\d+)\s*GB/);p.stoGB=t?+t[1]*1024:gb?+gb[1]:0;
+  const sz=p.screen.match(/([\d.]+)"/);p.inch=sz?+sz[1]:null;p.oled=/OLED/.test(p.screen);
+  p.rows=[["处理器",p.cpu],["显卡",p.gpu],["内存",p.ram?p.ram+"GB":"—"],["存储",p.storage],["屏幕",p.screen],["接口",p.ports]];
+  if(p.type==="laptop")p.rows.push(["重量","约 "+p.weight+"kg"],["电池",p.battery]);
+  p.srcObj=SRC[p.src];
+});
+Q.forEach(p=>{p.srcObj=p.src});
+const ALL=[...P,...Q];
+ALL.forEach(p=>{p.save=p.market&&p.market>p.price?Math.round((1-p.price/p.market)*100):0});
+/* recommended buy price: lowest known price +8%, else market price -15%, else current price -10% */
+const roundP=n=>n<100?Math.round(n):n<1000?Math.round(n/5)*5:Math.round(n/10)*10;
+ALL.forEach(p=>{
+  const h=HIST[p.id];p.hist=h?{v:h[0],n:h[1],u:h[2],d:h[3]}:null;
+  const lowKnown=p.hist?Math.min(p.hist.v,p.price):null;p.lowKnown=lowKnown;
+  let r,basis;
+  if(lowKnown){r=lowKnown*1.08;basis="已知最低价 +8%"}else if(p.market&&p.market>p.price){r=p.market*.85;basis="市场价 −15% 估算"}else{r=(p.market||p.price)*.9;basis="现价 −10% 估算"}
+  if(p.market)r=Math.min(r,p.market);
+  p.rec=roundP(r);p.recBasis=basis;p.recFromHist=!!lowKnown;
+  p.verdict=p.price<=p.rec?"good":p.price<=p.rec*1.12?"ok":"wait";
+  p.deal=p.price/p.rec;
+});
+const VERDICT={good:"现在入手合适",ok:"价格还行，可等促销",wait:"偏贵，建议等降价"};
+const byId=Object.fromEntries(ALL.map(p=>[p.id,p]));
+const CONN={wired:"有线",rf:"2.4G 无线",bt:"蓝牙"};
+
+/* ---------- category definitions ---------- */
+const has=(p,k)=>p.f&&p.f[k];
+const CATS={
+ pc:{t:"电脑",unit:"台",b:[250,5000,1000,50],
+  uses:[["study","上课 / 上网",{val:2,bat:1,port:1}],["office","办公文档",{perf:1,bat:1,disp:1,val:1}],["game","打游戏",{gpu:3,perf:1}],["create","剪辑 / 设计",{perf:2,disp:2,gpu:1}],["code","写代码",{perf:2,val:1}],["carry","经常带出门",{port:2,bat:2}]],
+  dims:{perf:"性能强",gpu:"显卡强",port:"轻便",bat:"续航长",disp:"屏幕好",val:"性价比高"},
+  groups:[
+   {k:"type",t:"形态",o:[["laptop","笔记本",p=>p.type==="laptop"],["desktop","台式机",p=>p.type==="desktop"]]},
+   {k:"os",t:"系统",o:[["win","Windows",p=>p.os==="Windows"||p.os==="无系统"],["mac","macOS",p=>p.os==="macOS"],["chrome","ChromeOS",p=>p.os==="ChromeOS"]]},
+   {k:"cpu",t:"处理器",o:[["Intel","Intel",p=>p.cpuBrand==="Intel"],["AMD","AMD",p=>p.cpuBrand==="AMD"],["Apple","Apple",p=>p.cpuBrand==="Apple"]]},
+   {k:"gpu",t:"显卡",o:[["ig","集成显卡",p=>!p.gpuNum],["g60","RTX 5050–5060 Ti",p=>p.gpuNum>=5050&&p.gpuNum<5070],["g70","RTX 5070 / Ti",p=>p.gpuNum>=5070&&p.gpuNum<5080],["g80","RTX 5080 / 5090",p=>p.gpuNum>=5080]]},
+   {k:"ram",t:"内存",o:[["r8","8GB 及以下",p=>(p.ram||0)<=8],["r16","16GB",p=>p.ram===16],["r32","24–32GB",p=>p.ram>=24&&p.ram<=32],["r36","36GB 以上",p=>p.ram>=36]]},
+   {k:"sto",t:"存储",o:[["s5","512GB 及以下",p=>p.stoGB<=512],["s1","1TB",p=>p.stoGB===1024],["s2","2TB 以上",p=>p.stoGB>=2048]]},
+   {k:"scr",t:"屏幕",o:[["sm","14 寸及以下",p=>p.inch&&p.inch<=14.5],["md","15–16 寸",p=>p.inch>=15&&p.inch<=16.05],["lg","16 寸以上",p=>p.inch>16.05],["oled","OLED",p=>p.oled]]},
+   {k:"wt",t:"重量（笔记本）",o:[["w1","1.4kg 以内",p=>p.type==="laptop"&&p.weight<=1.4],["w2","1.4–2kg",p=>p.type==="laptop"&&p.weight>1.4&&p.weight<=2],["w3","2kg 以上",p=>p.type==="laptop"&&p.weight>2]]}],
+  presets:[["stu","学生","上课写论文",{b:800,u:["study","office","carry"],s:{type:["laptop"]}}],["thin","轻薄办公","天天带出门",{b:1500,u:["office","carry"],s:{type:["laptop"],wt:["w1"]}}],
+   ["game","游戏","1080p / 2K",{b:1600,u:["game"],s:{gpu:["g60","g70","g80"]}}],["cre","剪辑设计","大内存好屏",{b:2500,u:["create"],s:{ram:["r32","r36"]}}],
+   ["dev","写代码","多开不卡",{b:1800,u:["code","carry"],s:{ram:["r16","r32","r36"]}}],["mac","苹果生态","配合 iPhone",{b:2000,u:["office","create"],s:{os:["mac"]}}]],
+  tags:p=>[p.type==="laptop"?(p.form==="tablet"?"二合一":"笔记本"):({mini:"迷你主机",aio:"一体机"}[p.form]||"台式机"),p.os,p.gpuNum?"RTX "+p.gpuNum:"",p.ram?p.ram+"GB":"",p.stoGB?(p.stoGB>=1024?p.stoGB/1024+"TB":p.stoGB+"GB"):"",p.inch?p.inch+" 寸"+(p.oled?" OLED":""):"",p.weight?p.weight+"kg":""]},
+ kb:{t:"键盘",unit:"款",b:[20,400,300,5],
+  uses:[["office","办公打字",{type:2,quiet:1,val:1}],["game","打游戏",{game:3,type:1}],["code","写代码",{type:2,val:1}],["carry","带出门 / 多设备",{port:3,val:1}],["quiet","需要安静",{quiet:3}]],
+  dims:{type:"打字手感好",game:"适合游戏",port:"便携",quiet:"安静",val:"性价比高"},
+  groups:[
+   {k:"conn",t:"连接",o:[["wired","有线",p=>p.f.conn.includes("wired")],["rf","2.4G 无线",p=>p.f.conn.includes("rf")],["bt","蓝牙",p=>p.f.conn.includes("bt")]]},
+   {k:"sw",t:"按键",o:[["mech","机械轴",p=>p.f.sw==="mech"],["mag","磁轴 / 快速触发",p=>p.f.sw==="mag"],["scissor","剪刀脚 / 低键程",p=>p.f.sw==="scissor"],["membrane","薄膜",p=>p.f.sw==="membrane"]]},
+   {k:"size",t:"尺寸",o:[["full","全尺寸带数字键",p=>p.f.size==="full"],["tkl","TKL / 75%",p=>p.f.size==="tkl"||p.f.size==="75"],["compact","紧凑",p=>p.f.size==="compact"||p.f.size==="75"]]},
+   {k:"ext",t:"功能",o:[["bl","背光",p=>p.f.bl],["multi","多设备切换",p=>p.f.multi],["hot","热插拔换轴",p=>p.f.hot],["mac","适配 Mac",p=>p.f.mac]]}],
+  presets:[["kq","安静办公","打字不吵",{b:200,u:["office","quiet"],s:{}}],["kg","游戏","机械轴",{b:300,u:["game"],s:{sw:["mech"]}}],["kc","随身多设备","平板手机电脑",{b:60,u:["carry"],s:{ext:["multi"]}}],["km","Mac 用户","苹果电脑",{b:250,u:["office"],s:{ext:["mac"]}}]],
+  tags:p=>[...p.f.conn.map(c=>CONN[c]),({mech:"机械轴",mag:"磁轴",scissor:"剪刀脚",membrane:"薄膜"})[p.f.sw],{full:"全尺寸",tkl:"TKL",75:"75%",compact:"紧凑"}[p.f.size],p.f.bl?"背光":"",p.f.hot?"热插拔":""]},
+ mouse:{t:"鼠标",unit:"款",b:[20,250,200,5],
+  uses:[["office","办公",{ergo:2,quiet:1,val:1}],["game","打游戏",{game:3}],["design","修图 / 设计",{ergo:2,game:1}],["carry","带出门",{port:3,val:1}]],
+  dims:{ergo:"握着舒服",game:"游戏性能好",port:"便携",quiet:"安静",val:"性价比高"},
+  groups:[
+   {k:"conn",t:"连接",o:[["wired","有线",p=>p.f.conn.includes("wired")],["rf","2.4G 无线",p=>p.f.conn.includes("rf")],["bt","蓝牙",p=>p.f.conn.includes("bt")]]},
+   {k:"wt",t:"重量",o:[["l","70g 以内",p=>p.f.wt&&p.f.wt<=70],["m","70–110g",p=>p.f.wt>70&&p.f.wt<=110],["h","110g 以上",p=>p.f.wt>110]]},
+   {k:"ext",t:"功能",o:[["silent","静音点击",p=>p.f.silent],["multi","多设备切换",p=>p.f.multi],["prog","可编程侧键",p=>p.f.prog],["vert","垂直人体工学",p=>p.f.vert]]}],
+  presets:[["mo","办公","舒服安静",{b:150,u:["office"],s:{}}],["mg","游戏","轻、准",{b:200,u:["game"],s:{}}],["mc","带出门","小巧",{b:120,u:["carry"],s:{}}]],
+  tags:p=>[...p.f.conn.map(c=>CONN[c]),p.f.wt?p.f.wt+"g":"",p.f.silent?"静音":"",p.f.multi?"多设备":""]},
+ audio:{t:"耳机",unit:"款",b:[30,500,400,10],
+  uses:[["commute","通勤出行",{anc:3,port:1,sound:1}],["game","打游戏",{game:3,call:1}],["meeting","网课 / 会议",{call:3,anc:1}],["sport","运动",{port:3,val:1}],["music","听音乐",{sound:3,anc:1}]],
+  dims:{anc:"降噪强",sound:"音质好",game:"适合游戏",call:"通话清楚",port:"便携",val:"性价比高"},
+  groups:[
+   {k:"form",t:"形态",o:[["over","头戴式",p=>p.f.form==="over"],["on","贴耳式",p=>p.f.form==="on"],["in","入耳式",p=>p.f.form==="in"]]},
+   {k:"conn",t:"连接",o:[["bt","蓝牙",p=>p.f.conn.includes("bt")],["rf","2.4G 低延迟",p=>p.f.conn.includes("rf")],["wired","可插线 3.5mm",p=>p.f.conn.includes("wired")]]},
+   {k:"ext",t:"功能",o:[["anc","主动降噪",p=>p.f.anc],["mic","带麦克风",p=>p.f.mic],["water","防水",p=>p.f.water]]},
+   {k:"batt",t:"单次续航",o:[["b24","24 小时以上",p=>p.f.batt>=24],["b50","50 小时以上",p=>p.f.batt>=50]]}],
+  presets:[["ac","通勤降噪","地铁飞机",{b:400,u:["commute"],s:{ext:["anc"]}}],["ag","游戏","低延迟",{b:200,u:["game"],s:{}}],["am","网课会议","通话清楚",{b:250,u:["meeting"],s:{ext:["mic"]}}],["as","运动","防水入耳",{b:300,u:["sport"],s:{form:["in"]}}]],
+  tags:p=>[{over:"头戴式",on:"贴耳式",in:"入耳式"}[p.f.form],...p.f.conn.map(c=>CONN[c]),p.f.anc?"主动降噪":"",p.f.batt?p.f.batt+" 小时":"",p.f.water?"防水":""]}
+};
+const ORDER=["pc","kb","mouse","audio"];
+const DEALGROUP={k:"deal",t:"价格状态",o:[["good","现在入手合适",p=>p.verdict==="good"],["okp","合适或还行",p=>p.verdict!=="wait"],["hist","有历史低价数据",p=>!!p.hist]]};
+ORDER.forEach(c=>CATS[c].groups.push(DEALGROUP));
+
+/* ---------- state ---------- */
+const fresh=c=>({budget:CATS[c].b[2],uses:new Set(c==="pc"?["study","office"]:[CATS[c].uses[0][0]]),sel:Object.fromEntries(CATS[c].groups.map(g=>[g.k,new Set()])),presets:new Set()});
+const state={cats:new Set(["pc","kb","mouse","audio"]),c:Object.fromEntries(ORDER.map(c=>[c,fresh(c)])),open:"pc",cmp:[],allCat:"all",sort:"asc"};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const money=n=>n.toLocaleString("en-US",{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2});
+
+function applyPresets(c){
+  const cs=state.c[c],def=CATS[c];
+  if(!cs.presets.size){const f=fresh(c);cs.budget=f.budget;cs.uses=f.uses;return}
+  const ps=def.presets.filter(x=>cs.presets.has(x[0]));
+  cs.budget=Math.max(...ps.map(x=>x[3].b));cs.uses=new Set(ps.flatMap(x=>x[3].u));
 }
+const passSel=(p,def,sel)=>def.groups.every(g=>{const s=sel[g.k];if(!s||!s.size)return true;return g.o.some(o=>s.has(o[0])&&o[2](p))});
+function eligible(p){
+  const cs=state.c[p.cat],def=CATS[p.cat];
+  if(p.price>cs.budget*1.05)return false;
+  if(!passSel(p,def,cs.sel))return false;
+  if(!cs.presets.size)return true;
+  return def.presets.filter(x=>cs.presets.has(x[0])).some(x=>passSel(p,def,Object.fromEntries(Object.entries(x[3].s).map(([k,v])=>[k,new Set(v)]))));
+}
+function score(p){
+  const cs=state.c[p.cat],def=CATS[p.cat];
+  const uses=cs.uses.size?[...cs.uses]:[def.uses[0][0]];
+  const w={};uses.forEach(u=>Object.entries(def.uses.find(x=>x[0]===u)[2]).forEach(([k,v])=>{w[k]=(w[k]||0)+v}));
+  let s=0,max=0;Object.entries(w).forEach(([k,v])=>{s+=v*(p.s[k]||0);max+=v*5});
+  let r=s/max;
+  if(p.cat==="pc"){if(p.os==="ChromeOS"&&(cs.uses.has("game")||cs.uses.has("code")||cs.uses.has("create")))r-=.35;if(p.os==="macOS"&&cs.uses.has("game"))r-=.12;if(cs.uses.has("code")&&(p.ram||8)<16)r-=.1}
+  r+=.06*Math.min(1,p.price/cs.budget)+.04*Math.min(1,p.save/30);
+  const strong=Object.keys(w).sort((a,b)=>w[b]-w[a]).filter(k=>(p.s[k]||0)>=4).map(k=>def.dims[k]);
+  if(p.save>=10)strong.push("比市场价便宜 "+p.save+"%");
+  if(p.verdict==="good"){r+=.03;strong.push("现价已到推荐入手价")}
+  return {r:Math.max(0,Math.min(1,r)),strong};
+}
+function summary(c){
+  const cs=state.c[c],def=CATS[c],parts=["€"+money(cs.budget)+" 内"];
+  if(cs.presets.size)parts.push(def.presets.filter(x=>cs.presets.has(x[0])).map(x=>x[1]).join(" + "));
+  const u=[...cs.uses].map(k=>def.uses.find(x=>x[0]===k)[1]);if(u.length)parts.push(u.join("、"));
+  def.groups.forEach(g=>{const s=cs.sel[g.k];if(s.size)parts.push(g.o.filter(o=>s.has(o[0])).map(o=>o[1]).join(" / "))});
+  return parts.join(" · ");
+}
+
+/* ---------- images ---------- */
+const img={ok:0,bad:0,dead:new Set()};
+const SK={laptop:'<rect x="30" y="14" width="140" height="88" rx="6" fill="none" stroke="currentColor" stroke-width="4"/><rect x="40" y="24" width="120" height="68" rx="2" fill="currentColor" opacity=".12"/><path d="M12 108h176l-10 12H22z" fill="currentColor" opacity=".55"/>',
+ tablet:'<rect x="36" y="12" width="128" height="84" rx="8" fill="none" stroke="currentColor" stroke-width="4"/><rect x="46" y="22" width="108" height="64" rx="2" fill="currentColor" opacity=".12"/><path d="M30 104h140l-6 10H36z" fill="currentColor" opacity=".45"/>',
+ tower:'<rect x="66" y="8" width="68" height="112" rx="6" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="100" cy="44" r="16" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="100" cy="86" r="16" fill="none" stroke="currentColor" stroke-width="3"/>',
+ mini:'<rect x="46" y="54" width="108" height="44" rx="10" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="66" cy="76" r="4" fill="currentColor"/><rect x="104" y="73" width="36" height="6" rx="3" fill="currentColor" opacity=".5"/>',
+ aio:'<rect x="22" y="10" width="156" height="92" rx="6" fill="none" stroke="currentColor" stroke-width="4"/><rect x="32" y="20" width="136" height="66" rx="2" fill="currentColor" opacity=".12"/><path d="M88 102h24l6 16H82z" fill="currentColor" opacity=".55"/>',
+ kb:'<rect x="14" y="40" width="172" height="58" rx="8" fill="none" stroke="currentColor" stroke-width="4"/>'+[0,1,2].map(r=>Array.from({length:10},(_,i)=>`<rect x="${24+i*16}" y="${50+r*14}" width="11" height="9" rx="2" fill="currentColor" opacity=".45"/>`).join("")).join(""),
+ mouse:'<rect x="74" y="18" width="52" height="92" rx="26" fill="none" stroke="currentColor" stroke-width="4"/><path d="M100 18v34M74 52h52" stroke="currentColor" stroke-width="3"/><rect x="96" y="28" width="8" height="14" rx="4" fill="currentColor" opacity=".55"/>',
+ audio:'<path d="M44 86V70a56 56 0 0 1 112 0v16" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><rect x="32" y="78" width="28" height="40" rx="10" fill="currentColor" opacity=".55"/><rect x="140" y="78" width="28" height="40" rx="10" fill="currentColor" opacity=".55"/>'};
+const shape=p=>p.cat==="pc"?p.form:p.cat;
+const sketch=p=>`<div class="sketch"><svg viewBox="0 0 200 128" aria-hidden="true">${SK[shape(p)]||""}</svg><small>示意图 · <a href="https://www.google.com/search?tbm=isch&q=${encodeURIComponent(p.q)}" target="_blank" rel="noopener">看实物图</a></small></div>`;
 function gallery(p){
   const list=p.img.filter(u=>!img.dead.has(u));
   if(!list.length)return `<div class="gal" data-n="0">${sketch(p)}</div>`;
-  return `<div class="gal" data-id="${p.id}" data-n="${list.length}">
-    <div class="track">${list.map((u,i)=>`<div class="slide" data-i="${i}"><img src="${esc(u)}" alt="${esc(p.name)} 图 ${i+1}" ${i?'loading="lazy"':""} referrerpolicy="no-referrer" decoding="async"></div>`).join("")}</div>
-    <span class="gcount">1/${list.length}</span>
-    <button type="button" class="gnav prev" aria-label="上一张">‹</button><button type="button" class="gnav next" aria-label="下一张">›</button>
-    <div class="dots">${list.map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div></div>`;
+  return `<div class="gal" data-id="${p.id}" data-n="${list.length}"><div class="track">${list.map((u,i)=>`<div class="slide"><img src="${esc(u)}" alt="${esc(p.name)} 图 ${i+1}" ${i?'loading="lazy"':""} referrerpolicy="no-referrer" decoding="async"></div>`).join("")}</div>
+   <span class="gcount">1/${list.length}</span><button type="button" class="gnav prev" aria-label="上一张">‹</button><button type="button" class="gnav next" aria-label="下一张">›</button>
+   <div class="dots">${list.map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div></div>`;
 }
 function syncGal(g){
-  const t=g.querySelector(".track");if(!t)return;
-  const n=t.children.length;g.dataset.n=n;
-  if(!n){const p=byId[g.dataset.id];g.outerHTML=`<div class="gal" data-n="0">${sketch(p)}</div>`;return}
+  const t=g.querySelector(".track");if(!t)return;const n=t.children.length;g.dataset.n=n;
+  if(!n){g.outerHTML=`<div class="gal" data-n="0">${sketch(byId[g.dataset.id])}</div>`;return}
   const i=Math.round(t.scrollLeft/Math.max(1,t.clientWidth));
   const c=g.querySelector(".gcount");if(c)c.textContent=`${Math.min(i+1,n)}/${n}`;
   const d=g.querySelector(".dots");if(d){if(d.children.length!==n)d.innerHTML=Array.from({length:n},()=>"<i></i>").join("");[...d.children].forEach((e,k)=>e.classList.toggle("on",k===i))}
 }
 document.addEventListener("error",e=>{
-  const el=e.target;if(!(el instanceof HTMLImageElement))return;
-  const src=el.getAttribute("src");
-  if(el.id==="lbImg"){return}
+  const el=e.target;if(!(el instanceof HTMLImageElement)||el.id==="lbImg")return;
   if(el.closest("thead")){el.remove();return}
   const slide=el.closest(".slide");if(!slide)return;
-  img.bad++;img.dead.add(src);
-  const g=slide.closest(".gal");slide.remove();syncGal(g);
+  img.bad++;img.dead.add(el.getAttribute("src"));const g=slide.closest(".gal");slide.remove();syncGal(g);
   if(img.bad>=6&&img.ok===0)$("#imgNotice").hidden=false;
 },true);
 document.addEventListener("load",e=>{if(e.target instanceof HTMLImageElement&&e.target.closest(".slide")){img.ok++;$("#imgNotice").hidden=true}},true);
 document.addEventListener("scroll",e=>{const t=e.target;if(t.classList&&t.classList.contains("track"))syncGal(t.closest(".gal"))},true);
 
-function chips(el,list,isOn,onTap){
-  el.innerHTML="";
-  list.forEach(([k,t])=>{const b=document.createElement("button");b.type="button";b.className="chip";b.textContent=t;
-    b.setAttribute("aria-pressed",isOn(k)?"true":"false");b.onclick=()=>onTap(k);el.append(b)});
+/* ---------- console ---------- */
+const ICON={pc:SK.laptop,kb:SK.kb,mouse:SK.mouse,audio:SK.audio};
+function chips(list,isOn,attr){return list.map(([k,t])=>`<button type="button" class="chip" ${attr}="${k}" aria-pressed="${isOn(k)}">${esc(t)}</button>`).join("")}
+function drawConsole(){
+  $("#cats").innerHTML=ORDER.map(c=>`<button type="button" class="cat" data-cat="${c}" aria-pressed="${state.cats.has(c)}"><svg viewBox="0 0 200 128" aria-hidden="true">${ICON[c]}</svg>${CATS[c].t}</button>`).join("");
+  $("#blocks").innerHTML=ORDER.filter(c=>state.cats.has(c)).map(c=>{
+    const cs=state.c[c],def=CATS[c],n=ALL.filter(p=>p.cat===c&&eligible(p)).length;
+    return `<details class="block" data-block="${c}" ${state.open===c?"open":""}><summary><b>${def.t}</b><span>${esc(summary(c))}</span></summary><div class="block-body">
+      <div class="field"><span class="label">快速开始 <span>可叠加，满足任一即可</span></span><div class="presets">${def.presets.map(x=>`<button type="button" class="preset" data-preset="${c}:${x[0]}" aria-pressed="${cs.presets.has(x[0])}"><b>${x[1]}</b>${x[2]}</button>`).join("")}</div></div>
+      <div class="field"><span class="label">最高预算 <span>可超出 5%</span></span><div class="budget"><output class="tech" id="bo-${c}">€${money(cs.budget)}</output><input type="range" data-budget="${c}" min="${def.b[0]}" max="${def.b[1]}" step="${def.b[3]}" value="${cs.budget}" aria-label="${def.t}预算"></div></div>
+      <div class="field"><span class="label">用途 <span>可多选</span></span><div class="seg">${chips(def.uses.map(u=>[u[0],u[1]]),k=>cs.uses.has(k),`data-use="${c}" data-k`)}</div></div>
+      ${def.groups.map(g=>`<div class="field"><span class="label">${g.t}</span><div class="seg">${chips(g.o.map(o=>[o[0],o[1]]),k=>cs.sel[g.k].has(k),`data-sel="${c}:${g.k}" data-k`)}</div></div>`).join("")}
+      <div class="blockfoot"><span>符合条件 <b>${n}</b> ${def.unit}</span><button type="button" class="linkbtn" data-reset="${c}">重置${def.t}</button></div>
+    </div></details>`}).join("")||`<div class="empty">先在上面选要买的东西</div>`;
+  $("#needSum").textContent=ORDER.filter(c=>state.cats.has(c)).map(c=>CATS[c].t+" €"+money(state.c[c].budget)).join(" ｜ ")||"还没选要买什么";
 }
-function drawControls(){
-  chips($("#typeSeg"),TYPES,k=>state.type===k,k=>{state.type=k;drawControls();drawRec()});
-  chips($("#osSeg"),OSES,k=>state.os===k,k=>{state.os=k;drawControls();drawRec()});
-  chips($("#useSeg"),USES,k=>state.uses.has(k),k=>{state.uses.has(k)?state.uses.delete(k):state.uses.add(k);drawControls();drawRec()});
-  chips($("#allSeg"),TYPES.map(([k,t])=>[k,k==="any"?"全部":t]),k=>state.allType===k,k=>{state.allType=k;drawControls();drawAll()});
+function updateBlockHead(c){
+  const blk=document.querySelector(`[data-block="${c}"]`);if(!blk)return;
+  blk.querySelector("summary span").textContent=summary(c);
+  blk.querySelector(".blockfoot b").textContent=ALL.filter(p=>p.cat===c&&eligible(p)).length;
 }
 
-const W={study:{val:2,bat:1,port:1},office:{perf:1,bat:1,disp:1,val:1},game:{gpu:3,perf:1},create:{perf:2,disp:2,gpu:1},code:{perf:2,val:1},carry:{port:2,bat:2}};
-const LBL={perf:"性能强",gpu:"显卡强",port:"轻便",bat:"续航长",disp:"屏幕好",val:"性价比高"};
-function score(p){
-  if(state.type!=="any"&&p.type!==state.type)return null;
-  if(!osOk(p,state.os))return null;
-  if(p.price>state.budget*1.05)return null;
-  const uses=state.uses.size?[...state.uses]:["office"];
-  let s=0,max=0;const w={};
-  uses.forEach(u=>Object.entries(W[u]).forEach(([k,v])=>{w[k]=(w[k]||0)+v}));
-  Object.entries(w).forEach(([k,v])=>{s+=v*p.s[k];max+=v*5});
-  let r=s/max;
-  if(p.os==="ChromeOS"&&(state.uses.has("game")||state.uses.has("code")||state.uses.has("create")))r-=.35;
-  if(p.os==="macOS"&&state.uses.has("game"))r-=.12;
-  if(state.uses.has("code")&&(p.ram||8)<16)r-=.1;
-  r+=.08*Math.min(1,p.price/state.budget);
-  const strong=Object.keys(w).sort((a,b)=>w[b]-w[a]).filter(k=>p.s[k]>=4).map(k=>LBL[k]);
-  return {r,strong};
+/* ---------- cards ---------- */
+function priceBox(p){
+  const hi=Math.max(p.market||0,p.price,p.rec)*1.03,lo=Math.min(p.lowKnown||p.rec,p.rec,p.price)*.94,pct=v=>Math.max(0,Math.min(100,(v-lo)/(hi-lo)*100));
+  const zoneL=pct(p.lowKnown||lo),zoneR=pct(p.rec);
+  return `<div class="pricebox">
+    <div class="pb-top"><div><span class="lbl">现价 · 找到的最低报价</span><span class="low"><small>€</small>${money(p.price)}</span></div><span class="verdict ${p.verdict}">${VERDICT[p.verdict]}</span></div>
+    <div class="ruler" role="img" aria-label="现价在推荐区间中的位置"><span class="bar"></span><span class="zone" style="left:${zoneL}%;width:${Math.max(2,zoneR-zoneL)}%"></span><span class="rec" style="left:${zoneR}%"></span><span class="now" style="left:${pct(p.price)}%"></span></div>
+    <dl class="pb-grid">
+      <div><dt>历史低价</dt>${p.hist?`<dd>€${money(p.hist.v)}</dd>`:`<dd class="na">暂无数据</dd>`}</div>
+      <div><dt>推荐入手价</dt><dd class="rec">≤ €${money(p.rec)}</dd></div>
+      <div><dt>市场价</dt>${p.market?`<dd>${p.save?`<s>€${money(p.market)}</s><em>省 ${p.save}%</em>`:"€"+money(p.market)}</dd>`:`<dd class="na">暂无</dd>`}</div>
+    </dl>
+    <p class="note">现价：${esc(p.pn)}${p.market&&p.mnote?`；市场价：${esc(p.mnote)}`:""}${p.hist?`；历史低价：<a href="${p.hist.u}" target="_blank" rel="noopener">${esc(p.hist.n)}</a>${p.hist.d?"（"+p.hist.d+"）":""}`:""}；推荐价按${p.recBasis}。</p>
+  </div>`;
 }
 function links(p){
   const q=encodeURIComponent(p.q);
-  let h=`<a href="https://www.amazon.it/s?k=${q}" target="_blank" rel="noopener">亚马逊</a><a href="https://www.idealo.it/MainSearchProductCategory.html?q=${q}" target="_blank" rel="noopener">idealo 比价</a>`;
-  if(p.apple)h+=`<a href="${p.apple}" target="_blank" rel="noopener">Apple 官网</a>`;
+  let h=`<a class="primary" href="https://www.amazon.it/s?k=${q}" target="_blank" rel="noopener">亚马逊</a><a href="https://www.idealo.it/MainSearchProductCategory.html?q=${q}" target="_blank" rel="noopener">比价</a>`;
+  if(p.apple)h+=`<a href="${p.apple}" target="_blank" rel="noopener">官网</a>`;
   return h;
 }
-function card(p,extra){
-  const on=state.cmp.includes(p.id);
-  const rows=[["处理器",p.cpu],["显卡",p.gpu],["内存",p.ram?p.ram+"GB":"—"],["存储",p.storage],["屏幕",p.screen],["接口",p.ports]];
-  if(p.type==="laptop")rows.push(["重量","约 "+p.weight+"kg"],["电池",p.battery]);
-  return `<article class="item${extra?" pick":""}">${gallery(p)}<div class="body">
-  <div class="item-head"><div>${extra?`<span class="rank">${esc(extra.rank)}</span>`:""}<div class="kind">${kindName(p)} · ${p.os}</div><h3>${esc(p.name)}</h3></div>
-  <div class="price" aria-label="价格 ${fmt(p.price)}"><small>€</small>${fmt(p.price).slice(1)}</div></div>
-  <div class="pnote">${esc(p.pn)}</div>
-  ${extra&&extra.why?`<p class="why"><b>为什么推荐：</b>${esc(extra.why)}</p>`:""}
-  <dl class="specs">${rows.map(([k,v])=>`<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl>
-  <p class="fit"><b>适合：</b>${esc(p.fit)}</p>
-  <div class="pc"><ul class="pros">${p.pros.map(x=>`<li>${esc(x)}</li>`).join("")}</ul><ul class="cons">${p.cons.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
-  <div class="actions">${links(p)}<button type="button" class="cmp" data-cmp="${p.id}" aria-pressed="${on}">${on?"已加入对比":"加入对比"}</button></div>
-  <div class="src">价格来源：<a href="${SRC[p.src].u}" target="_blank" rel="noopener">${esc(SRC[p.src].n)}</a></div>
-  </div></article>`;
+function card(p,x){
+  const on=state.cmp.includes(p.id),def=CATS[p.cat];
+  const tags=def.tags(p).filter(Boolean);
+  return `<article class="item glass">${gallery(p)}<div class="body">
+    ${x?`<div class="rankrow"><span class="rank">NO.${String(x.i).padStart(2,"0")}</span><span class="match">匹配度 <i><b style="width:${Math.round(x.r*100)}%"></b></i><span class="tech">${Math.round(x.r*100)}%</span></span></div>`:""}
+    <div><div class="kind">${def.t}${p.cat==="pc"?" · "+esc(p.os):""}</div><h3>${esc(p.name)}</h3></div>
+    ${priceBox(p)}
+    <p class="why"><b>${x?"推荐理由":"适合"}：</b>${esc(x?x.why:p.fit)}</p>
+    <div class="tags">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div>
+    <div class="actions">${links(p)}<button type="button" class="cmp" data-cmp="${p.id}" aria-pressed="${on}">${on?"已加入对比":"＋ 对比"}</button></div>
+    <details class="more"><summary>完整配置和优缺点</summary>
+      <dl class="specs">${p.rows.map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}</dl>
+      <div class="pc"><ul class="pros">${p.pros.map(z=>`<li>${esc(z)}</li>`).join("")}</ul><ul class="cons">${p.cons.map(z=>`<li>${esc(z)}</li>`).join("")}</ul></div>
+      <div class="src">价格来源：<a href="${p.srcObj.u}" target="_blank" rel="noopener">${esc(p.srcObj.n)}</a></div>
+    </details></div></article>`;
 }
-function drawRec(){
-  const picks=P.map(p=>({p,sc:score(p)})).filter(x=>x.sc).sort((a,b)=>b.sc.r-a.sc.r).slice(0,3);
-  const useTxt=state.uses.size?[...state.uses].map(u=>USES.find(x=>x[0]===u)[1]).join("、"):"日常办公";
-  $("#recSub").textContent=`预算 ${fmt(state.budget)} 以内 · ${useTxt}`;
-  $("#recGrid").innerHTML=picks.length?picks.map((x,i)=>card(x.p,{rank:"第 "+(i+1)+" 推荐",why:(x.sc.strong.length?x.sc.strong.join("、")+"，":"")+"符合你选的用途"})).join("")
-    :`<div class="empty">这个预算和条件下没有收录的型号。试试提高预算，或者把系统改成“不限”。</div>`;
+function drawRecs(only){
+  const cats=ORDER.filter(c=>state.cats.has(c));
+  if(!cats.length){$("#recs").innerHTML=`<div class="empty glass">在左边选要买的东西，这里就会出现推荐。</div>`;return}
+  if(only&&document.getElementById("rec-"+only)){document.getElementById("rec-"+only).outerHTML=recSection(only);return}
+  $("#recs").innerHTML=cats.map(recSection).join("");
+}
+function recSection(c){
+  const def=CATS[c];
+  const picks=ALL.filter(p=>p.cat===c&&eligible(p)).map(p=>({p,sc:score(p)})).sort((a,b)=>b.sc.r-a.sc.r).slice(0,5);
+  return `<section id="rec-${c}"><div class="sec-head"><h2>${def.t} · 推荐 ${picks.length} ${def.unit} <small>TOP 5</small></h2><p>${esc(summary(c))}</p></div>
+    <div class="row scroll">${picks.length?picks.map((x,i)=>card(x.p,{i:i+1,r:x.sc.r,why:(x.sc.strong.length?x.sc.strong.join("、")+"，":"")+"符合你的需求"})).join("")
+      :`<div class="empty glass">没有同时满足这些条件的${def.t}。试试提高预算，或者少选几个条件。</div>`}</div></section>`;
 }
 function drawAll(){
-  const list=P.filter(p=>state.allType==="any"||p.type===state.allType).sort((a,b)=>state.sort==="asc"?a.price-b.price:b.price-a.price);
-  $("#allGrid").innerHTML=list.map(p=>card(p)).join("");
+  $("#allSeg").innerHTML=chips([["all","全部"],...ORDER.map(c=>[c,CATS[c].t])],k=>state.allCat===k,"data-allcat");
+  const f={asc:(a,b)=>a.price-b.price,desc:(a,b)=>b.price-a.price,save:(a,b)=>b.save-a.save||a.price-b.price,deal:(a,b)=>a.deal-b.deal}[state.sort];
+  $("#allGrid").innerHTML=ALL.filter(p=>state.allCat==="all"||p.cat===state.allCat).sort(f).map(p=>card(p)).join("");
 }
-function syncCmpButtons(){
-  document.querySelectorAll("[data-cmp]").forEach(b=>{const on=state.cmp.includes(b.dataset.cmp);b.setAttribute("aria-pressed",on);b.textContent=on?"已加入对比":"加入对比"});
-}
+function syncCmpButtons(){document.querySelectorAll("[data-cmp]").forEach(b=>{const on=state.cmp.includes(b.dataset.cmp);b.setAttribute("aria-pressed",on);b.textContent=on?"已加入对比":"＋ 对比"})}
 function drawCmp(){
   const ps=state.cmp.map(id=>byId[id]);
-  $("#cbar").hidden=!ps.length;
-  $("#cbarNames").textContent=ps.length?`对比 ${ps.length}/3：`+ps.map(p=>p.name).join("、"):"";
-  if(!ps.length){$("#cmpOut").innerHTML=`<div class="empty">还没有选择要对比的电脑</div>`;return}
-  const minP=Math.min(...ps.map(p=>p.price)),maxR=Math.max(...ps.map(p=>p.ram||0));
-  const row=(k,f,cls)=>`<tr><th scope="row">${k}</th>${ps.map(p=>`<td class="${cls||""}">${f(p)}</td>`).join("")}</tr>`;
-  const sc=k=>p=>"●".repeat(p.s[k])+"○".repeat(5-p.s[k]);
+  $("#cbar").hidden=!ps.length;$("#cbarNames").textContent=ps.length?`对比 ${ps.length} 款：`+ps.map(p=>p.name).join("、"):"";
+  if(!ps.length){$("#cmpOut").innerHTML=`<div class="empty glass">还没有选择要对比的产品</div>`;return}
   const first=p=>p.img.find(u=>!img.dead.has(u));
-  $("#cmpOut").innerHTML=`<div class="table-wrap"><table>
-   <thead><tr><th></th>${ps.map(p=>`<th scope="col">${first(p)?`<img src="${esc(first(p))}" alt="" referrerpolicy="no-referrer">`:""}${esc(p.name)}</th>`).join("")}</tr></thead><tbody>
-   ${row("价格",p=>`<span class="${p.price===minP&&ps.length>1?"best":""}">${fmt(p.price)}</span><br><small>${esc(p.pn)}</small>`,"mono")}
-   ${row("类型",p=>kindName(p)+" · "+p.os)}
-   ${row("处理器",p=>esc(p.cpu),"mono")}
-   ${row("显卡",p=>esc(p.gpu),"mono")}
-   ${row("内存",p=>p.ram?`<span class="${p.ram===maxR&&ps.length>1?"best":""}">${p.ram}GB</span>`:"—","mono")}
-   ${row("存储",p=>esc(p.storage),"mono")}
-   ${row("屏幕",p=>esc(p.screen),"mono")}
-   ${row("接口",p=>esc(p.ports),"mono")}
-   ${row("重量",p=>p.weight?p.weight+"kg":"—","mono")}
-   ${row("电池",p=>p.battery?esc(p.battery):"—","mono")}
-   ${row("性能",sc("perf"),"mono")}
-   ${row("游戏",sc("gpu"),"mono")}
-   ${row("性价比",sc("val"),"mono")}
-   ${row("适合",p=>esc(p.fit))}
-   ${row("优点",p=>`<ul>${p.pros.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`)}
-   ${row("缺点",p=>`<ul>${p.cons.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`)}
-   ${row("购买",p=>`<div class="actions">${links(p)}</div>`)}
-   </tbody></table></div><p class="hint" style="margin-top:8px">性能、游戏、性价比是按收录型号相互比较的 5 分制，仅作参考。</p>`;
+  $("#cmpOut").innerHTML=ORDER.map(c=>{
+    const g=ps.filter(p=>p.cat===c);if(!g.length)return "";
+    const minP=Math.min(...g.map(p=>p.price));
+    const keys=[...new Set(g.flatMap(p=>p.rows.map(r=>r[0])))];
+    const row=(k,f)=>`<tr><th scope="row">${k}</th>${g.map(p=>`<td>${f(p)}</td>`).join("")}</tr>`;
+    return `<div class="cmpgroup"><h3>${CATS[c].t}</h3><div class="table-wrap glass"><table><thead><tr><th></th>${g.map(p=>`<th scope="col">${first(p)?`<img src="${esc(first(p))}" alt="" referrerpolicy="no-referrer">`:""}${esc(p.name)}</th>`).join("")}</tr></thead><tbody>
+      ${row("最低价",p=>`<span class="tech ${p.price===minP&&g.length>1?"best":""}">€${money(p.price)}</span>`)}
+      ${row("市场价",p=>p.market?`<span class="tech">€${money(p.market)}</span>${p.save?" · 省 "+p.save+"%":""}`:"暂无")}
+      ${row("历史低价",p=>p.hist?`<span class="tech">€${money(p.hist.v)}</span>`:"暂无")}
+      ${row("推荐入手价",p=>`<span class="tech">≤ €${money(p.rec)}</span><br><small>${VERDICT[p.verdict]}</small>`)}
+      ${keys.map(k=>row(esc(k),p=>{const r=p.rows.find(x=>x[0]===k);return r?esc(r[1]):"—"})).join("")}
+      ${Object.entries(CATS[c].dims).slice(0,4).map(([k,l])=>row(l.replace(/好|强|高$/,""),p=>"●".repeat(p.s[k]||0)+"○".repeat(5-(p.s[k]||0)))).join("")}
+      ${row("优点",p=>`<ul>${p.pros.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`)}${row("缺点",p=>`<ul>${p.cons.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`)}
+      ${row("购买",p=>`<div class="actions">${links(p)}</div>`)}</tbody></table></div></div>`}).join("")+`<p class="hint">圆点评分是同类产品之间相互比较的 5 分制，仅作参考。</p>`;
 }
 
-/* lightbox */
+/* ---------- lightbox ---------- */
 const lb={list:[],i:0,name:""};
-function lbShow(){
-  const u=lb.list[lb.i];$("#lbImg").src=u;$("#lbImg").alt=lb.name+" 大图";
-  $("#lbTitle").textContent=lb.name;$("#lbNum").textContent=`${lb.i+1} / ${lb.list.length}`;
-  $("#lbPrev").disabled=$("#lbNext").disabled=lb.list.length<2;$("#lbStage").classList.remove("zoom");
-}
-function lbOpen(id,i){
-  const p=byId[id];lb.list=p.img.filter(u=>!img.dead.has(u));if(!lb.list.length)return;
-  lb.i=Math.min(i,lb.list.length-1);lb.name=p.name;$("#lb").hidden=false;lbShow();$("#lbClose").focus();
-}
+function lbShow(){$("#lbImg").src=lb.list[lb.i];$("#lbImg").alt=lb.name+" 大图";$("#lbTitle").textContent=lb.name;$("#lbNum").textContent=`${lb.i+1} / ${lb.list.length}`;$("#lbPrev").disabled=$("#lbNext").disabled=lb.list.length<2;$("#lbStage").classList.remove("zoom")}
+function lbOpen(id,i){const p=byId[id];lb.list=p.img.filter(u=>!img.dead.has(u));if(!lb.list.length)return;lb.i=Math.min(i,lb.list.length-1);lb.name=p.name;$("#lb").hidden=false;lbShow();$("#lbClose").focus()}
 const lbClose=()=>{$("#lb").hidden=true;$("#lbImg").removeAttribute("src")};
 $("#lbClose").onclick=lbClose;
 $("#lbPrev").onclick=()=>{lb.i=(lb.i-1+lb.list.length)%lb.list.length;lbShow()};
@@ -549,27 +1180,40 @@ $("#lbImg").onclick=()=>$("#lbStage").classList.toggle("zoom");
 $("#lb").addEventListener("click",e=>{if(e.target.id==="lb")lbClose()});
 document.addEventListener("keydown",e=>{if($("#lb").hidden)return;if(e.key==="Escape")lbClose();if(e.key==="ArrowLeft")$("#lbPrev").click();if(e.key==="ArrowRight")$("#lbNext").click()});
 
+/* ---------- events ---------- */
+function rerenderCat(c){drawConsoleKeepOpen();drawRecs(c)}
+function drawConsoleKeepOpen(){const sc=$("#needs").scrollTop;drawConsole();$("#needs").scrollTop=sc}
+document.addEventListener("toggle",e=>{const b=e.target;if(b.matches&&b.matches("details.block")&&b.open)state.open=b.dataset.block},true);
 document.addEventListener("click",e=>{
-  const nav=e.target.closest(".gnav");
-  if(nav){const t=nav.closest(".gal").querySelector(".track");t.scrollBy({left:(nav.classList.contains("next")?1:-1)*t.clientWidth,behavior:"smooth"});return}
-  const sl=e.target.closest(".slide");
-  if(sl){const g=sl.closest(".gal");lbOpen(g.dataset.id,[...sl.parentNode.children].indexOf(sl));return}
-  const b=e.target.closest("[data-cmp]");if(!b)return;
-  const id=b.dataset.cmp,i=state.cmp.indexOf(id);
-  if(i>=0)state.cmp.splice(i,1);else{if(state.cmp.length>=3)state.cmp.shift();state.cmp.push(id)}
-  syncCmpButtons();drawCmp();
+  const t=e.target;
+  const nav=t.closest(".gnav");if(nav){const tr=nav.closest(".gal").querySelector(".track");tr.scrollBy({left:(nav.classList.contains("next")?1:-1)*tr.clientWidth,behavior:"smooth"});return}
+  const sl=t.closest(".slide");if(sl){lbOpen(sl.closest(".gal").dataset.id,[...sl.parentNode.children].indexOf(sl));return}
+  const cat=t.closest("[data-cat]");if(cat){const c=cat.dataset.cat;state.cats.has(c)?state.cats.delete(c):state.cats.add(c);if(state.cats.has(c))state.open=c;drawConsole();drawRecs();return}
+  const pr=t.closest("[data-preset]");if(pr){const [c,k]=pr.dataset.preset.split(":");const s=state.c[c].presets;s.has(k)?s.delete(k):s.add(k);applyPresets(c);rerenderCat(c);return}
+  const us=t.closest("[data-use]");if(us){const c=us.dataset.use,k=us.dataset.k,s=state.c[c].uses;s.has(k)?s.delete(k):s.add(k);us.setAttribute("aria-pressed",s.has(k));updateBlockHead(c);drawRecs(c);return}
+  const se=t.closest("[data-sel]");if(se){const [c,g]=se.dataset.sel.split(":"),k=se.dataset.k,s=state.c[c].sel[g];s.has(k)?s.delete(k):s.add(k);se.setAttribute("aria-pressed",s.has(k));updateBlockHead(c);drawRecs(c);return}
+  const rs=t.closest("[data-reset]");if(rs){const c=rs.dataset.reset;state.c[c]=fresh(c);rerenderCat(c);return}
+  const ac=t.closest("[data-allcat]");if(ac){state.allCat=ac.dataset.allcat;drawAll();return}
+  const b=t.closest("[data-cmp]");if(b){const id=b.dataset.cmp,i=state.cmp.indexOf(id);
+    if(i>=0)state.cmp.splice(i,1);else{const same=state.cmp.filter(x=>byId[x].cat===byId[id].cat);if(same.length>=3)state.cmp.splice(state.cmp.indexOf(same[0]),1);state.cmp.push(id)}
+    syncCmpButtons();drawCmp();}
 });
+document.addEventListener("input",e=>{const r=e.target.closest&&e.target.closest("[data-budget]");if(!r)return;const c=r.dataset.budget;state.c[c].budget=+r.value;
+  document.getElementById("bo-"+c).textContent="€"+money(+r.value);updateBlockHead(c);drawRecs(c);
+  $("#needSum").textContent=ORDER.filter(x=>state.cats.has(x)).map(x=>CATS[x].t+" €"+money(state.c[x].budget)).join(" ｜ ")});
+$("#resetAll").onclick=()=>{ORDER.forEach(c=>state.c[c]=fresh(c));drawConsole();drawRecs()};
+$("#needEdit").onclick=()=>$("#needs").scrollIntoView({behavior:"smooth",block:"start"});
 $("#cbarClear").onclick=()=>{state.cmp=[];syncCmpButtons();drawCmp()};
 $("#cbarGo").onclick=()=>$("#compare").scrollIntoView({behavior:"smooth"});
-const syncBudget=v=>{v=Math.max(250,Math.min(5000,Number(v)||1000));state.budget=v;$("#budget").value=v;$("#budgetRange").value=v;drawRec()};
-$("#budget").addEventListener("change",e=>syncBudget(e.target.value));
-$("#budgetRange").addEventListener("input",e=>syncBudget(e.target.value));
 $("#sort").onchange=e=>{state.sort=e.target.value;drawAll()};
 $("#needs").addEventListener("submit",e=>e.preventDefault());
-$("#count").textContent=P.length;
-$("#srcList").innerHTML=Object.values(SRC).map(s=>`<li><a href="${s.u}" target="_blank" rel="noopener">${esc(s.n)}</a></li>`).join("");
 
-drawControls();drawRec();drawAll();drawCmp();
+$("#stats").innerHTML=[[P.length,"台电脑"],[Q.filter(p=>p.cat==="kb").length,"款键盘"],[Q.filter(p=>p.cat==="mouse").length,"款鼠标"],[Q.filter(p=>p.cat==="audio").length,"款耳机"],[ALL.filter(p=>p.market).length,"款有市场价"],[ALL.filter(p=>p.hist).length,"款有历史低价"]]
+  .map(([n,t])=>`<div class="stat glass"><b>${n}</b><span>${t}</span></div>`).join("");
+const srcs=new Map();ALL.forEach(p=>srcs.set(p.srcObj.u,p.srcObj.n));Object.values(SRC).forEach(s=>srcs.set(s.u,s.n));
+$("#srcList").innerHTML=[...srcs].filter(([u])=>!/pccomponentes\.it\/(?!mini|pc-)/.test(u)).map(([u,n])=>`<li><a href="${u}" target="_blank" rel="noopener">${esc(n)}</a></li>`).join("")+`<li>外设价格：<a href="https://www.pccomponentes.it/" target="_blank" rel="noopener">PcComponentes.it</a>、<a href="https://www.ldlc.com/it-it/" target="_blank" rel="noopener">LDLC Italia</a> 商品页</li>`;
+if(innerWidth<=900)state.open=null;
+drawConsole();drawRecs();drawAll();drawCmp();
 </script>
 
 </body>

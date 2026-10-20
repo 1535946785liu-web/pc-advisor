@@ -1,0 +1,19 @@
+{
+  "name": "莫比价 MobiPrice · 电脑与外设选购参谋",
+  "short_name": "莫比价",
+  "description": "意大利电脑与外设选购参谋：需求可叠加，官网和大平台现价、历史低价、推荐入手价一目了然。",
+  "lang": "zh-CN",
+  "id": "./",
+  "start_url": "./?source=app",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0f1923",
+  "theme_color": "#0f1923",
+  "categories": ["shopping", "utilities"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

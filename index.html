@@ -3,6 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f1923">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="64x64" href="icons/favicon-64.png" data-static>
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" data-static>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="莫比价">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="description" content="意大利电脑与外设选购参谋：需求可叠加，官网和大平台现价、历史低价、推荐入手价一目了然。">
 </head>
 <body>
 <title>莫比价 MobiPrice · 电脑与外设选购参谋</title>
@@ -297,6 +306,18 @@ html.intro-on .brand-mark canvas{visibility:hidden}
 .mo-bubble::before{content:"";position:absolute;left:-7px;top:50%;width:12px;height:12px;margin-top:-6px;background:var(--glass-2);border-left:1px solid var(--line);border-bottom:1px solid var(--line);transform:rotate(45deg)}
 .mo-bubble b{color:var(--accent)}
 html.mo-off .mascot{display:none}
+.inst-btn{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:0 14px;border-radius:999px;border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent);font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
+.inst-btn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.inst-sheet{position:fixed;inset:0;z-index:60;background:rgba(6,14,20,.55);display:flex;align-items:flex-end;justify-content:center;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+.inst-card{width:100%;max-width:440px;background:var(--bg1);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:22px;display:grid;gap:16px;color:var(--ink)}
+.inst-head{display:flex;gap:14px;align-items:center}
+.inst-head img{border-radius:12px;flex:none}
+.inst-head h2{margin:0;font-size:18px}
+.inst-head p{margin:2px 0 0;font-size:13.5px;color:var(--ink-2)}
+.inst-steps{margin:0;padding-left:22px;display:grid;gap:8px;font-size:15px;line-height:1.6}
+.inst-steps b{color:var(--accent)}
+.inst-steps .ico{display:inline-block;padding:0 6px;border:1px solid var(--line-2);border-radius:6px;font-size:12px}
+.inst-close{min-height:44px;border:0;border-radius:14px;background:var(--accent);color:var(--accent-ink);font:inherit;font-weight:700;cursor:pointer}
 .tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .mo-toggle{display:inline-flex;align-items:center;gap:8px;min-height:38px;padding:0 6px 0 14px;border-radius:999px;border:1px solid var(--line);background:var(--glass);color:var(--ink-2);font:inherit;font-size:12.5px;cursor:pointer;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
 .mo-toggle i{width:32px;height:20px;border-radius:999px;background:var(--line-2);position:relative;transition:background .2s}
@@ -400,7 +421,7 @@ function brand(){
  try{var c=document.createElement('canvas');draw(c,FIN,1,0,64);setIcon('icon',c.toDataURL('image/png'));
   var c2=document.createElement('canvas'),bg=getComputedStyle(doc).getPropertyValue('--bg1').trim()||'#e8eef3';draw(c2,FIN,1,0,180,bg);setIcon('apple-touch-icon',c2.toDataURL('image/png'))}catch(e){}
 }
-function setIcon(rel,href){var l=document.querySelector('link[rel="'+rel+'"]');if(!l){l=document.createElement('link');l.rel=rel;document.head.appendChild(l)}l.href=href}
+function setIcon(rel,href){if(document.querySelector('link[data-static]'))return;var l=document.querySelector('link[rel="'+rel+'"]');if(!l){l=document.createElement('link');l.rel=rel;document.head.appendChild(l)}l.href=href}
 var TIPS=['嗨，我是<b>小莫</b>！先在下面选好要买什么，我帮你挑出最合适的 5 款。',
 '需求可以<b>叠加</b>：比如「学生」和「游戏」一起点，我会两边都照顾到。',
 '每款都有<b>推荐入手价</b>，是参考历史低价算出来的。标着「现在入手合适」就可以考虑下手啦。',
@@ -417,6 +438,20 @@ function wire(){brand();
  if(done)setTimeout(wave,500);
  var mt=document.getElementById('moToggle');function mtm(){if(mt)mt.setAttribute('aria-pressed',String(!doc.classList.contains('mo-off')))}
  if(mt)mt.addEventListener('click',function(){var off=doc.classList.toggle('mo-off');try{localStorage.setItem('mbp-mo',off?'off':'on')}catch(e){}mtm();if(!off)setTimeout(wave,50)});mtm();
+ (function(){
+  var ib=document.getElementById('instBtn'),sh=document.getElementById('instSheet'),dp=null;
+  var standalone=false;try{standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}catch(e){}
+  var canInstall=/github\.io$/.test(location.hostname)||location.hostname==='localhost';
+  if(!ib||!sh||standalone||!canInstall)return;
+  ib.hidden=false;
+  var android=/Android/i.test(navigator.userAgent);
+  document.getElementById('instAndroid').hidden=!android;document.getElementById('instIOS').hidden=android;
+  addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e});
+  addEventListener('appinstalled',function(){ib.hidden=true;sh.hidden=true});
+  ib.addEventListener('click',function(){if(dp){dp.prompt();dp.userChoice.then(function(){dp=null})}else{sh.hidden=false;document.getElementById('instClose').focus()}});
+  document.getElementById('instClose').addEventListener('click',function(){sh.hidden=true});
+  sh.addEventListener('click',function(e){if(e.target===sh)sh.hidden=true});
+ })();
  var sw=document.querySelectorAll('.theme-sw button');function mark(){var cur=doc.getAttribute('data-theme')||'auto';for(var i=0;i<sw.length;i++)sw[i].setAttribute('aria-pressed',String(sw[i].getAttribute('data-t')===cur))}
  for(var i=0;i<sw.length;i++)sw[i].addEventListener('click',function(){var v=this.getAttribute('data-t');applyTheme(v);try{if(v==='auto')localStorage.removeItem(TK);else localStorage.setItem(TK,v)}catch(e){}mark()});mark();
 var b=document.getElementById('brandMark');if(b)b.addEventListener('click',function(){if(!rm)play()});
@@ -427,6 +462,24 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script>
 
+<div class="inst-sheet" id="instSheet" hidden role="dialog" aria-modal="true" aria-labelledby="instTitle">
+  <div class="inst-card">
+    <div class="inst-head"><img src="icons/apple-touch-icon.png" alt="" width="52" height="52"><div><h2 id="instTitle">把莫比价装到手机</h2><p>装好后桌面上会多一个图标，点开就是全屏 App。</p></div></div>
+    <ol class="inst-steps" id="instIOS">
+      <li>用 <b>Safari</b> 打开这个网页（iPhone 上的 Chrome 也可以）。</li>
+      <li>点屏幕下方（Chrome 在右上角）的<b>分享</b>按钮 <span class="ico">⬆︎</span>。</li>
+      <li>往下滑，点<b>“添加到主屏幕”</b>。</li>
+      <li>右上角点<b>“添加”</b>，完成。</li>
+    </ol>
+    <ol class="inst-steps" id="instAndroid" hidden>
+      <li>用 <b>Chrome</b> 打开这个网页。</li>
+      <li>点右上角 <b>⋮</b> 菜单。</li>
+      <li>点<b>“安装应用”</b>或<b>“添加到主屏幕”</b>。</li>
+      <li>在弹出的窗口里点<b>“安装”</b>，完成。</li>
+    </ol>
+    <button type="button" class="inst-close" id="instClose">知道了</button>
+  </div>
+</div>
 <div class="space" aria-hidden="true"><div class="fog f1"></div><div class="fog f2"></div><div class="floor"></div></div>
 
 <div class="wrap">
@@ -436,6 +489,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     <div class="toprow">
       <div class="eyebrow">电脑与外设选购参谋 · Italia · EUR</div>
       <div class="tools">
+      <button type="button" class="inst-btn" id="instBtn" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>装到手机</button>
       <button type="button" class="mo-toggle" id="moToggle" aria-pressed="true">小莫<i aria-hidden="true"></i></button>
       <div class="theme-sw" role="group" aria-label="显示模式">
         <button type="button" data-t="auto" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg>自动</button>
@@ -517,9 +571,9 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   <div class="lb-foot"><button type="button" id="lbPrev">上一张</button><span id="lbNum"></span><button type="button" id="lbNext">下一张</button></div>
 </div>
 
-<script src="data/meta.js?v=2026-10-20b"></script>
-<script src="data/pcs.js?v=2026-10-20b"></script>
-<script src="data/peripherals.js?v=2026-10-20b"></script>
+<script src="data/meta.js?v=2026-10-20c"></script>
+<script src="data/pcs.js?v=2026-10-20c"></script>
+<script src="data/peripherals.js?v=2026-10-20c"></script>
 <script>
 /* ---------- meta (date & seasonal note) ---------- */
 (function(){var u=document.getElementById('upd'),s=document.getElementById('saleNote');if(typeof META!=='undefined'){if(u)u.textContent=META.updated;if(s)s.textContent=META.sale||''}})();
@@ -834,5 +888,6 @@ if(innerWidth<=900)state.open=null;
 drawConsole();drawRecs();drawAll();drawCmp();
 </script>
 
+<script>if('serviceWorker' in navigator){addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}</script>
 </body>
 </html>
